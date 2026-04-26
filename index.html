@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tassilo von Droste zu Hülshoff — Governance &amp; Development</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --serif: 'Playfair Display', Georgia, serif;
+    --body: 'Source Serif 4', Georgia, serif;
+    --text: #1a1a18;
+    --text-mid: #4a4a46;
+    --text-light: #7a7a74;
+    --border: rgba(26,26,24,0.12);
+    --border-mid: rgba(26,26,24,0.22);
+    --bg: #faf9f7;
+    --bg-card: #f3f1ec;
+    --green: #27500A;
+    --green-mid: #3B6D11;
+    --green-light: #EAF3DE;
+    --blue: #0C447C;
+    --blue-mid: #185FA5;
+    --blue-light: #E6F1FB;
+    --coral: #712B13;
+    --coral-mid: #993C1D;
+    --coral-light: #FAECE7;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LAYOUT ── */
+  .site-wrap { max-width: 920px; margin: 0 auto; padding: 0 2rem; }
+  .content-wrap { max-width: 740px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,249,247,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 1rem 0;
+  }
+  .nav-inner {
+    max-width: 920px; margin: 0 auto; padding: 0 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-name {
+    font-family: var(--serif); font-size: 15px; font-weight: 500;
+    color: var(--text); text-decoration: none; letter-spacing: 0.01em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 12px; color: var(--text-light); text-decoration: none;
+    letter-spacing: 0.04em; cursor: pointer; transition: color 0.2s;
+    background: none; border: none; font-family: var(--body); padding: 0;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active { border-bottom: 0.5px solid var(--text); padding-bottom: 1px; }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 3.5rem 0 5rem; }
+  .page.active { display: block; }
+
+  /* ── TYPOGRAPHY ── */
+  .eyebrow {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 1rem; display: block;
+  }
+  .prose { font-size: 15px; line-height: 1.9; color: var(--text-mid); font-weight: 300; }
+  .prose p { margin-bottom: 1.35rem; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { font-weight: 400; color: var(--text); }
+
+  .pull {
+    font-family: var(--serif); font-size: 20px; font-style: italic;
+    line-height: 1.45; color: var(--text);
+    border-top: 1.5px solid var(--text);
+    border-bottom: 0.5px solid var(--border);
+    padding: 1.4rem 0 1.2rem; margin: 2.5rem 0;
+  }
+
+  .s-break {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 3rem 0 1.75rem;
+  }
+  .s-label { font-family: var(--serif); font-size: 18px; font-weight: 400; white-space: nowrap; }
+  .s-line { flex: 1; height: 0.5px; background: var(--border); }
+  .s-badge {
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 3px; white-space: nowrap;
+  }
+  .green-badge { background: var(--green-light); color: var(--green); }
+  .blue-badge { background: var(--blue-light); color: var(--blue); }
+  .coral-badge { background: var(--coral-light); color: var(--coral); }
+
+  hr.divider { border: none; border-top: 0.5px solid var(--border); margin: 3.5rem 0; }
+
+  /* ── HOME PAGE ── */
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: start; margin-bottom: 4rem; }
+  .hero-title { font-family: var(--serif); font-size: 38px; font-weight: 400; line-height: 1.2; margin-bottom: 1.25rem; }
+  .hero-title em { font-style: italic; color: var(--green-mid); }
+  .hero-body { font-size: 15px; line-height: 1.85; color: var(--text-mid); font-weight: 300; }
+  .hero-bullets { margin-top: 1.75rem; display: flex; flex-direction: column; gap: 0.45rem; }
+  .hb { font-size: 13px; color: var(--text-mid); display: flex; align-items: center; gap: 0.7rem; }
+  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; }
+
+  .side-card { background: var(--bg-card); border-radius: 12px; padding: 1.4rem; border: 0.5px solid var(--border); }
+  .card-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); margin-bottom: 1rem; }
+  .topic { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: opacity 0.2s; }
+  .topic:hover { opacity: 0.7; }
+  .topic:last-child { border-bottom: none; padding-bottom: 0; }
+  .topic-num { font-size: 11px; color: var(--text-light); font-weight: 300; min-width: 16px; padding-top: 2px; }
+  .topic-name { font-family: var(--serif); font-size: 14px; font-weight: 400; margin-bottom: 2px; }
+  .topic-sub { font-size: 12px; color: var(--text-light); font-weight: 300; line-height: 1.5; }
+  .t-green .topic-num { color: var(--green-mid); }
+  .t-blue .topic-num { color: var(--blue-mid); }
+  .t-coral .topic-num { color: var(--coral-mid); }
+
+  /* CASE STUDIES */
+  .cs-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 3rem; align-items: start; }
+  .cs-eye { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.65rem; }
+  .green-eye { color: var(--green-mid); }
+  .blue-eye { color: var(--blue-mid); }
+  .coral-eye { color: var(--coral-mid); }
+  .cs-title { font-family: var(--serif); font-size: 22px; font-weight: 400; line-height: 1.25; margin-bottom: 1rem; }
+
+  .qblock { border-left: 2px solid; padding: 0.9rem 1.25rem; margin: 1.25rem 0; background: var(--bg-card); border-radius: 0 8px 8px 0; }
+  .green-qblock { border-color: var(--green-mid); }
+  .blue-qblock { border-color: var(--blue-mid); }
+  .coral-qblock { border-color: var(--coral-mid); }
+  .qtext { font-family: var(--serif); font-size: 14px; font-style: italic; line-height: 1.7; color: var(--text); }
+  .qattr { font-size: 11px; color: var(--text-light); margin-top: 0.35rem; }
+
+  .meta-panel {}
+  .mstat { padding: 0.75rem 0; border-bottom: 0.5px solid var(--border); }
+  .mstat:last-child { border-bottom: none; }
+  .mlabel { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.25rem; }
+  .mval { font-size: 13px; color: var(--text); line-height: 1.5; font-weight: 300; }
+
+  .tag { display: inline-block; font-size: 10px; border-radius: 2px; padding: 2px 8px; margin: 2px 2px 2px 0; letter-spacing: 0.02em; }
+  .g-tag { background: var(--green-light); color: var(--green); }
+  .b-tag { background: var(--blue-light); color: var(--blue); }
+  .c-tag { background: var(--coral-light); color: var(--coral); }
+
+  .cs-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 12px; text-decoration: none; border-bottom: 0.5px solid; padding-bottom: 1px; margin-top: 1rem; transition: opacity 0.2s; }
+  .cs-link:hover { opacity: 0.7; }
+  .g-link { color: var(--green-mid); border-color: var(--green-mid); }
+  .b-link { color: var(--blue-mid); border-color: var(--blue-mid); }
+  .c-link { color: var(--coral-mid); border-color: var(--coral-mid); }
+  .link-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  /* ── GOVERNANCE PAGE ── */
+  .essay-title { font-family: var(--serif); font-size: 40px; font-weight: 400; line-height: 1.15; margin-bottom: 0.5rem; }
+  .essay-title em { font-style: italic; color: var(--green-mid); }
+  .essay-subtitle { font-size: 17px; color: var(--text-mid); font-weight: 300; line-height: 1.6; margin-bottom: 2rem; font-style: italic; font-family: var(--serif); }
+  .essay-meta { display: flex; align-items: center; gap: 1.5rem; padding: 1rem 0; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); margin-bottom: 3rem; flex-wrap: wrap; }
+  .meta-author { font-size: 13px; color: var(--text); font-weight: 400; }
+  .meta-date { font-size: 12px; color: var(--text-light); font-weight: 300; }
+  .meta-sep { width: 1px; height: 14px; background: var(--border-mid); }
+
+  .callout { background: var(--bg-card); border-radius: 12px; padding: 1.5rem 1.75rem; border: 0.5px solid var(--border); margin: 2rem 0; }
+  .callout-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.75rem; }
+  .callout-title { font-family: var(--serif); font-size: 16px; font-weight: 400; margin-bottom: 0.6rem; }
+  .callout-body { font-size: 14px; line-height: 1.75; color: var(--text-mid); font-weight: 300; }
+
+  .examples { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.75rem 0; }
+  .ex { background: var(--bg-card); border-radius: 8px; padding: 1rem 1.1rem; border: 0.5px solid var(--border); }
+  .ex-title { font-size: 13px; font-weight: 400; margin-bottom: 0.35rem; color: var(--text); }
+  .ex-body { font-size: 12px; line-height: 1.65; color: var(--text-mid); font-weight: 300; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.75rem 0; }
+  .split-col { border-radius: 8px; padding: 1.1rem 1.25rem; border: 0.5px solid; }
+  .opp { background: var(--green-light); border-color: #C0DD97; }
+  .risk { background: var(--coral-light); border-color: #F5C4B3; }
+  .split-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .opp .split-label { color: var(--green); }
+  .risk .split-label { color: var(--coral); }
+  .split-item { font-size: 13px; line-height: 1.6; font-weight: 300; display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.4rem; color: var(--text); }
+  .split-item:last-child { margin-bottom: 0; }
+  .si-dot { width: 3px; height: 3px; border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+  .opp .si-dot { background: var(--green); }
+  .risk .si-dot { background: var(--coral-mid); }
+
+  .closing { border-top: 1.5px solid var(--text); padding-top: 1.5rem; margin-top: 3rem; }
+  .closing-text { font-family: var(--serif); font-size: 18px; font-style: italic; line-height: 1.6; color: var(--text); margin-bottom: 1rem; }
+  .closing-sub { font-size: 13px; color: var(--text-mid); font-weight: 300; line-height: 1.7; }
+
+  /* ── ABOUT PAGE ── */
+  .about-header { display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: start; margin-bottom: 2.5rem; }
+  .about-name { font-family: var(--serif); font-size: 38px; font-weight: 400; line-height: 1.15; margin-bottom: 0.75rem; }
+  .about-tagline { font-size: 16px; color: var(--text-mid); font-weight: 300; line-height: 1.7; font-style: italic; font-family: var(--serif); }
+  .initials-circle { width: 80px; height: 80px; border-radius: 50%; background: var(--bg-card); border: 0.5px solid var(--border-mid); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; font-weight: 400; color: var(--text-mid); flex-shrink: 0; margin-top: 2rem; }
+
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: grid; grid-template-columns: 130px 1fr; gap: 1.25rem; padding: 1.1rem 0; border-bottom: 0.5px solid var(--border); }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-period { font-size: 11px; color: var(--text-light); font-weight: 300; line-height: 1.5; padding-top: 2px; }
+  .tl-role { font-size: 14px; font-weight: 400; color: var(--text); margin-bottom: 0.2rem; }
+  .tl-org { font-size: 13px; color: var(--text-mid); font-weight: 300; margin-bottom: 0.3rem; }
+  .tl-place { font-size: 11px; color: var(--text-light); font-weight: 300; font-style: italic; }
+  .tl-note { font-size: 12px; color: var(--text-mid); font-weight: 300; margin-top: 0.35rem; line-height: 1.55; border-left: 1.5px solid var(--border-mid); padding-left: 0.75rem; }
+
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .edu-card { background: var(--bg-card); border-radius: 8px; padding: 1rem 1.1rem; border: 0.5px solid var(--border); }
+  .edu-deg { font-size: 13px; font-weight: 400; color: var(--text); margin-bottom: 0.2rem; }
+  .edu-inst { font-size: 12px; color: var(--text-mid); font-weight: 300; line-height: 1.5; }
+
+  .pub-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .pub { background: var(--bg-card); border-radius: 8px; padding: 0.9rem 1.1rem; border: 0.5px solid var(--border); }
+  .pub-title { font-size: 13px; font-weight: 400; color: var(--text); margin-bottom: 0.25rem; font-style: italic; }
+  .pub-detail { font-size: 12px; color: var(--text-mid); font-weight: 300; line-height: 1.55; }
+
+  .skill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .skill-tag { font-size: 12px; background: var(--bg-card); border: 0.5px solid var(--border-mid); border-radius: 3px; padding: 4px 10px; color: var(--text-mid); font-weight: 300; }
+  .skill-tag.strong { color: var(--text); border-color: rgba(26,26,24,0.35); }
+
+  /* ── CONTACT PAGE ── */
+  .contact-header { margin-bottom: 3rem; }
+  .contact-title { font-family: var(--serif); font-size: 38px; font-weight: 400; line-height: 1.2; margin-bottom: 0.75rem; }
+  .contact-title em { font-style: italic; color: var(--green-mid); }
+  .contact-intro { font-size: 16px; color: var(--text-mid); font-weight: 300; line-height: 1.8; max-width: 560px; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 3rem; }
+  .contact-card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 0.5px solid var(--border); }
+  .contact-card-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.75rem; }
+  .contact-card-title { font-family: var(--serif); font-size: 17px; margin-bottom: 0.5rem; }
+  .contact-card-body { font-size: 13px; color: var(--text-mid); font-weight: 300; line-height: 1.65; margin-bottom: 1rem; }
+  .contact-detail { font-size: 13px; color: var(--text); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
+  .contact-detail a { color: var(--green-mid); text-decoration: none; border-bottom: 0.5px solid var(--green-mid); }
+
+  .avail-bar { display: grid; grid-template-columns: 1fr 0.5px 1fr; gap: 2rem; background: var(--bg-card); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.75rem 2rem; margin-top: 2rem; }
+  .avail-sep { background: var(--border); }
+  .avail-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.6rem; }
+  .avail-title { font-family: var(--serif); font-size: 16px; margin-bottom: 0.4rem; }
+  .avail-body { font-size: 13px; color: var(--text-mid); font-weight: 300; line-height: 1.65; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 2rem 0;
+    margin-top: 3rem;
+  }
+  .footer-inner {
+    max-width: 920px; margin: 0 auto; padding: 0 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-name { font-family: var(--serif); font-size: 13px; color: var(--text-light); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 12px; color: var(--text-light); text-decoration: none; cursor: pointer; }
+  .footer-links a:hover { color: var(--text); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    .hero { grid-template-columns: 1fr; gap: 2rem; }
+    .cs-grid { grid-template-columns: 1fr; }
+    .examples { grid-template-columns: 1fr; }
+    .split { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .avail-bar { grid-template-columns: 1fr; }
+    .avail-sep { display: none; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .about-header { grid-template-columns: 1fr; }
+    .initials-circle { display: none; }
+    .tl-item { grid-template-columns: 90px 1fr; }
+    .nav-links { gap: 1.2rem; }
+    .essay-title, .hero-title, .about-name, .contact-title { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" onclick="showPage('home')">Tassilo von Droste zu Hülshoff</a>
+    <ul class="nav-links">
+      <li><a onclick="showPage('governance')" id="nav-governance" class="active">Governance</a></li>
+      <li><a onclick="showPage('home')" id="nav-home">Notes from the field</a></li>
+      <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+      <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+
+<!-- ═══════════════════════════════════════════════════
+     NOTES FROM THE FIELD PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-home" class="page">
+  <div class="content-wrap">
+
+    <span class="eyebrow">Notes from the field</span>
+    <h1 class="essay-title">Three problems that<br>kept coming <em>back</em></h1>
+    <p class="essay-subtitle">Observations from eighteen years working on governance in Africa — what worked, what didn't, and what remains hard</p>
+    <div class="essay-meta">
+      <span class="meta-author">Tassilo von Droste zu Hülshoff</span>
+      <div class="meta-sep"></div>
+      <span class="meta-date">Mauritania · South Africa · Chad · Ghana · Uganda</span>
+    </div>
+
+    <div class="prose">
+      <p>Governance reform is slow, non-linear, and frequently humbling. Programmes end, reports are written, and the honest practitioner asks: what actually changed? The three pieces below are attempts to answer that question honestly — for three problems I kept encountering across different countries and contexts, and the approaches that seemed, imperfectly, to make some difference.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- NOTE 1 -->
+    <section id="cs-audits">
+      <div class="s-break">
+        <h2 class="s-label">On audit institutions and environmental accountability</h2>
+        <div class="s-line"></div>
+        <span class="s-badge green-badge">01</span>
+      </div>
+      <div class="prose">
+        <div class="cs-eye green-eye" style="margin-bottom:0.65rem">Lake Chad Basin · Nigeria, Niger, Chad, Cameroon · 2015</div>
+        <h3 class="cs-title">When the water disappears: can audit institutions hold governments to account for shared resources?</h3>
+
+        <p>Lake Chad has lost roughly 90% of its surface area since the 1960s. The causes are multiple — climate change, population growth, irrigation — but one factor that received far less attention was governance. No institution, in any of the four countries that share the lake, was effectively monitoring how water was being used, by whom, or whether the rules that existed on paper were being applied in practice. The oversight gap was as significant as the rainfall deficit.</p>
+
+        <p>The question we worked on from 2013 onwards, through GIZ's Good Financial Governance programme in Africa, was whether Supreme Audit Institutions — the independent bodies that audit government spending and performance — could be part of the answer. SAIs are typically associated with financial probity: tracking whether money was spent as authorised. But performance auditing, the practice of evaluating whether government programmes actually achieved their objectives, opens the door to much broader questions. Did water management policies work? Were regulations enforced? What happened to the communities they were meant to protect?</p>
+
+        <p>Working with AFROSAI, the African umbrella body for SAIs, we supported the audit institutions of Nigeria, Niger, Chad and Cameroon to conduct a joint environmental performance audit of the Lake Chad Basin. It was completed in 2015 and presented to President Idriss Déby of Chad — the first time on the African continent that a joint environmental audit had been submitted to a head of state.</p>
+
+        <p>What did it change? The honest answer is: it is hard to know. The audit generated findings and recommendations; whether those recommendations translated into policy change remains difficult to trace. What it did demonstrate was that cooperation between national SAIs on a shared natural resource was feasible — that institutions which normally operate within strictly national mandates could align their methodologies, agree on findings, and speak with a common voice. That procedural achievement matters more than it might seem, in a region where cross-border cooperation on shared resources has often stalled for political reasons.</p>
+
+        <p>What remains hard: environmental performance auditing requires technical expertise that most African SAIs do not have in-house. Geology, hydrology, ecological monitoring — these are not auditing skills. The capacity gap is real, and filling it takes years, not programme cycles.</p>
+
+        <div class="qblock green-qblock">
+          <div class="qtext">"Lack of water, poverty, limited economic perspectives are a fertile ground for all kinds of vulnerabilities."</div>
+          <div class="qattr">— German Ambassador Helmut Kulitz, at the handover ceremony to President Déby, N'Djamena, May 2015</div>
+        </div>
+        <a class="cs-link g-link" href="https://www.giz.de/de/downloads/giz2015-en-gfg-article-lake-chad-auditreport.pdf" target="_blank">Read the original article ↗</a>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- NOTE 2 -->
+    <section id="cs-citizens">
+      <div class="s-break">
+        <h2 class="s-label">On citizen feedback and the limits of digital tools</h2>
+        <div class="s-line"></div>
+        <span class="s-badge blue-badge">02</span>
+      </div>
+      <div class="prose">
+        <div class="cs-eye blue-eye" style="margin-bottom:0.65rem">Ghana · Uganda · 2018–2025</div>
+        <h3 class="cs-title">Can citizens become part of the audit process? Notes on CitizensEye and what followed</h3>
+
+        <p>Audit reports, in most countries, are not read by citizens. They are technical documents, written in bureaucratic language, published months or years after the events they describe, and distributed to committees that may or may not act on them. The feedback loop between what citizens experience — the pothole, the absent nurse, the school with no books — and what auditors investigate is almost entirely broken.</p>
+
+        <p>The idea behind CitizensEye, developed in 2018 with Ghana's Audit Service, was simple: use a mobile app to let citizens report service delivery failures directly to the Auditor General, geolocated and categorised, in real time. The logic was borrowed from consumer platforms — the same instinct that makes someone leave a review on TripAdvisor — applied to public services. If citizens could flag issues as they encountered them, auditors would have a continuously updated picture of where the system was failing, grounded in lived experience rather than administrative self-reporting.</p>
+
+        <p>The Ghana launch attracted significant media attention. The harder question — whether the Audit Service had the internal capacity and political will to systematically act on citizen reports — was something we grappled with from the beginning, and did not fully resolve. A tool is only as useful as the institution it feeds into.</p>
+
+        <p>In Uganda, the model was adapted through the Citizen Feedback Platform, developed under the Strengthening Governance and Civil Society Programme, with civil society organisations — particularly the Civil Society Budget Advocacy Group — serving as the link between communities and the Office of the Auditor General. By 2024, 495 citizens across 20 local governments had submitted 726 reports. In at least one documented case, a primary school with 346 pupils flagged through the platform received construction materials within weeks.</p>
+
+        <p>What remains hard: digital tools work best for people who are already relatively connected — literate, smartphone-owning, comfortable with apps. The communities with the most acute service delivery failures are often the least reachable through digital channels. Bridging that gap requires civil society partners willing to do sustained, offline community mobilisation. The technology is the easy part.</p>
+
+        <div class="qblock blue-qblock">
+          <div class="qtext">"Duty bearers are now more cautious in their work, as they see us almost like auditors."</div>
+          <div class="qattr">— Gonansa Emmanuel, Participatory Budget Club Member, Budaka District, Uganda</div>
+        </div>
+        <div class="link-row">
+          <a class="cs-link b-link" href="https://audit.gov.gh/6/15/18/audit-service-launches-citizenseye-mobile-technology-application" target="_blank">Ghana Audit Service launch ↗</a>
+          <a class="cs-link b-link" href="https://cfp.oag.go.ug" target="_blank">Uganda CFP platform ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- NOTE 3 -->
+    <section id="cs-inclusive">
+      <div class="s-break">
+        <h2 class="s-label">On inclusion and who governance is actually for</h2>
+        <div class="s-line"></div>
+        <span class="s-badge coral-badge">03</span>
+      </div>
+      <div class="prose">
+        <div class="cs-eye coral-eye" style="margin-bottom:0.65rem">Uganda · 2019–2025</div>
+        <h3 class="cs-title">Who gets to participate? Notes on inclusive governance and what it actually requires</h3>
+
+        <p>Most governance programmes, if you look closely, reach a relatively narrow slice of the population: educated, urban, male, middle-aged. The people who attend stakeholder consultations, who engage with civil society organisations, who have the time and the confidence to show up — these are rarely the people most dependent on public services working well. The paradox of participatory governance is that the people whose participation matters most are usually the hardest to reach.</p>
+
+        <p>The Civil Society in Uganda Support Programme (CUSP), co-funded by the EU and Germany, tried to take this seriously. Working across all regions of Uganda, including the West Nile refugee-hosting areas, it supported youth parliaments, vocational programmes for young people with disabilities, sport-based civic education for girls in marginalised communities, and AI innovation workshops for civil society organisations learning to use new tools. The premise was that participation is not a single thing — it looks different for a 19-year-old woman in Karamoja than for an NGO officer in Kampala, and programmes need to be designed accordingly.</p>
+
+        <p>By 2024, seven sub-national youth parliaments had brought together 310 young people whose resolutions fed into national policy debates. The HEVOT vocational centre in West Nile opened to serve young people with disabilities who had previously had no pathway to skills training. An EU Youth Sounding Board gave twenty young Ugandans — including doctors, teachers, and female entrepreneurs — a formal advisory role with the EU Delegation.</p>
+
+        <p>What remains hard: inclusion is expensive and slow. It requires working through intermediaries — civil society organisations, community groups, local government structures — that have their own capacities, limitations, and interests. The further you go from the capital, the thinner the civil society ecosystem becomes. And the political environment matters enormously: in contexts where civic space is constrained, the organisations that can reach the most marginalised communities are often under the most pressure.</p>
+
+        <div class="qblock coral-qblock">
+          <div class="qtext">"Before, we could not even speak in public. Now I can stand up and say: this is what our community needs."</div>
+          <div class="qattr">— Youth parliament member, northern Uganda, 2024</div>
+        </div>
+        <div class="link-row">
+          <a class="cs-link c-link" href="https://www.giz.de/en/downloads/giz2024-en-CUSP-bulletin-vol-3.pdf" target="_blank">CUSP Bulletin Vol. 3 ↗</a>
+          <a class="cs-link c-link" href="https://www.giz.de/sites/default/files/media/pkb-document/2025-10/giz2025-en-uganda-4th-cusp-bulletin.pdf" target="_blank">CUSP Bulletin Vol. 4 ↗</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     GOVERNANCE PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-governance" class="page active">
+  <div class="content-wrap">
+
+    <span class="eyebrow">Essay · Governance &amp; development</span>
+    <h1 class="essay-title">Why governance is not<br>a technical problem —<br>it is a <em>moral</em> one</h1>
+    <p class="essay-subtitle">On power, accountability, and what it means to build a state that works for everyone</p>
+
+    <div class="essay-meta">
+      <span class="meta-author">Tassilo von Droste zu Hülshoff</span>
+      <div class="meta-sep"></div>
+      <span class="meta-date">18 years in development cooperation · Uganda, South Africa, Chad, Ghana</span>
+      <div class="meta-sep"></div>
+      <span class="s-badge green-badge">Governance</span>
+    </div>
+
+    <div class="prose">
+      <p>Governance is one of those words that has been stretched so far it has nearly lost its shape. Donors use it to justify conditionalities. Governments invoke it to signal reform intent. Academics write entire careers around its definition. And yet, stripped of jargon, it is a simple idea: <strong>governance is about whether state power is used for the benefit of citizens at large, or for the interests of the connected few.</strong></p>
+      <p>That simplicity matters. Because when governance fails, it is not an abstraction that suffers — it is people. Children sitting in classrooms without textbooks. Patients in health centres without medicines. Bridges that collapse because procurement contracts were awarded on the basis of connections rather than competence. Roads left unrepaired not because funds were unavailable, but because those funds never reached their destination.</p>
+    </div>
+
+    <div class="pull">"The question is not whether a government governs, but whether it governs for everyone."</div>
+
+    <div class="s-break"><h2 class="s-label">What good governance actually means</h2><div class="s-line"></div></div>
+
+    <div class="prose">
+      <p>Good governance has many dimensions — transparency, accountability, participation, the rule of law, efficiency, equity. It is sometimes taught as a checklist, and that is where things go wrong. Governance is not a list of institutional boxes to tick. It is a set of relationships: between the state and its citizens, between public officials and the law, between those with power and those affected by it.</p>
+      <p>At its core, good governance requires three things. First, <strong>solid mechanisms for policy development</strong> — processes that are inclusive, evidence-based, and responsive to the needs of all citizens, including those who are easiest to overlook. Second, <strong>effective implementation</strong> — the administrative capacity to translate policy into services, and the management culture to do so honestly. Third, and perhaps most importantly, <strong>credible accountability</strong> — institutions that are genuinely independent, that can investigate, report, and where necessary, sanction. Supreme Audit Institutions, human rights commissions, independent judiciaries: these are not bureaucratic niceties. They are the mechanisms through which citizens verify that power is being used on their behalf.</p>
+      <p>The independence of these institutions is not a procedural detail. It is the difference between a state that can be held to account and one that cannot. When an Auditor General can be removed by the executive for inconvenient findings, or when a human rights body is starved of funding, the entire architecture of accountability is hollowed out. What remains is the form of governance without its substance.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">The challenge of inclusion</div>
+      <div class="callout-title">No one should be left behind — but this requires deliberate design</div>
+      <div class="callout-body">Inclusive governance does not happen by default. Marginalised groups — women, persons with disabilities, youth, refugees, rural communities — are systematically underrepresented in the processes that shape the services they depend on most. Building systems that cannot be misused through the abuse of power means building systems that actively create equal opportunities and structure participation so that those with the least voice have mechanisms to be heard.</div>
+    </div>
+
+    <div class="s-break"><h2 class="s-label">Democracy between elections</h2><div class="s-line"></div></div>
+
+    <div class="prose">
+      <p>When we think about democracy, we think of elections. But elections take place every five years. In between, there are thousands of days during which government decisions are made, budgets are spent, contracts are awarded, and services either reach people or they do not. Democracy is not only the moment of the vote — it is everything that happens in between.</p>
+      <p>This is where citizen engagement becomes critical, and where its traditional forms fall short. Participation in budget hearings requires literacy, time, and proximity to district offices. Filing a complaint with an oversight body requires knowledge of how to do so and confidence that something will happen. For most citizens — particularly those in rural areas, or those from marginalised groups — these pathways are effectively closed.</p>
+      <p><strong>Digital tools have the potential to change this.</strong> Not as a silver bullet, but as a genuine leveller — lowering the cost of participation, making technical processes accessible, and creating channels through which ordinary citizens can contribute to accountability in real time. The CitizensEye app developed for Ghana's Audit Service, and the Citizen Feedback Platform now used by Uganda's Office of the Auditor General, are examples of what this looks like in practice: citizens reporting geolocated service failures directly to auditors, generating evidence that shapes what gets audited and where public attention is directed.</p>
+    </div>
+
+    <div class="s-break"><h2 class="s-label">Artificial intelligence and the future of governance</h2><div class="s-line"></div></div>
+
+    <div class="prose">
+      <p>Digitalisation offers something that previous governance reforms could not: the possibility of <strong>evidence-based decision-making at scale</strong>, in real time, based on the actual behaviour of systems and citizens rather than the assumptions of planners sitting in capital cities.</p>
+      <p>Consider a practical example. Traffic management in Kampala. An AI system analysing vehicle flow and road conditions across the city could tell the Kampala Capital City Authority not just where potholes exist, but which ones are driven over most frequently — the ones whose repair would reduce the most damage to the most vehicles, for the most people, every single day. Every shilling of public maintenance spending invested where it has the greatest impact on the greatest number of people. A utilitarian calculus in the best sense — maximising social welfare from constrained public resources, in the spirit of what Locke articulated about the purpose of political authority: to serve the governed.</p>
+      <p>The same logic applies to hospital allocation, to school infrastructure, to water access. Data — properly collected, properly disaggregated — allows planners to understand not just where need exists in aggregate, but where investment would have the greatest measurable effect on human outcomes. It can prevent public money from flowing disproportionately to areas that are already well-served, and redirect it to where it would do most good.</p>
+      <p>But disaggregation matters enormously here. <strong>Aggregate data conceals inequality.</strong> An analysis of crime across a city might suggest that street lighting is needed in certain commercial districts. But if the objective is to protect women and children from gender-based violence, the relevant data is different — where crimes against these groups have occurred, at what times, in what conditions. The tool is only as equitable as the question it is asked to answer.</p>
+    </div>
+
+    <div class="examples">
+      <div class="ex"><div class="ex-title">Road maintenance prioritisation</div><div class="ex-body">AI analysis of traffic frequency and road condition data to identify the repairs that serve the most people — directing limited maintenance budgets where they have the greatest impact.</div></div>
+      <div class="ex"><div class="ex-title">Healthcare facility siting</div><div class="ex-body">Using population health data to model where an additional clinic would have the largest effect on life expectancy and access — not where it is politically convenient.</div></div>
+      <div class="ex"><div class="ex-title">Street lighting &amp; safety</div><div class="ex-body">Disaggregated crime data, analysed by victim group and location, to direct safety infrastructure where it most protects women and children.</div></div>
+      <div class="ex"><div class="ex-title">Budget accessibility</div><div class="ex-body">AI summarisation of complex budget and audit documents — making technical accountability processes legible for citizens and civil society without specialist training.</div></div>
+    </div>
+
+    <div class="s-break"><h2 class="s-label">The risks we cannot ignore</h2><div class="s-line"></div></div>
+
+    <div class="prose">
+      <p>None of this is inevitable. Digitalisation does not automatically produce better governance — it amplifies the governance that exists. In the hands of accountable, citizen-oriented institutions, digital tools and AI can be transformative instruments of equity. In the hands of unaccountable ones, they can become instruments of surveillance, exclusion, and control.</p>
+    </div>
+
+    <div class="split">
+      <div class="split-col opp">
+        <div class="split-label">Opportunities</div>
+        <div class="split-item"><div class="si-dot"></div>Real-time citizen feedback on service delivery</div>
+        <div class="split-item"><div class="si-dot"></div>Evidence-based resource allocation for greatest social impact</div>
+        <div class="split-item"><div class="si-dot"></div>AI-powered access to complex budget and audit processes</div>
+        <div class="split-item"><div class="si-dot"></div>Disaggregated data to protect and include marginalised groups</div>
+        <div class="split-item"><div class="si-dot"></div>Lower barriers to civic participation for rural communities</div>
+      </div>
+      <div class="split-col risk">
+        <div class="split-label">Risks</div>
+        <div class="split-item"><div class="si-dot"></div>State surveillance and curtailment of individual rights</div>
+        <div class="split-item"><div class="si-dot"></div>Data used against citizens rather than for them</div>
+        <div class="split-item"><div class="si-dot"></div>AI bias reflecting and amplifying existing inequalities</div>
+        <div class="split-item"><div class="si-dot"></div>Private platforms capturing public data without accountability</div>
+        <div class="split-item"><div class="si-dot"></div>Digital exclusion deepening the gap for those already left behind</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Good governance of digitalisation — including the ethical governance of AI — is therefore not a separate agenda from good governance more broadly. It is its latest chapter. The same principles apply: transparency, accountability, independence, inclusion. Data must be governed with the same rigour as public finances. Algorithms used in public decision-making must be subject to audit. Citizens must have the right to understand how decisions that affect them are made, and the means to challenge them.</p>
+    </div>
+
+    <div class="s-break"><h2 class="s-label">More cooperation, not less</h2><div class="s-line"></div></div>
+
+    <div class="prose">
+      <p>We are living through a moment of acute pressure on the institutions and norms that underpin international cooperation. Belligerent nationalism is on the rise. Multilateral frameworks are under strain. The temptation in many capitals is to turn inward — to treat governance as a domestic matter, immune from external scrutiny or solidarity.</p>
+      <p>This is precisely the wrong response. The challenges that matter most — climate change, forced displacement, transnational corruption, the governance of AI — cannot be addressed by any single state acting alone. They require the kind of sustained cooperation that only robust international institutions can provide. And they require domestic governance frameworks strong enough to resist capture by narrow interests.</p>
+      <p>We have learned, through hard experience across many countries and many decades, that open societies do not sustain themselves automatically. They require active maintenance: independent oversight institutions, a free press, civil society organisations with the space to operate, and the political will to protect all of these when they come under pressure. The erosion of any one of them weakens all the others.</p>
+      <p>The goal is a society in which technology strengthens democracy rather than hollowing it out — where the distance between a citizen and the institutions that serve them is reduced, not by removing accountability but by making it more immediate, more legible, and more real.</p>
+    </div>
+
+    <div class="closing">
+      <div class="closing-text">"Good governance is ultimately an act of collective empathy — a society's decision that the wellbeing of the least powerful matters as much as the wellbeing of the most."</div>
+      <div class="closing-sub">This is the conviction that has shaped eighteen years of work across Africa — in audit institutions, in civil society, in programme management, and in the design of tools that put accountability in citizens' hands.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     ABOUT PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-about" class="page">
+  <div class="content-wrap">
+
+    <div class="about-header">
+      <div>
+        <span class="eyebrow">About</span>
+        <h1 class="about-name">Tassilo von Droste<br>zu Hülshoff</h1>
+        <p class="about-tagline">Development practitioner, governance specialist,<br>and believer in institutions that work for everyone.</p>
+      </div>
+      <div class="initials-circle">TvD</div>
+    </div>
+
+    <div class="prose">
+      <p>I have spent eighteen years trying to answer a deceptively simple question: how do you build a state that actually serves its citizens? Not a state on paper — one that works in practice, for the farmer in northern Uganda, for the woman in a Chadian village where the lake is drying up, for the young person in Kampala who wants to know that the road outside their school will be fixed.</p>
+      <p>That question has taken me from Mauritania to Brussels, from Pretoria to N'Djamena, and most recently to Kampala, where I managed the <strong>Strengthening Governance and Civil Society Programme</strong> — a €44.7 million initiative co-funded by Germany and the European Union, working with civil society organisations, oversight institutions, and government across all regions of Uganda.</p>
+      <p>My career began in public financial management and audit — unglamorous work, but foundational. You cannot have good governance without institutions that can follow the money: Supreme Audit Institutions that are genuinely independent, parliaments with real oversight capacity, budget processes that are open to scrutiny. I spent years supporting exactly this across Africa, advising the African Organisation of Supreme Audit Institutions (AFROSAI) and leading GIZ's Good Financial Governance programme in Pretoria.</p>
+      <p>Over time, I became increasingly convinced that accountability without citizen engagement is incomplete. Audit reports sit on shelves. Findings go unacted upon. The missing link is an informed, empowered citizenry that can demand change. That conviction led me to develop <strong>CitizensEye</strong> in 2018 — the first citizen feedback app for a Supreme Audit Institution in Africa, launched with Ghana's Audit Service — and later to oversee the development of Uganda's <strong>Citizen Feedback Platform</strong>, which has put accountability tools directly in the hands of communities across twenty local governments.</p>
+      <p>Inclusive governance is the third thread running through my work. Accountability means little if it only works for the already-powerful. The programmes I have managed have prioritised the participation of youth, women, persons with disabilities, and other marginalised groups — not as a box to tick, but because governance that excludes them is, by definition, not good governance.</p>
+    </div>
+
+    <div class="pull">"We have learned, through hard experience, that open societies, international cooperation, and robust independent institutions are not luxuries — they are what stand between citizens and the abuse of power."</div>
+
+    <div class="prose">
+      <p>I write and think about these issues not as an academic but as a practitioner who has seen what works and what does not — across very different contexts, under very different conditions. The current moment, marked by a resurgence of belligerent nationalism and a retreat from multilateralism, makes this work more urgent, not less. The temptation to turn inward, to weaken international institutions, to treat governance as a domestic affair immune from external scrutiny — these are precisely the conditions under which accountability erodes and citizens pay the price.</p>
+      <p>More cooperation, not less. Stronger institutions, not weaker ones. That is the lesson of the past decades, and the conviction that continues to drive my work.</p>
+    </div>
+
+    <div class="s-break"><div class="s-label">Experience</div><div class="s-line"></div></div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-period">2023 – 2026</div>
+        <div>
+          <div class="tl-role">Head of Programme</div>
+          <div class="tl-org">Strengthening Governance and Civil Society in Uganda · GIZ</div>
+          <div class="tl-place">Kampala, Uganda</div>
+          <div class="tl-note">€44.7M programme co-funded by BMZ and EU; 60 international and national staff; oversight of CUSP and SAGA components covering civil society, accountability, and inclusive governance across all regions of Uganda.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">2021</div>
+        <div>
+          <div class="tl-role">Project Manager</div>
+          <div class="tl-org">Applied Water Resource Management in the Lake Chad Basin · GIZ</div>
+          <div class="tl-place">N'Djamena, Chad</div>
+          <div class="tl-note">Management of a team of Technical Advisors working with the Lake Chad Basin Commission; planning, implementing and monitoring of programme activities.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">2019 – 2020</div>
+        <div>
+          <div class="tl-role">Deputy Programme Manager</div>
+          <div class="tl-org">Good Financial Governance in Africa · GIZ</div>
+          <div class="tl-place">Pretoria, South Africa</div>
+          <div class="tl-note">Managing Technical Advisors working across Africa on budget reform, external auditing, and legislative oversight; including direct management of the Support to the Supreme Audit Institution of Nigeria programme.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">2013 – 2019</div>
+        <div>
+          <div class="tl-role">Technical Advisor</div>
+          <div class="tl-org">Good Financial Governance in Africa · GIZ</div>
+          <div class="tl-place">Pretoria, South Africa</div>
+          <div class="tl-note">Advisor to AFROSAI; capacity development across member SAIs; initiator of the first joint environmental performance audit on the African continent (Lake Chad, 2015) and developer of CitizensEye for Ghana Audit Service (2018).</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">2011 – 2013</div>
+        <div>
+          <div class="tl-role">Policy Officer, Strategic Corporate Department</div>
+          <div class="tl-org">GIZ</div>
+          <div class="tl-place">Eschborn, Germany</div>
+          <div class="tl-note">Partnerships with the EU, European Commission, and European Investment Bank; EU programme network analysis and bilateral donor coordination.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">2009 – 2011</div>
+        <div>
+          <div class="tl-role">Seconded National Expert</div>
+          <div class="tl-org">European Commission, DG International Cooperation</div>
+          <div class="tl-place">Brussels, Belgium</div>
+          <div class="tl-note">Seconded from the German Ministry of Economic Development; unit responsible for tax and international tax cooperation.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">Early career</div>
+        <div>
+          <div class="tl-role">Junior Technical Advisor</div>
+          <div class="tl-org">Good Governance Programme · GIZ</div>
+          <div class="tl-place">Nouakchott, Mauritania</div>
+          <div class="tl-note">Focus on public financial management; work with the National Assembly.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s-break"><div class="s-label">Education</div><div class="s-line"></div></div>
+
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-deg">MA, Environmental Law &amp; Sustainable Development</div>
+        <div class="edu-inst">School of Oriental and African Studies (SOAS), University of London</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-deg">Postgraduate, Journalism</div>
+        <div class="edu-inst">Sciences Po Paris · Global affairs; written press, radio &amp; multimedia</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-deg">Undergraduate, Nancy</div>
+        <div class="edu-inst">History, Politics, French, English · Exchange year at Instituto Tecnológico de Estudios Superiores, Mexico City</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-deg">Abitur / Baccalauréat</div>
+        <div class="edu-inst">Birklehof School, Saint-Cloud, France · Grade 1.5 · Prize for outstanding performance (2001–2002)</div>
+      </div>
+    </div>
+
+    <div class="s-break"><div class="s-label">Publications</div><div class="s-line"></div></div>
+
+    <div class="pub-list">
+      <div class="pub">
+        <div class="pub-title">La Révolution Wikipédia</div>
+        <div class="pub-detail">Co-authored with Pierre Gourdain, Florence O'Kelly, Béatrice Roman-Amat &amp; Delphine Soulas · Mille et une nuits, Paris</div>
+      </div>
+      <div class="pub">
+        <div class="pub-title">Die Entwicklungspolitik der Europäischen Union</div>
+        <div class="pub-detail">Lit-Verlag, Berlin, 2013 · An introduction to EU development policy and the world of development NGOs</div>
+      </div>
+      <div class="pub">
+        <div class="pub-title">Travel writing</div>
+        <div class="pub-detail">Freelance contributions to Le Petit Futé travel guides · Namibia (2007), Vienna (2006)</div>
+      </div>
+    </div>
+
+    <div class="s-break"><div class="s-label">Languages &amp; expertise</div><div class="s-line"></div></div>
+
+    <div class="skill-row">
+      <span class="skill-tag strong">German (native)</span>
+      <span class="skill-tag strong">French (native)</span>
+      <span class="skill-tag strong">English (professional)</span>
+      <span class="skill-tag strong">Spanish (professional)</span>
+      <span class="skill-tag">Programme management</span>
+      <span class="skill-tag">Public financial management</span>
+      <span class="skill-tag">Supreme audit institutions</span>
+      <span class="skill-tag">Civil society capacity</span>
+      <span class="skill-tag">Civic technology</span>
+      <span class="skill-tag">EU &amp; BMZ frameworks</span>
+      <span class="skill-tag">Inclusive governance</span>
+      <span class="skill-tag">Digital governance &amp; AI</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CONTACT PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-contact" class="page">
+  <div class="content-wrap">
+
+    <div class="contact-header">
+      <span class="eyebrow">Contact</span>
+      <h1 class="contact-title">Let's work<br><em>together</em></h1>
+      <p class="contact-intro">I am open to senior roles in development cooperation and independent consultancy mandates. If you are working on governance, accountability, civic technology, or inclusive policy — I would be glad to hear from you.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-card-label">Direct contact</div>
+        <div class="contact-card-title">Get in touch</div>
+        <div class="contact-card-body">I am based in Düsseldorf and available for meetings in person or online. Please use the form below or reach out via LinkedIn.</div>
+        <div class="contact-detail">📍 Düsseldorf, Germany</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-label">Professional profile</div>
+        <div class="contact-card-title">Background &amp; CV</div>
+        <div class="contact-card-body">For a full professional profile including detailed work history, education, languages, and publications, see the About page.</div>
+        <div style="margin-top:1rem">
+          <a class="cs-link g-link" onclick="showPage('about')" style="cursor:pointer">View full profile ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="avail-bar">
+      <div>
+        <div class="avail-label">Senior role</div>
+        <div class="avail-title">Head of programme or senior advisory position</div>
+        <div class="avail-body">Bilateral or multilateral development cooperation; governance, civil society, PFM, or accountability portfolios. Open to international postings.</div>
+      </div>
+      <div class="avail-sep"></div>
+      <div>
+        <div class="avail-label">Consultancy</div>
+        <div class="avail-title">Independent expert mandates</div>
+        <div class="avail-body">Programme evaluations, strategy development, SAI capacity, civic tech design, inclusive governance frameworks. Based in Düsseldorf.</div>
+      </div>
+    </div>
+
+    <div class="closing" style="margin-top:3rem">
+      <div class="closing-text">"More cooperation, not less. Stronger institutions, not weaker ones."</div>
+      <div class="closing-sub">The conviction behind eighteen years of work — and the principle that will guide whatever comes next.</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-name">Tassilo von Droste zu Hülshoff · Düsseldorf</span>
+    <div class="footer-links">
+      <a onclick="showPage('home')">Notes from the field</a>
+      <a onclick="showPage('governance')">Governance</a>
+      <a onclick="showPage('about')">About</a>
+      <a onclick="showPage('contact')">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+</script>
+
+</body>
+</html>
