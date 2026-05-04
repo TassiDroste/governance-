@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Governance &amp; Development Outcomes — Tassilo von Droste zu Hülshoff</title>
+<meta name="description" content="An exploratory tool for examining correlations between governance indicators and human development outcomes across countries.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --text:#1a1a18;--text-mid:#4a4a46;--text-light:#7a7a74;
+  --border:rgba(26,26,24,0.12);--border-mid:rgba(26,26,24,0.22);
+  --bg:#faf9f7;--bg-card:#f3f1ec;
+  --green:#27500A;--green-mid:#3B6D11;--green-light:#EAF3DE;
+  --blue:#0C447C;--blue-mid:#185FA5;--blue-light:#E6F1FB;
+  --coral:#712B13;--coral-mid:#993C1D;--coral-light:#FAECE7;
+  --amber:#7a4a00;--amber-mid:#b07d00;--amber-light:#fdf3d9;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop-filter:blur(8px);border-bottom:0.5px solid var(--border)}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;height:48px}
+.nav-name{font-family:var(--serif);font-size:15px;font-weight:500;color:var(--text)}
+.nav-back{font-size:12px;color:var(--text-light);cursor:pointer;background:none;border:none;font-family:var(--body);padding:0}
+.nav-back:hover{color:var(--text)}
+.wrap{max-width:960px;margin:0 auto;padding:2.5rem 2rem 5rem}
+.eyebrow{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-light);display:block;margin-bottom:0.6rem}
+.page-title{font-family:var(--serif);font-size:28px;font-weight:400;margin-bottom:0.5rem;line-height:1.2}
+.page-desc{font-size:14px;color:var(--text-mid);font-weight:300;line-height:1.65;max-width:680px;margin-bottom:1.5rem}
+
+/* CAVEAT / INTRO BOX */
+.caveat-box{background:var(--amber-light);border:0.5px solid var(--amber-mid);border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:2rem}
+.caveat-header{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem}
+.caveat-icon{width:18px;height:18px;border-radius:50%;background:var(--amber-mid);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:500}
+.caveat-title{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);font-weight:400}
+.caveat-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:640px){.caveat-cols{grid-template-columns:1fr}}
+.caveat-col p{font-size:13px;line-height:1.75;color:var(--text-mid);font-weight:300;margin-bottom:0.55rem}
+.caveat-col p:last-child{margin-bottom:0}
+.caveat-col p strong{font-weight:400;color:var(--text)}
+
+/* TOOL SECTION */
+.tool-section{background:var(--bg-card);border-radius:10px;border:0.5px solid var(--border);padding:1.5rem;margin-bottom:1.5rem}
+.tool-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem}
+.tool-title{font-family:var(--serif);font-size:18px;font-weight:400}
+.tool-sub{font-size:12px;color:var(--text-light);font-weight:300}
+
+/* CONTROLS */
+.ctrl-grid{display:grid;grid-template-columns:1fr 1fr auto auto;gap:0.75rem;align-items:end;margin-bottom:1.25rem}
+@media(max-width:640px){.ctrl-grid{grid-template-columns:1fr 1fr}}
+.ctrl-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:0.3rem}
+.ctrl-select{font-size:13px;padding:7px 10px;border:0.5px solid var(--border-mid);border-radius:4px;background:var(--bg);color:var(--text);font-family:var(--body);width:100%;cursor:pointer}
+.ctrl-select:focus{outline:none;border-color:var(--text-mid)}
+.ctrl-check-wrap{display:flex;flex-direction:column;gap:0.4rem;padding-bottom:2px}
+.ctrl-check{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-mid);cursor:pointer;white-space:nowrap}
+.ctrl-check input{cursor:pointer;accent-color:var(--green-mid)}
+
+/* SCATTER */
+.scatter-container{position:relative}
+#corr-svg{width:100%;display:block;cursor:crosshair;overflow:visible}
+.corr-stat-row{display:flex;align-items:center;gap:1.5rem;margin-top:0.75rem;flex-wrap:wrap}
+.corr-stat{font-size:12px;color:var(--text-light)}
+.corr-stat strong{color:var(--text);font-weight:400}
+.legend-row{display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:0.75rem}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-mid)}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* TRAJECTORY / COUNTRY DETAIL */
+.detail-panel{background:var(--bg);border:0.5px solid var(--border);border-radius:8px;padding:1.25rem;margin-top:1rem;display:none}
+.detail-panel.visible{display:block}
+.detail-name{font-family:var(--serif);font-size:20px;font-weight:400;margin-bottom:0.2rem}
+.detail-meta{font-size:11px;color:var(--text-light);margin-bottom:1rem}
+.detail-charts{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:640px){.detail-charts{grid-template-columns:1fr}}
+.chart-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:0.4rem}
+.chart-svg{width:100%;display:block;overflow:visible}
+.close-btn{float:right;background:none;border:none;font-size:18px;color:var(--text-light);cursor:pointer;line-height:1}
+.close-btn:hover{color:var(--text)}
+
+/* RANK PANEL */
+.rank-panel{margin-top:1rem}
+.rank-title{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:0.6rem}
+.rank-table{width:100%;border-collapse:collapse;font-size:12px}
+.rank-table th{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);padding:0.3rem 0.5rem;text-align:left;border-bottom:0.5px solid var(--border)}
+.rank-table td{padding:0.35rem 0.5rem;border-bottom:0.5px solid var(--border);color:var(--text-mid)}
+.rank-table tr:last-child td{border-bottom:none}
+.rank-table tr:hover td{background:var(--bg-card);cursor:pointer}
+.rank-bar{height:4px;border-radius:2px;display:inline-block;vertical-align:middle;margin-right:4px}
+
+/* NOTES + SOURCES */
+.notes-section{margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid var(--border)}
+.notes-title{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-light);margin-bottom:0.75rem}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:640px){.notes-grid{grid-template-columns:1fr}}
+.note-item{font-size:12px;color:var(--text-mid);line-height:1.65;font-weight:300}
+.note-item strong{font-weight:400;color:var(--text)}
+.sources{font-size:11px;color:var(--text-light);line-height:1.8;margin-top:1.5rem}
+.sources a{color:var(--green-mid);text-decoration:none}
+.sources a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <span class="nav-name">Tassilo von Droste zu H&uuml;lshoff</span>
+    <button class="nav-back" onclick="history.back()">&#8592; Back to site</button>
+    <a href="indicators.html" style="font-size:12px;color:var(--green-mid);text-decoration:none;font-family:var(--body)">&#9672; Governance Compass &rarr;</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <span class="eyebrow">Interactive &middot; Exploratory analysis</span>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem">
+    <svg width="52" height="52" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+      <circle cx="70" cy="70" r="63" fill="none" stroke="#1a1a18" stroke-width="1.8"/>
+      <line x1="40" y1="100" x2="110" y2="30" stroke="#1a1a18" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+      <circle cx="55" cy="88" r="5" fill="#993C1D" opacity="0.8"/>
+      <circle cx="72" cy="65" r="4" fill="#185FA5" opacity="0.8"/>
+      <circle cx="88" cy="50" r="6" fill="#27500A" opacity="0.8"/>
+      <circle cx="95" cy="38" r="3" fill="#B07D00" opacity="0.8"/>
+      <line x1="40" y1="30" x2="40" y2="110" stroke="#1a1a18" stroke-width="1.2" opacity="0.4"/>
+      <line x1="40" y1="110" x2="115" y2="110" stroke="#1a1a18" stroke-width="1.2" opacity="0.4"/>
+    </svg>
+    <h1 class="page-title" style="margin-bottom:0">Governance &amp; Development Outcomes</h1>
+  </div>
+  <p class="page-desc">An exploratory tool for examining how governance indicators relate to human development outcomes &mdash; health, education, poverty, service access &mdash; across countries and over time. Click any country to see its trajectories side by side.</p>
+
+  <!-- CAVEAT BOX -->
+  <div class="caveat-box">
+    <div class="caveat-header">
+      <div class="caveat-icon">!</div>
+      <div class="caveat-title">What this tool is &mdash; and what it is not</div>
+    </div>
+    <div class="caveat-cols">
+      <div class="caveat-col">
+        <p><strong>This is an exploratory tool, not a causal analysis.</strong> Correlations shown here describe statistical associations between variables &mdash; they do not establish that governance improvements cause development gains, or vice versa.</p>
+        <p><strong>Reverse causality is endemic.</strong> Wealthier countries tend to have both better governance scores and better development outcomes. Much of the correlation you see may reflect income level driving both variables simultaneously, not a direct governance&ndash;outcome relationship.</p>
+        <p>Use the &ldquo;Control for income group&rdquo; option to visualise correlations <em>within</em> income groups &mdash; a rough check on whether patterns hold beyond the development-level effect.</p>
+      </div>
+      <div class="caveat-col">
+        <p><strong>Some pairs have measurement overlap.</strong> World Bank Governance Indicators partly draw on service delivery data, so correlating WGI with health or education outcomes may be partially circular. Treat such pairs with extra caution.</p>
+        <p><strong>Lags are uncertain.</strong> Governance changes take years or decades to affect outcomes. The &ldquo;Show 5-year lag&rdquo; option uses governance data from five years prior &mdash; a rough but instructive test of whether earlier governance predicts later outcomes better than contemporaneous data.</p>
+        <p><strong>Use this to form hypotheses, not draw conclusions.</strong> Patterns worth investigating further should be tested with proper causal methods.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN SCATTER TOOL -->
+  <div class="tool-section">
+    <div class="tool-header">
+      <div class="tool-title">Correlation explorer</div>
+      <div class="tool-sub" id="year-label">2022 data</div>
+    </div>
+
+    <div class="ctrl-grid">
+      <div>
+        <div class="ctrl-label">Governance indicator (X axis)</div>
+        <select class="ctrl-select" id="gov-x" onchange="render()"></select>
+      </div>
+      <div>
+        <div class="ctrl-label">Development outcome (Y axis)</div>
+        <select class="ctrl-select" id="out-y" onchange="render()"></select>
+      </div>
+      <div class="ctrl-check-wrap">
+        <label class="ctrl-check"><input type="checkbox" id="chk-income" onchange="render()"> Control for income group</label>
+        <label class="ctrl-check"><input type="checkbox" id="chk-lag" onchange="render()"> Governance 5-year lag</label>
+        <label class="ctrl-check"><input type="checkbox" id="chk-pop" onchange="render()"> Size by population</label>
+      </div>
+      <div>
+        <div class="ctrl-label">Year</div>
+        <select class="ctrl-select" id="year-sel" onchange="render()" style="width:90px">
+          <option value="2023">2023</option>
+          <option value="2022" selected>2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+          <option value="2017">2017</option>
+          <option value="2016">2016</option>
+          <option value="2015">2015</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="scatter-container">
+      <svg id="corr-svg" height="380" viewBox="0 0 880 380" preserveAspectRatio="none"></svg>
+    </div>
+
+    <div class="corr-stat-row">
+      <div class="corr-stat" id="stat-r"></div>
+      <div class="corr-stat" id="stat-partial"></div>
+      <div class="corr-stat" id="stat-n"></div>
+    </div>
+
+    <div class="legend-row" id="scatter-legend"></div>
+
+    <!-- COUNTRY DETAIL PANEL -->
+    <div class="detail-panel" id="detail-panel">
+      <button class="close-btn" onclick="closeDetail()">&#215;</button>
+      <div class="detail-name" id="detail-name"></div>
+      <div class="detail-meta" id="detail-meta"></div>
+      <div class="detail-charts">
+        <div>
+          <div class="chart-label" id="gov-traj-label">Governance trajectory</div>
+          <svg id="gov-traj" class="chart-svg" height="130" viewBox="0 0 400 130" preserveAspectRatio="none"></svg>
+        </div>
+        <div>
+          <div class="chart-label" id="out-traj-label">Outcome trajectory</div>
+          <svg id="out-traj" class="chart-svg" height="130" viewBox="0 0 400 130" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP/BOTTOM RANKERS -->
+  <div class="tool-section">
+    <div class="tool-header">
+      <div class="tool-title">Country rankings</div>
+      <div class="tool-sub">Sorted by selected outcome &middot; click any row to view detail</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+      <div>
+        <div class="rank-title" id="top-rank-title">Top 15 countries</div>
+        <table class="rank-table" id="top-rank"></table>
+      </div>
+      <div>
+        <div class="rank-title" id="bot-rank-title">Bottom 15 countries</div>
+        <table class="rank-table" id="bot-rank"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes-section">
+    <div class="notes-title">Data notes</div>
+    <div class="notes-grid">
+      <div class="note-item">
+        <strong>Governance data:</strong> Same indices as the Governance Compass &mdash; CPI, WGI, Freedom House, RSF Press Freedom, WJP Rule of Law, Chandler, BTI, Mo Ibrahim (Africa only) &mdash; normalised to 0&ndash;100 scale. Composite is an equal-weighted average of available indices (minimum 4 required).
+      </div>
+      <div class="note-item">
+        <strong>Development outcome data:</strong> World Bank World Development Indicators (WDI) and UNDP Human Development Reports. Years available vary by series; gaps are shown as &ldquo;No data.&rdquo; All outcome series are presented in their natural direction (higher = better) for ease of comparison.
+      </div>
+      <div class="note-item">
+        <strong>Income groups:</strong> World Bank 2024 classification: High income (H), Upper-middle (UM), Lower-middle (LM), Low income (L). Used for colouring and for the &ldquo;Control for income group&rdquo; option.
+      </div>
+      <div class="note-item">
+        <strong>Pearson r and partial r:</strong> Raw correlation between the two selected variables. Partial r (shown when &ldquo;Control for income group&rdquo; is checked) computes correlation within income groups and averages, providing a rough control for development level. Neither is a causal estimate.
+      </div>
+    </div>
+    <div class="sources">
+      <strong style="font-weight:400;color:var(--text-mid)">Outcome sources:</strong>
+      <a href="https://hdr.undp.org/data-center/human-development-index" target="_blank">UNDP HDR</a> &middot;
+      <a href="https://data.worldbank.org/indicator/SH.DYN.MORT" target="_blank">World Bank WDI</a> &middot;
+      <a href="https://www.who.int/data/gho/data/themes/topics/indicator-groups/indicator-group-details/GHO/uhc-index" target="_blank">WHO UHC Index</a> &middot;
+      <a href="https://data.worldbank.org/indicator/SI.POV.DDAY" target="_blank">World Bank Poverty</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <strong style="font-weight:400;color:var(--text-mid)">Governance sources:</strong>
+      <a href="https://www.transparency.org/en/cpi" target="_blank">TI</a> &middot;
+      <a href="https://info.worldbank.org/governance/wgi/" target="_blank">World Bank WGI</a> &middot;
+      <a href="https://freedomhouse.org" target="_blank">Freedom House</a> &middot;
+      <a href="https://rsf.org/en/index" target="_blank">RSF</a> &middot;
+      <a href="https://worldjusticeproject.org" target="_blank">WJP</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── COUNTRY META (region + income group) ────────────────────────────────────
+// Same as in indicators.html
+var COUNTRY_META = {
+  USA:{r:'NAM',i:'H'},CAN:{r:'NAM',i:'H'},MEX:{r:'LAC',i:'UM'},
+  GBR:{r:'WEU',i:'H'},DEU:{r:'WEU',i:'H'},FRA:{r:'WEU',i:'H'},ITA:{r:'WEU',i:'H'},
+  ESP:{r:'WEU',i:'H'},PRT:{r:'WEU',i:'H'},NLD:{r:'WEU',i:'H'},BEL:{r:'WEU',i:'H'},
+  CHE:{r:'WEU',i:'H'},AUT:{r:'WEU',i:'H'},SWE:{r:'WEU',i:'H'},NOR:{r:'WEU',i:'H'},
+  DNK:{r:'WEU',i:'H'},FIN:{r:'WEU',i:'H'},IRL:{r:'WEU',i:'H'},LUX:{r:'WEU',i:'H'},
+  ISL:{r:'WEU',i:'H'},GRC:{r:'WEU',i:'H'},CYP:{r:'WEU',i:'H'},MLT:{r:'WEU',i:'H'},
+  TUR:{r:'ECA',i:'UM'},RUS:{r:'ECA',i:'UM'},UKR:{r:'ECA',i:'LM'},BLR:{r:'ECA',i:'UM'},
+  POL:{r:'ECA',i:'H'},CZE:{r:'ECA',i:'H'},SVK:{r:'ECA',i:'H'},HUN:{r:'ECA',i:'H'},
+  ROU:{r:'ECA',i:'UM'},BGR:{r:'ECA',i:'UM'},HRV:{r:'ECA',i:'H'},SVN:{r:'ECA',i:'H'},
+  SRB:{r:'ECA',i:'UM'},MNE:{r:'ECA',i:'UM'},BIH:{r:'ECA',i:'UM'},MKD:{r:'ECA',i:'UM'},
+  ALB:{r:'ECA',i:'UM'},MDA:{r:'ECA',i:'LM'},ARM:{r:'ECA',i:'UM'},GEO:{r:'ECA',i:'UM'},
+  AZE:{r:'ECA',i:'UM'},KAZ:{r:'ECA',i:'UM'},UZB:{r:'ECA',i:'LM'},KGZ:{r:'ECA',i:'LM'},
+  TJK:{r:'ECA',i:'LM'},TKM:{r:'ECA',i:'UM'},EST:{r:'ECA',i:'H'},LVA:{r:'ECA',i:'H'},
+  LTU:{r:'ECA',i:'H'},AUS:{r:'EAP',i:'H'},NZL:{r:'EAP',i:'H'},JPN:{r:'EAP',i:'H'},
+  KOR:{r:'EAP',i:'H'},CHN:{r:'EAP',i:'UM'},IDN:{r:'EAP',i:'UM'},MYS:{r:'EAP',i:'UM'},
+  THA:{r:'EAP',i:'UM'},VNM:{r:'EAP',i:'LM'},PHL:{r:'EAP',i:'LM'},KHM:{r:'EAP',i:'LM'},
+  MMR:{r:'EAP',i:'LM'},LAO:{r:'EAP',i:'LM'},MNG:{r:'EAP',i:'LM'},PRK:{r:'EAP',i:'L'},
+  PNG:{r:'EAP',i:'LM'},TLS:{r:'EAP',i:'LM'},FJI:{r:'EAP',i:'UM'},IND:{r:'SAS',i:'LM'},
+  PAK:{r:'SAS',i:'LM'},BGD:{r:'SAS',i:'LM'},NPL:{r:'SAS',i:'LM'},LKA:{r:'SAS',i:'LM'},
+  AFG:{r:'SAS',i:'L'},BTN:{r:'SAS',i:'LM'},BRA:{r:'LAC',i:'UM'},ARG:{r:'LAC',i:'UM'},
+  COL:{r:'LAC',i:'UM'},PER:{r:'LAC',i:'UM'},CHL:{r:'LAC',i:'H'},VEN:{r:'LAC',i:'UM'},
+  ECU:{r:'LAC',i:'UM'},BOL:{r:'LAC',i:'LM'},PRY:{r:'LAC',i:'UM'},URY:{r:'LAC',i:'H'},
+  CRI:{r:'LAC',i:'UM'},PAN:{r:'LAC',i:'H'},GTM:{r:'LAC',i:'UM'},HND:{r:'LAC',i:'LM'},
+  SLV:{r:'LAC',i:'LM'},NIC:{r:'LAC',i:'LM'},DOM:{r:'LAC',i:'UM'},CUB:{r:'LAC',i:'UM'},
+  HTI:{r:'LAC',i:'L'},JAM:{r:'LAC',i:'UM'},TTO:{r:'LAC',i:'H'},GUY:{r:'LAC',i:'UM'},
+  EGY:{r:'MENA',i:'LM'},MAR:{r:'MENA',i:'LM'},TUN:{r:'MENA',i:'LM'},DZA:{r:'MENA',i:'LM'},
+  LBY:{r:'MENA',i:'UM'},JOR:{r:'MENA',i:'UM'},LBN:{r:'MENA',i:'LM'},IRQ:{r:'MENA',i:'UM'},
+  IRN:{r:'MENA',i:'UM'},SYR:{r:'MENA',i:'L'},YEM:{r:'MENA',i:'L'},SAU:{r:'MENA',i:'H'},
+  ARE:{r:'MENA',i:'H'},QAT:{r:'MENA',i:'H'},KWT:{r:'MENA',i:'H'},ISR:{r:'MENA',i:'H'},
+  NGA:{r:'SSA',i:'LM'},ETH:{r:'SSA',i:'L'},COD:{r:'SSA',i:'L'},TZA:{r:'SSA',i:'LM'},
+  KEN:{r:'SSA',i:'LM'},UGA:{r:'SSA',i:'L'},GHA:{r:'SSA',i:'LM'},MOZ:{r:'SSA',i:'L'},
+  ZMB:{r:'SSA',i:'LM'},ZWE:{r:'SSA',i:'LM'},MDG:{r:'SSA',i:'L'},CMR:{r:'SSA',i:'LM'},
+  CIV:{r:'SSA',i:'LM'},SEN:{r:'SSA',i:'LM'},MLI:{r:'SSA',i:'L'},BFA:{r:'SSA',i:'L'},
+  NER:{r:'SSA',i:'L'},TCD:{r:'SSA',i:'L'},SSD:{r:'SSA',i:'L'},SDN:{r:'SSA',i:'L'},
+  AGO:{r:'SSA',i:'LM'},ZAF:{r:'SSA',i:'UM'},NAM:{r:'SSA',i:'UM'},BWA:{r:'SSA',i:'UM'},
+  RWA:{r:'SSA',i:'L'},BDI:{r:'SSA',i:'L'},ERI:{r:'SSA',i:'L'},SOM:{r:'SSA',i:'L'},
+  GIN:{r:'SSA',i:'L'},GNB:{r:'SSA',i:'L'},SLE:{r:'SSA',i:'L'},LBR:{r:'SSA',i:'L'},
+  MRT:{r:'SSA',i:'LM'},MLT:{r:'WEU',i:'H'},GAB:{r:'SSA',i:'UM'},COG:{r:'SSA',i:'LM'},
+  CAF:{r:'SSA',i:'L'},GMB:{r:'SSA',i:'L'},BEN:{r:'SSA',i:'L'},TGO:{r:'SSA',i:'LM'},
+  MWI:{r:'SSA',i:'L'},COM:{r:'SSA',i:'LM'},SWZ:{r:'SSA',i:'LM'},LSO:{r:'SSA',i:'L'},
+  MUS:{r:'SSA',i:'UM'},CPV:{r:'SSA',i:'LM'},SYC:{r:'SSA',i:'H'},DJI:{r:'SSA',i:'LM'},
+  MDV:{r:'SAS',i:'UM'},
+};
+
+var REGION_COLORS = {
+  WEU:'#185FA5', NAM:'#B07D00', ECA:'#3B6D11', LAC:'#993C1D',
+  EAP:'#2D5E6B', SAS:'#6B2D5E', MENA:'#5B3A8C', SSA:'#0A6B6B'
+};
+var REGION_NAMES = {
+  SSA:'Sub-Saharan Africa', MENA:'Middle East & North Africa',
+  ECA:'Europe & Central Asia', SAS:'South Asia',
+  EAP:'East Asia & Pacific', LAC:'Latin America & Caribbean',
+  NAM:'North America', WEU:'Western Europe'
+};
+var INCOME_NAMES = {H:'High income',UM:'Upper-middle',LM:'Lower-middle',L:'Low income'};
+
+// ─── COUNTRY NAMES ─────────────────────────────────────────────────────────
+var NAMES = {
+  AFG:'Afghanistan',AGO:'Angola',ALB:'Albania',ARE:'UAE',ARG:'Argentina',ARM:'Armenia',
+  AUS:'Australia',AUT:'Austria',AZE:'Azerbaijan',BDI:'Burundi',BEL:'Belgium',BEN:'Benin',
+  BFA:'Burkina Faso',BGD:'Bangladesh',BGR:'Bulgaria',BHR:'Bahrain',BIH:'Bosnia-Herz.',
+  BLR:'Belarus',BOL:'Bolivia',BRA:'Brazil',BTN:'Bhutan',BUR:'Myanmar',BWA:'Botswana',
+  CAF:'Cent. African Rep.',CAN:'Canada',CHE:'Switzerland',CHL:'Chile',CHN:'China',
+  CIV:'Côte d\'Ivoire',CMR:'Cameroon',COD:'DR Congo',COG:'Congo',COL:'Colombia',
+  COM:'Comoros',CPV:'Cabo Verde',CRI:'Costa Rica',CUB:'Cuba',CYP:'Cyprus',CZE:'Czechia',
+  DEU:'Germany',DJI:'Djibouti',DNK:'Denmark',DOM:'Dom. Republic',DZA:'Algeria',
+  ECU:'Ecuador',EGY:'Egypt',ERI:'Eritrea',ESP:'Spain',EST:'Estonia',ETH:'Ethiopia',
+  FIN:'Finland',FJI:'Fiji',FRA:'France',GAB:'Gabon',GBR:'UK',GEO:'Georgia',GHA:'Ghana',
+  GIN:'Guinea',GMB:'Gambia',GNB:'Guinea-Bissau',GRC:'Greece',GTM:'Guatemala',GUY:'Guyana',
+  HND:'Honduras',HRV:'Croatia',HTI:'Haiti',HUN:'Hungary',IDN:'Indonesia',IND:'India',
+  IRL:'Ireland',IRN:'Iran',IRQ:'Iraq',ISL:'Iceland',ISR:'Israel',ITA:'Italy',JAM:'Jamaica',
+  JOR:'Jordan',JPN:'Japan',KAZ:'Kazakhstan',KEN:'Kenya',KGZ:'Kyrgyzstan',KHM:'Cambodia',
+  KOR:'South Korea',KWT:'Kuwait',LAO:'Laos',LBN:'Lebanon',LBR:'Liberia',LBY:'Libya',
+  LSO:'Lesotho',LKA:'Sri Lanka',LTU:'Lithuania',LUX:'Luxembourg',LVA:'Latvia',
+  MAR:'Morocco',MDA:'Moldova',MDG:'Madagascar',MDV:'Maldives',MEX:'Mexico',MKD:'N. Macedonia',
+  MLI:'Mali',MLT:'Malta',MMR:'Myanmar',MNE:'Montenegro',MNG:'Mongolia',MOZ:'Mozambique',
+  MRT:'Mauritania',MUS:'Mauritius',MWI:'Malawi',MYS:'Malaysia',NAM:'Namibia',NER:'Niger',
+  NGA:'Nigeria',NIC:'Nicaragua',NLD:'Netherlands',NOR:'Norway',NPL:'Nepal',NZL:'New Zealand',
+  OMN:'Oman',PAK:'Pakistan',PAN:'Panama',PER:'Peru',PHL:'Philippines',PNG:'Papua NG',
+  POL:'Poland',PRK:'N. Korea',PRY:'Paraguay',PRT:'Portugal',QAT:'Qatar',ROU:'Romania',
+  RUS:'Russia',RWA:'Rwanda',SAU:'Saudi Arabia',SDN:'Sudan',SEN:'Senegal',SLE:'Sierra Leone',
+  SLV:'El Salvador',SOM:'Somalia',SRB:'Serbia',SSD:'South Sudan',SVK:'Slovakia',
+  SVN:'Slovenia',SWE:'Sweden',SWZ:'Eswatini',SYC:'Seychelles',SYR:'Syria',TCD:'Chad',
+  TGO:'Togo',THA:'Thailand',TJK:'Tajikistan',TKM:'Turkmenistan',TLS:'Timor-Leste',
+  TTO:'Trinidad & Tobago',TUN:'Tunisia',TUR:'Turkey',TZA:'Tanzania',UGA:'Uganda',
+  UKR:'Ukraine',URY:'Uruguay',USA:'USA',UZB:'Uzbekistan',VEN:'Venezuela',VNM:'Vietnam',
+  YEM:'Yemen',ZAF:'South Africa',ZMB:'Zambia',ZWE:'Zimbabwe',BWA:'Botswana',
+  DJI:'Djibouti',COM:'Comoros',MUS:'Mauritius',GAB:'Gabon',CPV:'Cabo Verde',
+  COG:'Congo-Brazzaville',GMB:'Gambia',BEN:'Benin',
+};
+
+// ─── POPULATION DATA (millions) ──────────────────────────────────────────────
+var POP = {
+  CHN:1412,IND:1417,USA:335,IDN:277,PAK:231,BRA:215,NGA:218,BGD:170,
+  RUS:144,ETH:123,MEX:130,DEU:84,GBR:67,FRA:68,THA:72,TZA:63,ZAF:60,
+  KOR:52,COL:51,ESP:47,UGA:48,ITA:60,ARG:45,DZA:45,SDN:45,IRQ:42,
+  UKR:44,KEN:55,POL:38,CAN:38,MAR:37,SAU:36,MOZ:33,PER:33,ANB:32,
+  VEN:29,MYS:33,AUS:26,GHA:33,NLD:17,CMR:28,CIV:28,MWI:20,ROM:19,
+  EGY:105,VNM:97,IRN:87,PHL:115,COD:100,MMR:54,TUR:85,AGO:34,KAZ:19,
+  ZMB:20,CHE:8,SWE:10,HUN:10,BLR:9,AUT:9,ISR:9,HND:10,TJK:10,
+  SRB:7,LKA:22,BFA:22,NER:25,MLI:22,SEN:17,GTM:17,ZWE:16,RWA:14,
+  BOL:12,CHL:19,ECU:18,CUB:11,SOM:17,BDI:12,GIN:14,SSD:11,HTI:12,
+  TCD:17,PNG:10,BEN:13,JOR:10,SOM:17,MDG:28,PRY:7,ERI:3,SLE:8,
+  MRT:4,CRI:5,GNB:2,GMB:2,TTO:1,JAM:3,FJI:1,MUS:1
+};
+
+// ─── GOVERNANCE DATA ─────────────────────────────────────────────────────────
+// Normalised 0-100. Subset of governance indices used in the Compass.
+// composite = equal-weighted average across available indices
+var GOV = {
+  composite:{
+    2015:{NOR:85,SWE:84,FIN:86,DNK:88,NLD:85,CHE:84,NZL:86,AUS:80,CAN:82,GBR:80,DEU:79,AUT:79,ISL:84,IRL:81,LUX:82,BEL:78,JPN:74,USA:73,FRA:71,ESP:67,PRT:68,CZE:66,SVN:68,EST:70,LVA:64,LTU:63,SVK:60,POL:62,HRV:58,HUN:58,BGR:53,ROU:52,GRC:52,ZAF:58,BRA:46,ARG:48,COL:42,PER:44,CHL:66,MEX:42,URY:63,CRI:60,JAM:51,TTO:52,BWA:60,NAM:58,GHA:55,SEN:50,MUS:58,TUN:52,MAR:44,JOR:46,IDN:46,MYS:56,THA:46,IND:42,TUR:44,KAZ:38,RUS:36,CHN:42,UGA:32,KEN:42,MWI:38,NGA:32,ETH:38,EGY:38,PHL:40,BGD:38,VNM:36,PAK:32,MOZ:36,AGO:28,ZMB:44,ZWE:30,CMR:32,SDN:22,MLI:36,SEN:50,YEM:18,SOM:12,PRK:8,ERI:14,SYR:16},
+    2018:{NOR:87,SWE:85,FIN:87,DNK:89,NLD:86,CHE:85,NZL:86,AUS:80,CAN:82,GBR:80,DEU:80,AUT:80,ISL:84,IRL:82,LUX:83,BEL:78,JPN:74,USA:72,FRA:71,ESP:68,PRT:68,CZE:67,SVN:68,EST:72,LVA:65,LTU:64,SVK:59,POL:62,HRV:58,HUN:56,BGR:52,ROU:52,GRC:51,ZAF:56,BRA:44,ARG:46,COL:42,PER:43,CHL:66,MEX:40,URY:63,CRI:60,JAM:50,TTO:51,BWA:60,NAM:57,GHA:55,SEN:51,MUS:59,TUN:50,MAR:44,JOR:46,IDN:46,MYS:55,THA:46,IND:42,TUR:42,KAZ:38,RUS:35,CHN:42,UGA:32,KEN:42,MWI:38,NGA:31,ETH:38,EGY:38,PHL:40,BGD:38,VNM:36,PAK:31,MOZ:36,AGO:28,ZMB:44,ZWE:30,CMR:32,SDN:21,MLI:35,YEM:16,SOM:11,PRK:8,ERI:13,SYR:15},
+    2020:{NOR:88,SWE:85,FIN:87,DNK:89,NLD:86,CHE:85,NZL:87,AUS:80,CAN:82,GBR:79,DEU:80,AUT:80,ISL:84,IRL:82,LUX:83,BEL:78,JPN:73,USA:70,FRA:70,ESP:68,PRT:68,CZE:67,SVN:68,EST:73,LVA:65,LTU:65,SVK:58,POL:61,HRV:58,HUN:55,BGR:52,ROU:52,GRC:51,ZAF:55,BRA:44,ARG:45,COL:42,PER:43,CHL:65,MEX:40,URY:63,CRI:60,JAM:50,TTO:51,BWA:59,NAM:57,GHA:55,SEN:52,MUS:59,TUN:48,MAR:44,JOR:45,IDN:46,MYS:54,THA:46,IND:41,TUR:41,KAZ:38,RUS:34,CHN:42,UGA:33,KEN:42,MWI:38,NGA:30,ETH:38,EGY:38,PHL:40,BGD:37,VNM:36,PAK:30,MOZ:36,AGO:27,ZMB:44,ZWE:29,CMR:32,SDN:20,MLI:34,YEM:15,SOM:10,PRK:7,ERI:12,SYR:14},
+    2022:{NOR:89,SWE:86,FIN:87,DNK:89,NLD:87,CHE:85,NZL:87,AUS:80,CAN:81,GBR:79,DEU:80,AUT:80,ISL:84,IRL:82,LUX:83,BEL:78,JPN:73,USA:70,FRA:70,ESP:69,PRT:69,CZE:67,SVN:68,EST:73,LVA:65,LTU:65,SVK:58,POL:61,HRV:58,HUN:54,BGR:52,ROU:52,GRC:51,ZAF:55,BRA:44,ARG:44,COL:42,PER:42,CHL:65,MEX:39,URY:63,CRI:59,JAM:50,TTO:51,BWA:59,NAM:57,GHA:55,SEN:52,MUS:59,TUN:47,MAR:44,JOR:45,IDN:46,MYS:54,THA:46,IND:42,TUR:40,KAZ:38,RUS:33,CHN:42,UGA:33,KEN:42,MWI:38,NGA:30,ETH:37,EGY:37,PHL:40,BGD:37,VNM:36,PAK:30,MOZ:36,AGO:27,ZMB:44,ZWE:29,CMR:32,SDN:20,MLI:34,YEM:15,SOM:10,PRK:7,ERI:12,SYR:14}
+  },
+  cpi:{
+    2015:{DNK:91,FIN:90,SWE:89,NZL:88,NOR:88,CHE:86,SGP:85,CAN:83,LUX:81,GBR:81,AUS:79,ISL:79,BEL:77,AUT:76,DEU:81,IRL:75,JPN:75,EST:70,USA:76,URY:74,FRA:70,CHI:70,CHL:70,ARE:70,QAT:68,ISR:61,CZE:56,ESP:58,SVN:60,POL:62,LTU:61,KOR:56,SVK:51,CYP:61,LVA:55,BGR:41,ROU:46,ITA:44,ZAF:44,BRA:38,COL:37,ARG:32,IND:38,THA:38,IDN:36,MYS:50,TUR:42,CHN:37,GHA:47,RWA:54,NAM:52,BWA:63,SEN:44,TUN:38,MAR:36,JAM:41,PER:36,MEX:31,GTM:28,KEN:25,UGA:25,NGA:26,EGY:36,IRQ:16,RUS:29,KAZ:28,UKR:25,BGD:25,VNM:31,PAK:30,MOZ:31,AGO:15,CMR:27,ZMB:38,MLI:35,NER:34,MDG:28,YEM:18,SOM:8,SSD:15,PRK:8,LBY:16,SYR:18,ETH:33,SLE:29,TZA:30,ZWE:21,HND:31,HTI:17,SDN:12,CAF:24,TCD:22,MWI:31,BDI:21,ERI:18},
+    2018:{DNK:88,FIN:85,SWE:85,NZL:87,NOR:84,CHE:85,CAN:81,LUX:81,GBR:80,AUS:77,ISL:76,BEL:75,AUT:76,DEU:80,IRL:73,JPN:73,EST:73,USA:71,URY:70,FRA:72,ARE:70,QAT:62,ISR:60,CZE:59,ESP:58,SVN:60,POL:60,LTU:59,KOR:57,SVK:50,LVA:58,BGR:42,ROU:47,ITA:52,ZAF:43,BRA:35,COL:36,ARG:40,IND:41,THA:36,IDN:38,MYS:47,TUR:41,CHN:39,GHA:41,RWA:56,NAM:52,BWA:61,SEN:45,TUN:43,MAR:43,JAM:44,PER:35,MEX:28,KEN:28,UGA:26,NGA:27,EGY:35,RUS:28,KAZ:31,UKR:32,BGD:26,VNM:33,PAK:33,MOZ:23,AGO:19,CMR:25,ZMB:35,ETH:35,MLI:32,MDG:25,YEM:14,SOM:10,SSD:13,PRK:14},
+    2022:{DNK:90,FIN:87,NZL:87,NOR:84,SWE:83,SGP:83,CHE:82,LUX:77,AUS:75,GBR:73,ISL:74,BEL:73,AUT:74,DEU:79,IRL:77,JPN:73,EST:74,USA:69,URY:74,FRA:72,ARE:67,QAT:58,ISR:63,CZE:56,ESP:60,SVN:57,POL:55,LTU:58,KOR:63,SVK:53,LVA:57,BGR:43,ROU:46,ITA:56,ZAF:43,BRA:38,COL:39,ARG:38,IND:40,THA:36,IDN:34,MYS:47,TUR:36,CHN:45,GHA:43,RWA:51,NAM:49,BWA:60,SEN:43,TUN:40,MAR:40,JAM:43,PER:36,MEX:31,KEN:32,UGA:26,NGA:24,EGY:30,RUS:28,KAZ:36,UKR:33,BGD:25,VNM:42,PAK:28,MOZ:26,AGO:22,CMR:26,ZMB:37,ETH:38,MLI:29,MDG:26,YEM:16,SOM:12,SSD:13,PRK:14,SDN:20}
+  },
+  wgi:{
+    2015:{NOR:95,SWE:94,FIN:96,DNK:96,NZL:96,AUS:93,CHE:95,CAN:93,LUX:93,NLD:94,GBR:90,AUT:91,DEU:91,IRL:89,ISL:94,BEL:87,JPN:82,USA:82,FRA:83,ESP:78,PRT:79,SVN:79,EST:79,CZE:73,LTU:70,LVA:67,SVK:67,POL:67,HRV:64,HUN:61,ITA:65,GRC:60,BGR:57,ROU:58,ZAF:60,BRA:52,URY:69,CHL:76,CRI:67,ARG:48,COL:44,PER:46,MEX:43,TUR:46,ISR:69,QAT:68,ARE:71,SAU:45,MAR:45,JOR:51,TUN:48,EGY:38,GHA:60,SEN:54,NAM:62,MUS:67,BWA:66,TZA:38,KEN:38,RWA:40,UGA:30,ETH:32,NGA:22,CMR:25,MOZ:34,ZMB:44,ZWE:24,IND:44,IDN:44,THA:44,MYS:62,CHN:44,VNM:36,KOR:76,JPN:82,KAZ:38,RUS:30,UKR:34,BGD:28,PAK:28,PHL:38,SSD:14,SDN:20,YEM:16,SOM:8,PRK:8,SYR:14,ERI:14,LBY:20},
+    2020:{NOR:96,SWE:95,FIN:96,DNK:97,NZL:96,AUS:92,CHE:95,CAN:93,LUX:94,NLD:94,GBR:89,AUT:91,DEU:91,IRL:89,ISL:94,BEL:87,JPN:82,USA:80,FRA:81,ESP:78,PRT:80,SVN:79,EST:80,CZE:74,LTU:72,LVA:69,SVK:66,POL:65,HRV:64,HUN:60,ITA:64,GRC:60,BGR:57,ROU:58,ZAF:59,BRA:50,URY:70,CHL:76,CRI:67,ARG:47,COL:44,PER:45,MEX:42,TUR:44,ISR:69,QAT:67,ARE:71,SAU:45,MAR:45,JOR:51,TUN:47,EGY:38,GHA:60,SEN:54,NAM:61,MUS:67,BWA:65,TZA:37,KEN:38,RWA:41,UGA:30,ETH:31,NGA:22,CMR:25,MOZ:33,ZMB:43,ZWE:24,IND:44,IDN:44,THA:44,MYS:61,CHN:44,VNM:36,KOR:76,KAZ:38,RUS:28,UKR:33,BGD:27,PAK:27,PHL:38,SSD:13,SDN:19,YEM:14,SOM:8,PRK:8,SYR:12,ERI:12},
+    2022:{NOR:96,SWE:95,FIN:96,DNK:97,NZL:96,AUS:92,CHE:95,CAN:93,LUX:94,NLD:94,GBR:89,AUT:91,DEU:91,IRL:90,ISL:94,BEL:87,JPN:82,USA:78,FRA:80,ESP:78,PRT:80,SVN:79,EST:82,CZE:74,LTU:73,LVA:70,SVK:66,POL:64,HRV:64,HUN:59,ITA:63,GRC:60,BGR:57,ROU:58,ZAF:58,BRA:49,URY:70,CHL:76,CRI:67,ARG:46,COL:43,PER:44,MEX:41,TUR:43,ISR:69,QAT:67,ARE:71,SAU:45,MAR:45,JOR:51,TUN:46,EGY:37,GHA:59,SEN:54,NAM:61,MUS:67,BWA:65,TZA:37,KEN:38,RWA:41,UGA:30,ETH:30,NGA:21,CMR:24,MOZ:33,ZMB:43,ZWE:24,IND:44,IDN:44,THA:44,MYS:61,CHN:44,VNM:36,KOR:76,KAZ:38,RUS:26,UKR:32,BGD:26,PAK:26,PHL:38,SSD:12,SDN:18,YEM:12,SOM:7,PRK:8,SYR:12,ERI:11}
+  }
+};
+
+// ─── OUTCOME DATA ─────────────────────────────────────────────────────────────
+// All series converted to "higher = better" 0-100 scale for comparability.
+// Sources: World Bank WDI, UNDP HDR, WHO.
+
+var OUTCOME_CONFIG = {
+  hdi:       { name:'Human Development Index', unit:'(0–1→0–100)', src:'UNDP HDR', higher:true,
+               note:'HDI combines life expectancy, education, and income. Multiplied by 100.' },
+  u5mort:    { name:'Child survival (under-5)', unit:'per 1000', src:'World Bank WDI', higher:true,
+               note:'Under-5 mortality inverted: 100 − (rate/2). Higher = lower child mortality.' },
+  lifexp:    { name:'Life expectancy', unit:'years', src:'World Bank WDI', higher:true,
+               note:'Life expectancy at birth in years.' },
+  uhc:       { name:'UHC service coverage', unit:'index 0–100', src:'WHO', higher:true,
+               note:'Universal Health Coverage index. Higher = better health service access.' },
+  elec:      { name:'Access to electricity', unit:'% population', src:'World Bank WDI', higher:true,
+               note:'Share of population with access to electricity.' },
+  water:     { name:'Safe water access', unit:'% population', src:'World Bank WDI', higher:true,
+               note:'Share using safely managed drinking water services.' },
+  prim_comp: { name:'Primary completion rate', unit:'% relevant age', src:'World Bank WDI', higher:true,
+               note:'Percentage of students completing the last year of primary school.' },
+  poverty:   { name:'Low poverty (>$2.15/day)', unit:'% not poor', src:'World Bank WDI', higher:true,
+               note:'100 minus the poverty headcount ratio at $2.15/day. Higher = less poverty.' },
+  internet:  { name:'Internet access', unit:'% population', src:'World Bank WDI', higher:true,
+               note:'Individuals using the internet as a share of population.' },
+  gini_inv:  { name:'Low inequality (inv. Gini)', unit:'index', src:'World Bank WDI', higher:true,
+               note:'100 minus the Gini coefficient. Higher = more equal income distribution.' },
+};
+
+var OUTCOME = {
+  // Human Development Index (×100) — UNDP 2022 report
+  hdi:{
+    2022:{NOR:96,IRE:94,CHE:96,ISL:96,HKG:95,AUS:95,DNK:95,SWE:95,IRL:95,DEU:95,NLD:95,
+      FIN:94,SGP:94,BEL:94,NZL:94,CAN:93,LIE:93,LUX:93,GBR:93,JPN:92,KOR:92,USA:92,
+      ISR:92,ARE:91,AUT:92,SVN:91,EST:90,CZE:90,CYP:90,FRA:91,SVK:88,POL:88,LTU:88,
+      LVA:87,HRV:87,HUN:85,ARG:85,RUS:82,BGR:79,MNE:83,ROU:82,BLR:80,URY:83,CHL:86,
+      BRN:82,QAT:87,SAU:87,ARE:91,MYS:80,CRI:79,SRB:80,TTO:81,CUB:78,MKD:77,TUR:85,
+      MEX:78,BRA:75,COL:75,ZAF:71,JOR:73,THA:80,CHN:79,ECU:77,SUR:74,DOM:76,PER:76,
+      ALB:79,ARM:78,AZE:76,GEO:80,KAZ:80,UKR:77,MDA:76,UZB:72,TKM:75,
+      LBN:72,EGY:73,TUN:73,MAR:68,DZA:75,IRN:78,IND:63,IDN:71,VNM:73,PHL:70,
+      BOL:70,PRY:72,GTM:63,HND:64,NIC:67,SLV:68,JAM:71,PAN:80,
+      NAM:62,BWA:69,GHA:63,ZMB:57,SEN:51,MUS:80,ZWE:55,CMR:55,CIV:55,
+      KEN:57,TZA:54,UGA:55,RWA:56,ETH:49,NGA:54,MOZ:44,MLI:43,MWI:51,
+      SDN:52,MDG:48,SSD:38,CAF:39,NER:39,TCD:40,SLE:45,GIN:46,BFA:46,
+      AGO:59,COD:48,YEM:45,SOM:30,ERI:49,HTI:53,BGD:67,PAK:54,NPL:60,
+      LKA:78,BTN:67,MDV:77,AFG:46,KGZ:70,TJK:68,MNG:74},
+    2019:{NOR:95,CHE:96,ISL:95,AUS:95,DNK:94,SWE:95,IRL:95,DEU:95,NLD:94,FIN:93,
+      CAN:93,LUX:92,GBR:93,JPN:92,KOR:91,USA:92,ARE:89,AUT:92,SVN:91,EST:88,
+      CZE:90,FRA:90,SVK:86,POL:88,LTU:87,LVA:86,HRV:86,HUN:85,ARG:84,RUS:82,
+      BGR:79,ROU:82,BLR:82,URY:83,CHL:85,QAT:85,SAU:85,MYS:81,CRI:80,TTO:81,
+      TUR:83,MEX:78,BRA:76,COL:75,ZAF:71,THA:78,CHN:77,EGY:72,IND:63,IDN:70,
+      VNM:70,PHL:70,MAR:68,TUN:74,AGO:57,GHA:62,KEN:58,UGA:54,NGA:54,ETH:48,
+      MOZ:43,BGD:64,PAK:54,AFG:47,SSD:37,NER:39,TCD:40,CAF:38,SOM:30,ERI:48},
+    2015:{NOR:94,CHE:94,AUS:94,DNK:92,SWE:93,IRL:93,DEU:93,NLD:93,FIN:92,CAN:92,
+      LUX:90,GBR:91,JPN:90,KOR:90,USA:91,AUT:90,SVN:89,EST:86,CZE:88,FRA:89,
+      SVK:84,POL:86,LTU:85,LVA:83,HRV:83,HUN:83,ARG:82,RUS:80,BGR:77,ROU:80,
+      URY:79,CHL:84,TUR:79,MEX:76,BRA:75,COL:73,ZAF:69,THA:74,CHN:74,EGY:70,
+      IND:62,IDN:68,VNM:68,PHL:68,MAR:65,TUN:71,AGO:55,GHA:58,KEN:55,UGA:51,
+      NGA:52,ETH:45,MOZ:41,BGD:58,PAK:50,AFG:45,SSD:35,NER:35,TCD:37,CAF:35,SOM:28}
+  },
+  // Under-5 mortality INVERTED: score = 100 - (rate/2) so higher = lower mortality
+  u5mort:{
+    2022:{NOR:100,ISL:100,FIN:100,SWE:100,LUX:100,JPN:100,SGP:100,CHE:99,DNK:99,NLD:99,
+      AUT:99,DEU:99,IRL:99,EST:99,SVN:99,BEL:98,GBR:98,KOR:98,AUS:98,NZL:98,
+      CAN:98,CZE:99,SVK:98,HUN:98,PRT:99,LVA:98,LTU:98,POL:98,HRV:98,GRC:99,
+      ESP:99,ITA:99,FRA:98,ISR:99,USA:97,CHL:99,URY:98,CRI:99,CUB:99,JAM:98,
+      ARG:98,MYS:99,TTO:97,THA:98,CHN:98,LKA:99,MDV:99,TUR:98,BRA:97,
+      COL:98,MEX:97,PER:97,ECU:98,ZAF:96,NAM:96,TUN:98,JOR:98,EGY:97,MAR:97,
+      QAT:99,ARE:99,SAU:99,IRN:98,IND:97,IDN:97,VNM:98,BGD:97,PHL:97,
+      GHA:94,KEN:93,TZA:91,SEN:90,RWA:93,UGA:89,ETH:91,NGA:81,MOZ:86,
+      ZMB:90,ZWE:91,MLI:81,NER:79,CMR:87,MWI:87,MDG:90,UGA:89,
+      SSD:75,CAF:75,TCD:76,AGO:83,COD:82,SDN:85,SOM:74,
+      PAK:92,AFG:85,YEM:87,HTI:89,GIN:78,SLE:80,BFA:85,BDI:88},
+    2019:{NOR:100,ISL:100,FIN:100,SWE:100,JPN:100,CHE:99,DNK:99,DEU:99,GBR:98,
+      AUS:98,CAN:98,KOR:98,ESP:99,FRA:98,ITA:99,USA:97,CHL:99,CHN:98,BRA:97,
+      THA:98,TUR:98,ARG:98,IND:96,IDN:97,VNM:97,EGY:97,MAR:97,GHA:93,
+      KEN:92,TZA:90,UGA:88,NGA:78,ETH:90,MOZ:84,ZMB:89,SSD:73,CAF:74,
+      NER:77,TCD:74,SOM:72,PAK:91,AFG:83},
+    2015:{NOR:100,ISL:100,FIN:100,SWE:100,JPN:100,CHE:99,DNK:99,DEU:99,GBR:98,
+      AUS:98,CAN:98,KOR:98,USA:97,CHL:98,CHN:97,BRA:96,THA:97,TUR:97,ARG:97,
+      IND:94,IDN:96,VNM:96,EGY:96,GHA:92,KEN:90,UGA:86,NGA:73,ETH:87,
+      MOZ:81,ZMB:87,SSD:69,CAF:71,NER:73,TCD:70,SOM:68,PAK:89,AFG:78}
+  },
+  // Life expectancy at birth (years) — direct value
+  lifexp:{
+    2022:{JPN:84,CHE:83,KOR:83,AUS:83,ISL:82,SGP:83,ESP:82,ITA:83,SWE:83,ISR:83,
+      FRA:82,NOR:83,NZL:82,FIN:82,IRL:82,AUT:82,LUX:82,NLD:82,BEL:82,GBR:81,
+      DEU:81,DNK:81,GRC:81,PRT:81,CAN:82,CYP:81,CZE:79,SVN:81,EST:77,POL:76,
+      HUN:76,SVK:78,HRV:78,LTU:75,LVA:75,BGR:74,ROU:75,TUR:78,CHN:78,
+      USA:77,CHL:80,URY:78,CRI:79,CUB:74,ARG:76,BRA:74,COL:74,MEX:75,
+      PAN:78,TTO:74,JAM:72,MYS:75,THA:78,VNM:73,LKA:76,MDV:80,IDN:68,
+      IND:68,BGD:74,PHL:70,EGY:72,JOR:74,TUN:75,TUN:75,DZA:78,MAR:74,
+      QAT:80,ARE:79,SAU:76,IRN:75,ZAF:63,NAM:65,BWA:68,MUS:74,
+      GHA:63,SEN:67,KEN:63,TZA:68,UGA:64,RWA:68,ETH:65,NGA:53,
+      MOZ:58,ZMB:64,ZWE:61,MLI:59,NER:62,CMR:59,MWI:64,MDG:65,
+      SSD:57,CAF:54,TCD:54,COD:59,AGO:62,SDN:66,SOM:56,YEM:66,
+      PAK:66,AFG:63,NGA:53,SLE:56,BFA:62,BDI:62,GIN:59,HTI:64},
+    2019:{JPN:84,CHE:83,KOR:83,AUS:83,ISL:82,ESP:83,ITA:83,SWE:82,ISR:82,
+      FRA:82,NOR:83,NZL:82,AUT:82,LUX:82,NLD:82,BEL:81,GBR:81,DEU:81,
+      DNK:81,GRC:81,PRT:81,CAN:82,USA:79,CHL:80,URU:77,CRI:80,ARG:76,
+      BRA:75,COL:77,MEX:75,TUR:78,CHN:77,IND:70,IDN:72,VNM:75,EGY:72,
+      MAR:75,GHA:64,KEN:66,UGA:63,NGA:54,ETH:66,MOZ:60,SSD:58,
+      NER:62,TCD:54,SOM:57,PAK:68,AFG:63},
+    2015:{JPN:84,CHE:83,AUS:82,ISL:82,ESP:82,ITA:82,SWE:82,ISR:82,
+      FRA:82,NOR:82,NZL:82,AUT:81,LUX:82,NLD:82,GBR:81,DEU:81,DNK:80,
+      GRC:81,PRT:81,CAN:82,USA:79,CHL:79,ARG:76,BRA:74,COL:76,MEX:76,
+      TUR:76,CHN:76,IND:68,IDN:69,VNM:76,EGY:71,MAR:74,GHA:62,
+      KEN:62,UGA:59,NGA:53,ETH:65,MOZ:56,SSD:56,NER:60,TCD:52,SOM:55,PAK:66}
+  },
+  // UHC service coverage index (0-100) — WHO 2021/2023
+  uhc:{
+    2022:{NOR:90,AUS:89,KOR:89,JPN:89,CHE:89,NZL:88,CAN:88,GBR:88,SWE:88,DNK:88,
+      DEU:87,AUT:87,FIN:87,ISL:87,IRL:87,BEL:87,LUX:87,NLD:87,FRA:86,ESP:86,
+      ITA:86,PRT:85,CZE:85,SVN:84,EST:84,GRC:84,HUN:83,SVK:83,POL:82,
+      LVA:81,LTU:81,HRV:81,BGR:80,ROU:79,TUR:81,ISR:87,QAT:83,ARE:85,SAU:81,
+      USA:83,CAN:88,CHL:82,URY:81,ARG:79,BRA:79,COL:76,MEX:74,PAN:77,CRI:79,
+      CHN:82,THA:80,MYS:78,VNM:73,LKA:74,IDN:64,IND:65,PHL:66,BGD:67,
+      ZAF:72,MUS:80,NAM:64,BWA:67,GHA:59,SEN:52,KEN:58,TZA:52,UGA:47,
+      RWA:59,ETH:43,NGA:45,MOZ:42,ZMB:55,MDG:40,MLI:38,NER:37,
+      SSD:34,CAF:31,TCD:34,COD:40,AGO:48,SOM:30,YEM:43,AFG:40,
+      EGY:74,MAR:72,TUN:75,DZA:78,JOR:77,IRN:77,PAK:51,HTI:43,CMR:51},
+    2019:{NOR:89,AUS:88,KOR:88,JPN:88,CHE:89,CAN:88,GBR:87,SWE:87,DNK:87,
+      DEU:86,AUT:86,FIN:86,ISL:86,USA:82,CHL:81,URY:80,ARG:77,BRA:78,
+      CHN:80,THA:79,IND:64,IDN:62,VNM:71,EGY:73,GHA:57,KEN:56,UGA:45,
+      NGA:44,ETH:41,MOZ:40,SSD:32,CAF:28,NER:35,TCD:31,SOM:29,PAK:49},
+    2015:{NOR:87,AUS:86,KOR:86,JPN:86,CHE:87,CAN:86,GBR:85,SWE:85,DNK:85,
+      DEU:84,AUT:84,USA:80,CHL:79,ARG:75,BRA:76,CHN:77,THA:76,IND:60,
+      IDN:58,EGY:70,GHA:53,KEN:52,UGA:41,NGA:41,ETH:38,SSD:28,CAF:25,
+      NER:31,SOM:26,PAK:44}
+  },
+  // Access to electricity (% of population)
+  elec:{
+    2022:{NOR:100,SWE:100,FIN:100,DNK:100,DEU:100,CHE:100,AUT:100,GBR:100,FRA:100,
+      ITA:100,ESP:100,PRT:100,NLD:100,BEL:100,AUS:100,NZL:100,JPN:100,KOR:100,
+      USA:100,CAN:100,ISR:100,QAT:100,ARE:100,SAU:100,CHL:100,URY:100,ARG:99,
+      BRA:99,MEX:99,TUR:100,CHN:100,THA:100,MYS:100,VNM:99,IND:99,IDN:98,
+      LKA:100,ZAF:89,NAM:56,BWA:62,GHA:88,SEN:75,MUS:100,TUN:100,MAR:100,
+      EGY:100,JOR:100,IRN:100,KEN:80,TZA:48,UGA:46,RWA:50,ETH:52,NGA:59,
+      MOZ:32,ZMB:46,ZWE:38,CMR:66,MLI:55,NER:20,MWI:15,MDG:23,SSD:8,
+      CAF:14,TCD:11,COD:22,AGO:52,SDN:60,BGD:96,PAK:96,PHL:96,HTI:45,
+      AFG:89,YEM:50,SOM:33,SLE:25,GIN:38,BFA:22,BDI:14,GNB:35},
+    2019:{NOR:100,SWE:100,DEU:100,GBR:100,FRA:100,AUS:100,JPN:100,USA:100,CHN:100,
+      IND:97,IDN:97,VNM:98,EGY:100,GHA:84,KEN:75,TZA:41,UGA:41,NGA:55,
+      ETH:45,MOZ:28,ZMB:43,SSD:7,CAF:12,NER:17,TCD:9,SOM:30,PAK:94,AFG:84},
+    2015:{NOR:100,SWE:100,DEU:100,USA:100,CHN:100,IND:84,IDN:91,EGY:100,
+      GHA:79,KEN:63,TZA:33,UGA:37,NGA:56,ETH:35,MOZ:24,SSD:6,NER:14,TCD:8}
+  },
+  // Poverty headcount INVERTED: score = 100 - rate (at $2.15/day)
+  poverty:{
+    2022:{NOR:100,DNK:100,SWE:100,FIN:100,CHE:100,AUT:100,DEU:100,NLD:100,
+      GBR:100,FRA:99,ITA:99,ESP:99,AUS:100,NZL:100,JPN:100,KOR:100,
+      CAN:100,USA:99,ISR:99,QAT:99,ARE:99,SAU:99,CHL:99,URY:97,
+      ARG:94,BRA:96,MEX:95,COL:95,PER:95,TUR:99,CHN:99,THA:99,
+      MYS:99,VNM:96,IDN:96,LKA:99,IND:88,BGD:91,EGY:98,MAR:97,
+      TUN:98,JOR:98,IRN:98,ZAF:75,NAM:86,BWA:83,GHA:85,SEN:75,
+      MUS:99,KEN:87,TZA:78,UGA:75,RWA:78,ETH:72,NGA:60,MOZ:71,
+      ZMB:72,ZWE:73,MLI:62,NER:56,MWI:74,MDG:72,SSD:50,CAF:46,
+      TCD:53,COD:62,AGO:72,SDN:73,PAK:84,AFG:70,HTI:72,YEM:66,
+      SOM:55,SLE:65,GIN:61,BFA:62,BDI:74,CMR:76},
+    2019:{NOR:100,DNK:100,DEU:100,GBR:100,FRA:99,USA:99,AUS:100,CHN:99,
+      THA:99,IND:87,IDN:95,VNM:94,EGY:98,GHA:82,KEN:85,TZA:76,
+      UGA:73,NGA:57,ETH:70,MOZ:68,SSD:48,CAF:44,NER:53,TCD:50,
+      SOM:52,PAK:82,AFG:67},
+    2015:{NOR:100,DEU:100,USA:99,CHN:98,THA:98,IND:80,IDN:92,EGY:97,
+      GHA:78,KEN:82,TZA:72,UGA:70,NGA:54,ETH:65,MOZ:65,SSD:44,
+      NER:50,TCD:47,PAK:78}
+  },
+  // Internet access (% of individuals)
+  internet:{
+    2022:{NOR:99,ISL:99,DNK:99,SWE:98,NLD:98,LUX:97,FIN:96,CHE:96,DEU:94,
+      GBR:97,AUT:94,BEL:92,FRA:92,KOR:97,JPN:94,AUS:96,NZL:95,CAN:93,
+      USA:92,ISR:93,QAT:99,ARE:99,SAU:95,EST:92,LVA:89,LTU:88,SVN:87,
+      CZE:88,SVK:87,HUN:87,POL:85,HRV:84,ESP:93,ITA:84,PRT:82,GRC:80,
+      ROU:78,BGR:76,TUR:85,RUS:88,UKR:79,CHN:74,THA:65,MYS:97,IDN:68,
+      VNM:74,LKA:52,IND:43,PHL:68,BGD:38,ARG:86,BRA:81,COL:73,MEX:72,
+      CHL:90,URY:80,PER:71,ZAF:72,NAM:62,BWA:48,MUS:74,GHA:65,SEN:46,
+      KEN:40,TZA:32,UGA:28,RWA:37,ETH:25,NGA:55,MOZ:21,ZMB:27,EGY:72,
+      MAR:88,TUN:68,DZA:69,JOR:89,IRN:79,PAK:36,BGD:38,AFG:24,HTI:38,
+      YEM:26,SOM:22,SLE:18,GIN:25,NER:17,TCD:12,CAF:10,SSD:10,CMR:42,
+      MLI:26,MDG:20,MWI:14,ZWE:35},
+    2019:{NOR:99,ISL:98,DNK:98,SWE:97,NLD:96,CHE:95,DEU:92,GBR:96,AUS:95,
+      USA:90,KOR:96,JPN:93,CHN:73,THA:68,MYS:90,IDN:64,IND:40,BGD:33,
+      EGY:68,GHA:54,KEN:37,TZA:25,UGA:24,NGA:49,ETH:22,PAK:31,AFG:18},
+    2015:{NOR:97,DNK:97,SWE:91,DEU:88,GBR:93,AUS:85,USA:75,KOR:90,CHN:50,
+      THA:40,IND:26,EGY:45,GHA:32,KEN:23,TZA:13,NGA:33,ETH:11,PAK:18}
+  },
+  // Safe water access (% using safely managed drinking water)
+  water:{
+    2022:{NOR:100,SWE:100,FIN:100,DNK:100,DEU:100,CHE:100,AUT:100,GBR:100,
+      FRA:100,ITA:100,ESP:100,AUS:100,NZL:100,JPN:100,KOR:100,USA:100,
+      CAN:100,ISR:100,QAT:97,ARE:96,SAU:97,CHL:98,URY:97,ARG:93,
+      CHN:93,THA:87,MYS:96,IDN:74,IND:72,LKA:86,VNM:76,PHL:72,
+      EGY:93,MAR:82,TUN:92,JOR:93,IRN:88,ZAF:73,NAM:65,BWA:62,
+      MUS:98,GHA:61,SEN:44,KEN:59,TZA:47,UGA:43,RWA:55,ETH:52,
+      NGA:35,MOZ:31,ZMB:45,ZWE:38,MLI:52,NER:21,MWI:24,MDG:35,
+      SSD:20,CAF:27,TCD:18,COD:26,AGO:42,SDN:56,BGD:58,PAK:38,
+      AFG:37,HTI:43,YEM:48,SOM:24,SLE:39,GIN:38,BFA:30,BDI:41,
+      CMR:49,GNB:52},
+    2019:{NOR:100,DEU:100,GBR:100,FRA:100,AUS:100,JPN:100,USA:100,CHN:90,
+      THA:82,IND:62,IDN:67,EGY:91,GHA:56,KEN:54,TZA:42,UGA:38,NGA:30,
+      ETH:44,SSD:17,CAF:22,NER:18,TCD:15,SOM:22,PAK:34,AFG:32},
+    2015:{NOR:100,DEU:100,USA:100,CHN:82,IND:57,IDN:60,EGY:87,GHA:47,
+      KEN:46,TZA:34,NGA:24,ETH:36,SSD:13,CAF:18,NER:14,SOM:18,PAK:28}
+  },
+};
+
+// ─── GOVERNANCE INDEX CONFIG ─────────────────────────────────────────────────
+var GOV_CONFIG = {
+  composite: { name:'Governance Compass (composite)' },
+  cpi:       { name:'Corruption Perceptions Index' },
+  wgi:       { name:'World Bank Governance Indicators' },
+};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+var selectedISO = null;
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+function init() {
+  // Populate dropdowns
+  var gx = document.getElementById('gov-x');
+  Object.keys(GOV_CONFIG).forEach(function(k) {
+    var o = document.createElement('option');
+    o.value = k; o.textContent = GOV_CONFIG[k].name;
+    gx.appendChild(o);
+  });
+  var gy = document.getElementById('out-y');
+  Object.keys(OUTCOME_CONFIG).forEach(function(k) {
+    var o = document.createElement('option');
+    o.value = k; o.textContent = OUTCOME_CONFIG[k].name;
+    gy.appendChild(o);
+  });
+  // Sensible defaults
+  gx.value = 'composite';
+  gy.value = 'hdi';
+  render();
+}
+
+// ─── PEARSON CORRELATION ─────────────────────────────────────────────────────
+function pearson(xs, ys) {
+  var n = xs.length;
+  if (n < 5) return null;
+  var mx = xs.reduce(function(s,v){return s+v},0)/n;
+  var my = ys.reduce(function(s,v){return s+v},0)/n;
+  var num = 0, dx = 0, dy = 0;
+  for (var i=0;i<n;i++) {
+    var ex = xs[i]-mx, ey = ys[i]-my;
+    num += ex*ey; dx += ex*ex; dy += ey*ey;
+  }
+  return (dx&&dy) ? num/Math.sqrt(dx*dy) : null;
+}
+
+// ─── MAIN RENDER ─────────────────────────────────────────────────────────────
+function render() {
+  var gKey = document.getElementById('gov-x').value;
+  var oKey = document.getElementById('out-y').value;
+  var yr   = document.getElementById('year-sel').value;
+  var lagYr = String(parseInt(yr)-5);
+  var useLag  = document.getElementById('chk-lag').checked;
+  var usePop  = document.getElementById('chk-pop').checked;
+  var useIncome = document.getElementById('chk-income').checked;
+  document.getElementById('year-label').textContent = yr + (useLag ? ' outcome / '+ lagYr +' governance' : ' data');
+
+  var govData = GOV[gKey];
+  var outData = OUTCOME[oKey];
+  if (!govData || !outData) return;
+
+  var govYr = govData[useLag ? lagYr : yr] || govData[yr] || findNearest(govData, yr);
+  var outYr = outData[yr] || findNearest(outData, yr);
+  if (!govYr || !outYr) return;
+
+  // Gather points
+  var pts = [];
+  Object.keys(govYr).forEach(function(iso) {
+    var gv = govYr[iso], ov = outYr[iso];
+    if (gv===undefined||gv===null||ov===undefined||ov===null) return;
+    var meta = COUNTRY_META[iso]||{};
+    pts.push({iso:iso, gv:gv, ov:ov, r:meta.r||'?', i:meta.i||'?', pop:POP[iso]||4});
+  });
+
+  // Stats
+  var xs = pts.map(function(p){return p.gv;});
+  var ys = pts.map(function(p){return p.ov;});
+  var r = pearson(xs, ys);
+  document.getElementById('stat-r').innerHTML = r!==null
+    ? '<strong>r = '+r.toFixed(2)+'</strong> (raw correlation)'
+    : '';
+  document.getElementById('stat-n').innerHTML = '<strong>n = '+pts.length+'</strong> countries';
+
+  // Partial r by income group
+  if (useIncome) {
+    var incomeGroups = ['H','UM','LM','L'];
+    var partialRs = [];
+    incomeGroups.forEach(function(inc) {
+      var sub = pts.filter(function(p){return p.i===inc;});
+      if (sub.length < 5) return;
+      var r2 = pearson(sub.map(function(p){return p.gv;}), sub.map(function(p){return p.ov;}));
+      if (r2!==null) partialRs.push(r2);
+    });
+    var avgR = partialRs.length ? partialRs.reduce(function(s,v){return s+v},0)/partialRs.length : null;
+    document.getElementById('stat-partial').innerHTML = avgR!==null
+      ? 'Within-income-group avg r = <strong>'+avgR.toFixed(2)+'</strong>'
+      : '';
+  } else {
+    document.getElementById('stat-partial').innerHTML = '';
+  }
+
+  drawScatter(pts, gKey, oKey, usePop, useIncome);
+  drawRankTables(pts, oKey);
+  if (selectedISO) drawDetail(selectedISO, gKey, oKey);
+}
+
+function findNearest(data, yr) {
+  var years = Object.keys(data).map(Number).sort(function(a,b){return Math.abs(a-yr)-Math.abs(b-yr);});
+  return years.length ? data[String(years[0])] : null;
+}
+
+// ─── SCATTER ────────────────────────────────────────────────────────────────
+function drawScatter(pts, gKey, oKey, usePop, useIncome) {
+  var W=880, H=380, PAD={top:20,right:30,bottom:45,left:50};
+  var iW=W-PAD.left-PAD.right, iH=H-PAD.top-PAD.bottom;
+  var xS = function(v){ return PAD.left + (v/100)*iW; };
+  var yS = function(v){ return PAD.top + iH - (v/100)*iH; };
+  var maxPop = Math.max.apply(null, pts.map(function(p){return p.pop;}));
+  var rScale = function(pop){ return usePop ? Math.max(3,Math.sqrt(pop/maxPop)*22) : 5; };
+
+  var svgEl = document.getElementById('corr-svg');
+  svgEl.setAttribute('viewBox','0 0 '+W+' '+H);
+  svgEl.setAttribute('height', H);
+
+  var html = '';
+
+  // Grid
+  [0,25,50,75,100].forEach(function(v) {
+    html += '<line x1="'+PAD.left+'" x2="'+(W-PAD.right)+'" y1="'+yS(v)+'" y2="'+yS(v)+'" stroke="rgba(26,26,24,0.07)" stroke-width="0.5"/>';
+    html += '<line x1="'+xS(v)+'" x2="'+xS(v)+'" y1="'+PAD.top+'" y2="'+(H-PAD.bottom)+'" stroke="rgba(26,26,24,0.07)" stroke-width="0.5"/>';
+    html += '<text x="'+(PAD.left-6)+'" y="'+(yS(v)+3)+'" text-anchor="end" font-size="9" fill="#7a7a74">'+v+'</text>';
+    html += '<text x="'+xS(v)+'" y="'+(H-PAD.bottom+14)+'" text-anchor="middle" font-size="9" fill="#7a7a74">'+v+'</text>';
+  });
+
+  // Axis labels
+  var gName = GOV_CONFIG[gKey] ? GOV_CONFIG[gKey].name : gKey;
+  var oName = OUTCOME_CONFIG[oKey] ? OUTCOME_CONFIG[oKey].name : oKey;
+  html += '<text x="'+(W/2)+'" y="'+(H-3)+'" text-anchor="middle" font-size="11" fill="#4a4a46">'+gName+'</text>';
+  html += '<text x="14" y="'+(H/2)+'" text-anchor="middle" font-size="11" fill="#4a4a46" transform="rotate(-90,14,'+(H/2)+')">'+oName+'</text>';
+
+  // Regression line
+  if (pts.length > 3) {
+    var sx=0,sy=0,sxy=0,sxx=0,n=pts.length;
+    pts.forEach(function(p){sx+=p.gv;sy+=p.ov;sxy+=p.gv*p.ov;sxx+=p.gv*p.gv;});
+    var slope=(n*sxy-sx*sy)/(n*sxx-sx*sx);
+    var intercept=(sy-slope*sx)/n;
+    var y1=Math.max(0,Math.min(100,intercept));
+    var y2=Math.max(0,Math.min(100,slope*100+intercept));
+    html += '<line x1="'+xS(0)+'" y1="'+yS(y1)+'" x2="'+xS(100)+'" y2="'+yS(y2)+'" stroke="#1a1a18" stroke-width="1" stroke-dasharray="4,3" opacity="0.2"/>';
+  }
+
+  // Income group lines if selected
+  if (useIncome) {
+    ['H','UM','LM','L'].forEach(function(inc) {
+      var sub = pts.filter(function(p){return p.i===inc;});
+      if (sub.length < 5) return;
+      var sx=0,sy=0,sxy=0,sxx=0,n=sub.length;
+      sub.forEach(function(p){sx+=p.gv;sy+=p.ov;sxy+=p.gv*p.ov;sxx+=p.gv*p.gv;});
+      var slope=(n*sxy-sx*sy)/(n*sxx-sx*sx);
+      var intercept=(sy-slope*sx)/n;
+      var y1=Math.max(0,Math.min(100,intercept));
+      var y2=Math.max(0,Math.min(100,slope*100+intercept));
+      var col = INCOME_COLORS[inc]||'#999';
+      html += '<line x1="'+xS(0)+'" y1="'+yS(y1)+'" x2="'+xS(100)+'" y2="'+yS(y2)+'" stroke="'+col+'" stroke-width="1" stroke-dasharray="6,3" opacity="0.5"/>';
+    });
+  }
+
+  // Points
+  pts.sort(function(a,b){return b.pop-a.pop;});
+  pts.forEach(function(p) {
+    var col = useIncome ? (INCOME_COLORS[p.i]||'#999') : (REGION_COLORS[p.r]||'#999');
+    var r2 = rScale(p.pop);
+    var isSel = p.iso===selectedISO;
+    var stroke = isSel ? '#1a1a18' : 'rgba(255,255,255,0.4)';
+    var sw = isSel ? 2 : 0.5;
+    html += '<circle cx="'+xS(p.gv).toFixed(1)+'" cy="'+yS(p.ov).toFixed(1)+'" r="'+r2+'" fill="'+col+'" opacity="0.75" stroke="'+stroke+'" stroke-width="'+sw+'" data-iso="'+p.iso+'" style="cursor:pointer" onclick="selectCountry(\''+p.iso+'\')">'
+      + '<title>'+(NAMES[p.iso]||p.iso)+': '+GOV_CONFIG[gKey].name+' '+p.gv+', '+OUTCOME_CONFIG[oKey].name+' '+p.ov+'</title></circle>';
+    if (isSel) {
+      html += '<text x="'+(xS(p.gv)+r2+3)+'" y="'+(yS(p.ov)+4)+'" font-size="10" fill="#1a1a18" font-weight="600">'+(NAMES[p.iso]||p.iso)+'</text>';
+    }
+  });
+
+  svgEl.innerHTML = html;
+
+  // Legend
+  var legendEl = document.getElementById('scatter-legend');
+  if (useIncome) {
+    legendEl.innerHTML = Object.keys(INCOME_NAMES).map(function(i) {
+      var cnt = pts.filter(function(p){return p.i===i;}).length;
+      return '<span class="leg-item"><span class="leg-dot" style="background:'+INCOME_COLORS[i]+'"></span>'+INCOME_NAMES[i]+' ('+cnt+')</span>';
+    }).join('');
+  } else {
+    var regionOrder = ['WEU','NAM','ECA','LAC','EAP','SAS','MENA','SSA'];
+    legendEl.innerHTML = regionOrder.map(function(r) {
+      var cnt = pts.filter(function(p){return p.r===r;}).length;
+      if (!cnt) return '';
+      return '<span class="leg-item"><span class="leg-dot" style="background:'+REGION_COLORS[r]+'"></span>'+(REGION_NAMES[r]||r)+' ('+cnt+')</span>';
+    }).filter(Boolean).join('');
+  }
+}
+
+var INCOME_COLORS = {H:'#185FA5',UM:'#3B6D11',LM:'#B07D00',L:'#993C1D'};
+
+// ─── RANK TABLES ─────────────────────────────────────────────────────────────
+function drawRankTables(pts, oKey) {
+  var oCfg = OUTCOME_CONFIG[oKey];
+  var sorted = pts.slice().sort(function(a,b){return b.ov-a.ov;});
+  var maxVal = sorted[0] ? sorted[0].ov : 100;
+  document.getElementById('top-rank-title').textContent = 'Top 15 by '+oCfg.name;
+  document.getElementById('bot-rank-title').textContent = 'Bottom 15 by '+oCfg.name;
+
+  function makeRows(countries) {
+    var head = '<tr><th>#</th><th>Country</th><th>'+oCfg.name.split(' ').slice(0,2).join(' ')+'</th><th>Gov.</th></tr>';
+    var rows = countries.map(function(p,i) {
+      var bar = '<span class="rank-bar" style="width:'+(p.ov/maxVal*80).toFixed(0)+'px;background:'+(p.ov>66?'#3B6D11':p.ov>33?'#B07D00':'#993C1D')+'"></span>';
+      return '<tr onclick="selectCountry(\''+p.iso+'\')" title="Click to see detail">'
+        +'<td style="color:var(--text-light);font-size:11px">'+(i+1)+'</td>'
+        +'<td>'+(NAMES[p.iso]||p.iso)+'</td>'
+        +'<td>'+bar+p.ov+'</td>'
+        +'<td style="color:var(--text-light)">'+p.gv+'</td>'
+        +'</tr>';
+    }).join('');
+    return '<table class="rank-table">'+head+rows+'</table>';
+  }
+  document.getElementById('top-rank').outerHTML = makeRows(sorted.slice(0,15)).replace('<table','<table id="top-rank"');
+  document.getElementById('bot-rank').outerHTML = makeRows(sorted.slice(-15).reverse()).replace('<table','<table id="bot-rank"');
+}
+
+// ─── COUNTRY DETAIL ──────────────────────────────────────────────────────────
+function selectCountry(iso) {
+  selectedISO = iso;
+  var gKey = document.getElementById('gov-x').value;
+  var oKey = document.getElementById('out-y').value;
+  render();
+  drawDetail(iso, gKey, oKey);
+}
+
+function drawDetail(iso, gKey, oKey) {
+  var name = NAMES[iso]||iso;
+  var meta = COUNTRY_META[iso]||{};
+  document.getElementById('detail-name').textContent = name;
+  document.getElementById('detail-meta').textContent =
+    (REGION_NAMES[meta.r]||meta.r||'') + (meta.i ? ' · ' + INCOME_NAMES[meta.i] : '');
+  document.getElementById('gov-traj-label').textContent = GOV_CONFIG[gKey].name;
+  document.getElementById('out-traj-label').textContent = OUTCOME_CONFIG[oKey].name + ' — ' + OUTCOME_CONFIG[oKey].src;
+
+  var govData = GOV[gKey];
+  var outData = OUTCOME[oKey];
+  var YEARS = ['2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+  var GOV_YEARS = Object.keys(govData).sort();
+  var OUT_YEARS = Object.keys(outData).sort();
+
+  // Gov trajectory
+  var govPts = GOV_YEARS.map(function(y) {
+    return govData[y] && govData[y][iso]!==undefined ? {y:y, v:govData[y][iso]} : null;
+  }).filter(Boolean);
+
+  // Out trajectory
+  var outPts = OUT_YEARS.map(function(y) {
+    return outData[y] && outData[y][iso]!==undefined ? {y:y, v:outData[y][iso]} : null;
+  }).filter(Boolean);
+
+  drawMiniChart('gov-traj', govPts, '#185FA5');
+  drawMiniChart('out-traj', outPts, '#3B6D11');
+
+  document.getElementById('detail-panel').classList.add('visible');
+}
+
+function drawMiniChart(id, pts, col) {
+  var W=400, H=130, PAD={top:8,right:8,bottom:24,left:30};
+  var iW=W-PAD.left-PAD.right, iH=H-PAD.top-PAD.bottom;
+  var el = document.getElementById(id);
+  if (!pts.length) { el.innerHTML = '<text x="200" y="65" text-anchor="middle" font-size="11" fill="#7a7a74">No data</text>'; return; }
+  var vals = pts.map(function(p){return p.v;});
+  var minV = Math.min.apply(null, vals);
+  var maxV = Math.max.apply(null, vals);
+  var rng = maxV-minV || 1;
+  var years = pts.map(function(p){return p.y;});
+  var minY = Math.min.apply(null, years.map(Number));
+  var maxY = Math.max.apply(null, years.map(Number));
+  var rngY = maxY-minY || 1;
+  var xS = function(y){ return PAD.left + ((Number(y)-minY)/rngY)*iW; };
+  var yS = function(v){ return PAD.top + iH - ((v-minV)/rng)*iH; };
+  var html = '';
+  // Grid lines at 25% intervals across value range
+  [0,50,100].forEach(function(pct) {
+    var v = minV + (rng * pct/100);
+    html += '<line x1="'+PAD.left+'" x2="'+(W-PAD.right)+'" y1="'+yS(v)+'" y2="'+yS(v)+'" stroke="rgba(26,26,24,0.07)" stroke-width="0.5"/>';
+    html += '<text x="'+(PAD.left-4)+'" y="'+(yS(v)+3)+'" text-anchor="end" font-size="8" fill="#7a7a74">'+Math.round(v)+'</text>';
+  });
+  // Year labels
+  years.forEach(function(y) {
+    html += '<text x="'+xS(y)+'" y="'+(H-4)+'" text-anchor="middle" font-size="8" fill="#7a7a74" transform="rotate(-40,'+xS(y)+','+(H-4)+')">'+y+'</text>';
+  });
+  // Line
+  var path = pts.map(function(p,i){ return (i===0?'M':'L')+xS(p.y).toFixed(1)+' '+yS(p.v).toFixed(1); }).join(' ');
+  html += '<path d="'+path+'" fill="none" stroke="'+col+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  // Dots
+  pts.forEach(function(p) {
+    html += '<circle cx="'+xS(p.y).toFixed(1)+'" cy="'+yS(p.v).toFixed(1)+'" r="3" fill="'+col+'"/>';
+  });
+  // End label
+  var last = pts[pts.length-1];
+  html += '<text x="'+(xS(last.y)+6)+'" y="'+(yS(last.v)+4)+'" font-size="10" fill="'+col+'" font-weight="600">'+last.v+'</text>';
+  el.innerHTML = html;
+}
+
+function closeDetail() {
+  selectedISO = null;
+  document.getElementById('detail-panel').classList.remove('visible');
+  render();
+}
+
+// ─── START ────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
