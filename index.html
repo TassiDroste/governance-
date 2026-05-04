@@ -185,6 +185,10 @@
     .nav-links { gap: 1.2rem; }
     .gallery-grid { grid-template-columns: 1fr !important; }
   }
+.pull-quote{font-family:var(--serif);font-size:1.25rem;font-weight:400;font-style:italic;color:var(--text);border-left:3px solid var(--border-mid);padding:0.75rem 1.25rem;margin:1.5rem 0;line-height:1.5}
+.article-note{font-size:12px;color:var(--text-light);line-height:1.75;font-weight:300;border-top:0.5px solid var(--border);padding-top:1rem;margin-top:1.5rem}
+.article-note a{color:var(--green-mid);text-decoration:none}.article-note a:hover{text-decoration:underline}
+.prose hr{border:none;border-top:0.5px solid var(--border);margin:2rem 0}
 </style>
 </head>
 <body>
@@ -233,6 +237,17 @@
   <!-- ESSAYS -->
   <div class="index-section">
     <div class="index-section-label">Essays</div>
+
+    <div class="index-item" onclick="showPage('essay-accountability')">
+      <div class="index-item-left">
+        <div class="index-item-title">Does Accountability Matter for Development?</div>
+        <div class="index-item-desc">On capability, accountability, and what eight governance indices reveal when held together &mdash; including a surprise about Belarus, South Africa, and the limits of what the data can show.</div>
+      </div>
+      <div class="index-item-right">
+        <div class="index-item-date">2025</div>
+        <span class="index-item-tag s-badge blue-badge">Analysis</span>
+      </div>
+    </div>
 
     <div class="index-item" onclick="showPage('essay-present')">
       <div class="index-item-left">
@@ -1049,5 +1064,122 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
+
+<div id="page-essay-accountability" class="page">
+<div class="narrow">
+  <span class="back-link" onclick="showPage('home')">&#8592; All writing</span>
+  <span class="eyebrow">Analysis &middot; Governance &middot; 2025</span>
+  <h1 class="article-title">Does Accountability<br><em>Matter for Development?</em></h1>
+  <p class="article-subtitle">Lessons from governance data &mdash; on capability, accountability, and what the numbers actually reveal</p>
+  <div class="essay-meta">
+    <span class="meta-item">Tassilo von Droste zu H&uuml;lshoff</span>
+    <div class="meta-sep"></div>
+    <span class="meta-item">Governance &middot; Data analysis</span>
+    <div class="meta-sep"></div>
+    <span class="s-badge blue-badge">Analysis</span>
+  </div>
+
+  <div class="prose">
+
+    <p>Since I started working in development cooperation, my obsession has been a simple question: what does good governance actually do for people? Not in the abstract &mdash; in the clinic that gets built, the contract that gets implemented, the budget that reaches the school instead of disappearing on the way. The question sounds obvious. The answer, as anyone who has spent time in this field knows, is rarely straightforward.</p>
+
+    <p>There is no shortage of tools for measuring governance. The Corruption Perceptions Index. The World Bank Governance Indicators. Freedom House. The Rule of Law Index. Each of them captures something real. But taken individually, each tells only part of the story &mdash; and the part they tell is often the part that confirms what the commissioner of the index already believed.</p>
+
+    <p>What has changed, and what prompted this essay, is that it is now possible to bring these datasets together and interrogate them in ways that weren&rsquo;t practical before. To ask not just what one index shows, but what happens when you hold all of them against each other, and then hold the whole picture against what actually happens to people&rsquo;s lives. Correlating governance scores with child mortality, life expectancy, electricity access, and income inequality across a hundred and fifty countries is not a definitive answer to anything. But it is a way of forming new hypotheses &mdash; and, more usefully, of questioning the assumptions you walked in with.</p>
+
+    <p>The surprises were immediate. How large was my surprise to find that Belarus &mdash; a country with one of the lowest political freedom scores in the world &mdash; has a Gini coefficient of 24.4, making it one of the most equal countries on earth, more equal than France, Germany, or the United Kingdom. Or that nine out of twelve countries in what I will call the authoritarian development cluster sit below their income-group peers on inequality. Or that Freedom House scores, the most direct measure of democratic rights, have almost zero correlation with income distribution across countries.</p>
+
+    <p>There are more surprises in the data. I want to share them &mdash; and to be honest about what they do and do not mean.</p>
+
+    <hr>
+
+    <p>There is a fact embedded in the 2022 governance data that does not resolve comfortably into either side of one of development&rsquo;s oldest debates. China, with a press freedom score of 16 out of 100 and a Freedom House rating of 9, has an HDI of 79 &mdash; higher than Brazil, Colombia, or South Africa. Vietnam, rated 19 on political rights, has a life expectancy of 73 and a UHC service coverage score matching Romania. Russia, despite a WGI governance score of 19, has an HDI of 82, placing it above much of Latin America. These countries do not merely survive their governance deficits; they appear, in aggregate human development terms, to flourish despite them.</p>
+
+    <p>This is not a marginal anomaly to be explained away. When you run a regression of composite governance scores against HDI across 77 countries, you get an r of 0.85 &mdash; a strong positive correlation that seems to confirm the conventional wisdom. But when you disaggregate governance into its two main components &mdash; state capacity on one side, accountability and rights on the other &mdash; and test each separately, a sharper and more troubling picture emerges.</p>
+
+    <h2>The Capability Advantage</h2>
+
+    <p>The governance indices in common use actually measure two quite different things. Some &mdash; the World Bank Governance Indicators, the Chandler Good Government Index &mdash; assess what a state <em>can do</em>: its effectiveness at delivering services, its regulatory coherence, the quality of its institutions as instruments of administration. Others &mdash; Freedom House, the Reporters Without Borders Press Freedom Index, the Transparency International Corruption Perceptions Index &mdash; assess how a state is <em>constrained and observed</em>: whether citizens can hold it to account, whether the press can investigate it, whether corruption can be named and punished.</p>
+
+    <p>Building a composite &ldquo;capability score&rdquo; (averaging WGI and Chandler) and a composite &ldquo;accountability score&rdquo; (averaging Freedom House, press freedom, and CPI) across the 56 countries for which both are available, the correlation with HDI breaks significantly in the capability direction: capability &rarr; HDI yields r&nbsp;=&nbsp;0.916, accountability &rarr; HDI yields r&nbsp;=&nbsp;0.831 &mdash; a gap of nearly 0.09 Pearson points that is substantively meaningful. For life expectancy the gap is larger still: capability r&nbsp;=&nbsp;0.882, accountability r&nbsp;=&nbsp;0.766.</p>
+
+    <p>This is not surprising once you think about the mechanisms. What actually produces low child mortality, high life expectancy, or broad UHC coverage? Schools built and staffed. Vaccination programmes designed and delivered. Roads connecting rural populations to clinics. Water infrastructure maintained. All of these require state capacity &mdash; the ability to plan, fund, contract and execute. A free press does not, in any direct sense, build a hospital.</p>
+
+    <p>The authoritarian development model, when it works, works precisely here. China, Vietnam, Singapore, Thailand, Morocco and Kazakhstan all sit at the top of the capability-versus-accountability gap table: their state effectiveness scores substantially exceed their political freedom scores, and the gap ranges from +7 points (Morocco) to +33 (Singapore). These are states that have invested in the machinery of service delivery while suppressing the mechanisms of political accountability. In the cross-section, the investment shows.</p>
+
+    <h2>The Regional Pattern</h2>
+
+    <p>The capability-accountability gap is not randomly distributed. Breaking it down by region reveals a structural geography of governance that maps closely onto the developmental state literature.</p>
+
+    <p>East Asia and Pacific shows the largest positive gap: +5.7 points on average, meaning the region&rsquo;s states are more effective than they are accountable. MENA follows at +4.1. Western Europe sits near parity at &minus;1.4 &mdash; the only region where capability and accountability are roughly matched, which is the distinguishing feature of consolidated liberal democracies. North America is similar.</p>
+
+    <p>Then the pattern inverts. Sub-Saharan Africa shows &minus;9.2: African states on average have more political pluralism than administrative effectiveness. Latin America is the most extreme case at &minus;14.4, with Brazil (&minus;21), Bolivia (&minus;20), Peru (&minus;18), and South Africa (&minus;15) all having significantly stronger accountability than capacity. These are countries with competitive elections, independent judiciaries, free presses &mdash; and chronically weak bureaucratic effectiveness.</p>
+
+    <p>This is a recognisable finding in the literature. Francis Fukuyama has argued that the sequence matters as much as the content: states that built administrative capacity before democratising tend to have stronger institutions than states that democratised before building capacity &mdash; much of sub-Saharan Africa and Latin America, where political competition arrived before the administrative infrastructure to support it. The data appears to bear this out, at least in cross-section.</p>
+
+    <h2>The Inequality Puzzle</h2>
+
+    <p>If the authoritarian development model delivers better-than-expected human development outcomes, one natural suspicion is that it does so unequally &mdash; purchasing aggregate HDI gains while concentrating income at the top. The Gini coefficient data complicates that story considerably.</p>
+
+    <p>Across 101 countries with both governance and Gini data, the correlation between governance and inequality is negative but weak: composite governance score &rarr; Gini yields r&nbsp;=&nbsp;&minus;0.229. Better governance is associated with lower inequality, but the relationship is modest. More striking is what breaks down when you separate the governance dimensions. The Chandler Good Government Index &mdash; the most capability-oriented of the eight indices &mdash; shows the strongest association with lower inequality (r&nbsp;=&nbsp;&minus;0.417). Freedom House, the most direct measure of democratic rights, shows essentially no relationship with inequality at all (r&nbsp;=&nbsp;&minus;0.093). The BTI governance index, which explicitly tracks democratic transformation, yields r&nbsp;=&nbsp;&minus;0.003 &mdash; effectively zero.</p>
+
+    <p>The implication is uncomfortable for democratic theory: in the cross-sectional data, political rights do not reduce income inequality. Administrative competence does &mdash; through the mechanisms of functional taxation, effective social transfer programmes, and public service delivery that reaches the poor. Democracy, on its own, is not a redistribution engine.</p>
+
+    <p>Against this backdrop, the authoritarian cluster produces a finding that many readers will find counterintuitive: most of these countries are <em>more equal</em> than their income-group peers, not less. Nine out of twelve countries in the cluster fall below their peer-group average Gini coefficient. Belarus (24.4) is one of the most equal countries in the dataset, more so than every Western European state except Slovakia and Slovenia. Azerbaijan (26.6) and Kazakhstan (29.2) are more equal than Germany (32.4) or the United Kingdom (32.4). China (35.7), Russia (35.1), Vietnam (36.1), and Iran (35.9) all sit comfortably below their upper-middle-income peer average of 39.1.</p>
+
+    <p>The mechanism, however, matters enormously. The low Gini scores in the former Soviet states reflect wage compression and state management of labour markets rather than democratic redistribution. These are economies in which wages are administratively constrained, informal sector activity is limited, and the range of income outcomes is narrow for structural rather than redistributive reasons. The same Gini coefficient that in Denmark reflects generous social insurance and progressive taxation in Belarus reflects the absence of the income variance that market economies generate. Equality measured this way and equality in lived experience are not the same thing.</p>
+
+    <p>The outlier cases are particularly revealing. South Africa (Gini 63.0) is the most unequal country in the dataset by a wide margin, and is also one of the clearest cases of accountability without capacity: strong constitutional protections, competitive elections, an independent judiciary and press &mdash; yet administrative effectiveness that has consistently failed to translate political commitments to redistribution into actual redistribution. For these countries, the post-apartheid inheritance of concentrated land ownership and racialised labour markets represents a form of structural inequality that conventional governance reforms are poorly equipped to address, regardless of their accountability credentials.</p>
+
+    <h2>What Accountability Doesn&rsquo;t Explain &mdash; in the Short Run</h2>
+
+    <p>The short-run picture is uncomfortable for advocates of accountability-first development strategies. Between 2015 and 2022, the correlation between <em>changes</em> in Freedom House scores and <em>changes</em> in HDI was only r&nbsp;=&nbsp;0.30. Countries that improved political rights gained an average of 3.3 HDI points over the period; countries that backslid gained 2.4. The gap exists but is modest &mdash; and substantially smaller than the equivalent relationship between capability improvements and HDI gains (r&nbsp;=&nbsp;0.37).</p>
+
+    <p>More troubling still: every major democracy that experienced significant political backsliding in this period continued to improve or hold stable on HDI. India (Freedom House &minus;11 points) gained 1 HDI point. Brazil (&minus;8) was unchanged. Poland (&minus;7) gained 2. Hungary (&minus;6) gained 2. The United States (&minus;7) gained 1. Democratic erosion, at least over a seven-year window, leaves no visible trace in the human development data.</p>
+
+    <p>This is the empirical core of the authoritarian competence argument, and it deserves to be taken seriously rather than explained away. If accountability were the primary driver of development outcomes, we would expect its deterioration to register &mdash; and it largely does not, at this timescale.</p>
+
+    <h2>What Accountability Does &mdash; Over Time</h2>
+
+    <p>The picture changes when you shift the question from <em>level</em> and <em>trend</em> to <em>variance</em> and <em>fragility</em>.</p>
+
+    <p>Among the 20 countries with the highest accountability scores (above 70 out of 100), the average HDI is 92.8, with a standard deviation of just 3.2. Among the 16 countries with the lowest accountability scores (below 40), the average HDI is 58.0 &mdash; and the standard deviation is 13.4, more than four times larger. This group includes China (79) and Vietnam (73) at the top, alongside Somalia (30), Chad (40), and Niger (39) at the bottom. The spread is enormous.</p>
+
+    <p>Accountability, in other words, appears to function less as an accelerator of development and more as a floor under it. High-accountability states do not necessarily develop faster than high-capacity authoritarian states in any given period. But they almost never fall to the bottom. Low-accountability states produce a wide and unpredictable distribution of outcomes, from Singapore and China to South Sudan and North Korea.</p>
+
+    <p>This logic extends to inequality. Democratic redistribution systems &mdash; social insurance, progressive taxation, collective bargaining &mdash; are institutionally self-reinforcing: they create constituencies that defend them, and they survive leadership change. Compressed wages under administrative control do not. Russia&rsquo;s Gini rose from roughly 27 in 1990 to over 40 during the transition decade &mdash; one of the largest and fastest inequality increases in recorded history, directly produced by the removal of the administrative compression that had held it down.</p>
+
+    <h2>The Fragility the Data Cannot See</h2>
+
+    <p>There is a deeper problem with reading the authoritarian overperformers as a governance success story: the data is a cross-section, and cross-sections cannot observe collapse.</p>
+
+    <p>Venezuela had strong state capacity in the oil era &mdash; and an HDI that rose steadily through the 1970s and 1980s. The collapse of the 1990s and 2000s was not gradual; it was sudden, and it was directly enabled by the absence of accountability mechanisms that could have forced course correction before the institutions were hollowed out. China&rsquo;s zero-COVID reversal in late 2022 &mdash; a policy implemented with ruthless effectiveness for three years and abandoned overnight &mdash; is a smaller but structurally identical case: a state capable of extraordinary administrative performance in one direction, with no mechanism for self-correction when the direction was wrong.</p>
+
+    <p>The capability trap, as Andrews, Pritchett and Woolcock describe it, operates precisely here. States can build impressive service delivery systems on foundations of political control, and those systems will show up well in cross-sectional data. But the same concentration of power that enables rapid implementation also eliminates the feedback loops that sustain performance over time. The low Gini scores in Belarus, Azerbaijan and Kazakhstan are, in a sense, a governance artefact: they reflect the ongoing capacity of those states to compress economic outcomes. That capacity is not institutionally self-sustaining. When it shifts, the inequality will surface.</p>
+
+    <h2>A Provisional Synthesis</h2>
+
+    <p>The data does not support the conclusion that accountability is irrelevant to development. It supports a more precise and more uncomfortable claim: that state capacity is the more proximate determinant of short-run human development outcomes, while accountability determines the stability and predictability of those outcomes over time.</p>
+
+    <p class="pull-quote">Capability delivers. Accountability sustains.</p>
+
+    <p>The inequality findings add a third dimension. Administrative capacity &mdash; the same dimension that predicts HDI gains in the short run &mdash; also appears to be the mechanism through which states achieve more equal income distribution, not democratic accountability. But the equality produced by administrative compression is qualitatively different from the equality produced by democratic redistribution: the first is fragile and dependent on continued political conditions; the second is institutionally self-reinforcing.</p>
+
+    <p>Singapore, which has substituted administrative management for democratic redistribution over the long run, shows a Gini of 47.3 &mdash; the highest of any high-income state in the dataset. South Korea and Taiwan, often cited alongside Singapore as evidence that autocratic development works, are today full democracies; their development trajectories cannot be cleanly separated from that transition.</p>
+
+    <p>For development practitioners, the sequencing question &mdash; build capacity first, then accountability, or pursue both simultaneously &mdash; is not fully resolved by the cross-sectional data. What the data does suggest is that accountability substantially narrows the range of outcomes that states can fall into. And that the kind of equality produced by accountable states is more durable than the kind produced by administrative compression, however impressive the latter looks at any given moment.</p>
+
+    <p>A press freedom score of 16 correlates with an HDI of 79 and a Gini of 36 today. Whether those numbers still look like a success story in 2035 is a question the cross-section cannot answer &mdash; but the theory of accountability, and the history of states that tried to sustain development without it, suggests they should give us pause.</p>
+
+    <hr>
+
+    <p class="article-note"><strong>Data sources:</strong> This essay draws on the <a href="indicators.html">Governance Compass</a>, which aggregates eight major governance indices across 160&ndash;180 countries from 2015 to 2025, and a <a href="correlations.html">companion correlations tool</a> comparing governance scores against World Bank WDI and UNDP development outcome series. Gini data is from the World Bank Poverty and Inequality Platform (most recent year available per country). All analysis reflects data as of 2022&ndash;2025.</p>
+
+    <p class="article-note"><strong>A note on process:</strong> This analysis was developed with the assistance of AI tools for data processing and writing. The data compilation, the questions driving the analysis, and the judgements about what the findings mean are the author&rsquo;s own; the computation and much of the drafting were AI-assisted.</p>
+
+  </div>
+</div>
+</div>
+
 </body>
 </html>
