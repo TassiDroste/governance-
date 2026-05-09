@@ -1,0 +1,218 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0e1a0b"/>
+      <stop offset="100%" stop-color="#1a2d14"/>
+    </linearGradient>
+    <linearGradient id="mapfade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0e1a0b" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#0e1a0b" stop-opacity="0"/>
+      <stop offset="75%" stop-color="#0e1a0b" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0e1a0b" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="scorebar_g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#c0392b"/>
+      <stop offset="25%"  stop-color="#e67e22"/>
+      <stop offset="50%"  stop-color="#f1c40f"/>
+      <stop offset="75%"  stop-color="#2ecc71"/>
+      <stop offset="100%" stop-color="#1a7a4a"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <clipPath id="map-clip">
+      <rect x="0" y="0" width="780" height="630"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle dot grid -->
+  <pattern id="dots" width="30" height="30" patternUnits="userSpaceOnUse">
+    <circle cx="15" cy="15" r="0.8" fill="#3B6D11" opacity="0.25"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- ── STYLISED WORLD MAP (simplified continent blobs) ── -->
+  <g clip-path="url(#map-clip)" opacity="0.9">
+
+    <!-- Ocean base -->
+    <rect x="0" y="0" width="780" height="630" fill="#0a160a"/>
+
+    <!-- Europe (high scores — green) -->
+    <ellipse cx="355" cy="165" rx="55" ry="38" fill="#1a7a4a" opacity="0.85"/>
+    <ellipse cx="380" cy="175" rx="30" ry="22" fill="#1a7a4a" opacity="0.7"/>
+    <!-- Scandinavia -->
+    <ellipse cx="358" cy="130" rx="22" ry="28" fill="#27ae60" opacity="0.9"/>
+
+    <!-- North America (medium-high) -->
+    <ellipse cx="160" cy="195" rx="85" ry="65" fill="#2ecc71" opacity="0.75"/>
+    <ellipse cx="175" cy="240" rx="55" ry="40" fill="#f1c40f" opacity="0.6"/>
+
+    <!-- Central America / Caribbean -->
+    <ellipse cx="195" cy="280" rx="25" ry="14" fill="#e67e22" opacity="0.7"/>
+
+    <!-- South America (mixed) -->
+    <ellipse cx="235" cy="370" rx="62" ry="90" fill="#e67e22" opacity="0.7"/>
+    <ellipse cx="215" cy="340" rx="28" ry="35" fill="#2ecc71" opacity="0.65"/>
+
+    <!-- Africa (mixed — wide range) -->
+    <ellipse cx="370" cy="320" rx="68" ry="95" fill="#e67e22" opacity="0.65"/>
+    <!-- North Africa lighter -->
+    <ellipse cx="370" cy="240" rx="60" ry="38" fill="#f1c40f" opacity="0.55"/>
+    <!-- South Africa greener -->
+    <ellipse cx="385" cy="420" rx="30" ry="28" fill="#2ecc71" opacity="0.7"/>
+    <!-- Central Africa darker -->
+    <ellipse cx="388" cy="355" rx="28" ry="35" fill="#c0392b" opacity="0.55"/>
+
+    <!-- Middle East -->
+    <ellipse cx="458" cy="225" rx="42" ry="32" fill="#f1c40f" opacity="0.6"/>
+
+    <!-- Russia (large, medium) -->
+    <ellipse cx="530" cy="130" rx="130" ry="42" fill="#f1c40f" opacity="0.5"/>
+    <ellipse cx="570" cy="160" rx="90" ry="28" fill="#e67e22" opacity="0.4"/>
+
+    <!-- Central Asia -->
+    <ellipse cx="520" cy="205" rx="55" ry="30" fill="#e67e22" opacity="0.6"/>
+
+    <!-- South Asia -->
+    <ellipse cx="530" cy="268" rx="38" ry="38" fill="#e67e22" opacity="0.65"/>
+
+    <!-- Southeast Asia / East Asia -->
+    <ellipse cx="610" cy="220" rx="65" ry="52" fill="#f1c40f" opacity="0.6"/>
+    <!-- China -->
+    <ellipse cx="600" cy="210" rx="52" ry="40" fill="#e67e22" opacity="0.55"/>
+    <!-- Japan / Korea -->
+    <ellipse cx="648" cy="190" rx="18" ry="22" fill="#2ecc71" opacity="0.8"/>
+    <!-- Singapore / Pacific -->
+    <ellipse cx="635" cy="295" rx="28" ry="22" fill="#f1c40f" opacity="0.6"/>
+
+    <!-- Australia/NZ (high) -->
+    <ellipse cx="640" cy="400" rx="60" ry="45" fill="#1a7a4a" opacity="0.8"/>
+    <ellipse cx="695" cy="420" rx="14" ry="10" fill="#27ae60" opacity="0.85"/>
+
+    <!-- Graticule lines (lat/long grid) -->
+    <g stroke="#3B6D11" stroke-width="0.4" opacity="0.3">
+      <!-- Latitude lines -->
+      <line x1="0" y1="105" x2="780" y2="105"/>
+      <line x1="0" y1="210" x2="780" y2="210"/>
+      <line x1="0" y1="315" x2="780" y2="315"/>
+      <line x1="0" y1="420" x2="780" y2="420"/>
+      <line x1="0" y1="525" x2="780" y2="525"/>
+      <!-- Longitude lines -->
+      <line x1="156" y1="0" x2="156" y2="630"/>
+      <line x1="312" y1="0" x2="312" y2="630"/>
+      <line x1="468" y1="0" x2="468" y2="630"/>
+      <line x1="624" y1="0" x2="624" y2="630"/>
+    </g>
+
+    <!-- Country dot markers (island states / key countries) -->
+    <!-- Nordic block -->
+    <circle cx="345" cy="118" r="5" fill="#27ae60" opacity="0.95"/>
+    <circle cx="358" cy="112" r="4" fill="#27ae60" opacity="0.9"/>
+    <!-- UK -->
+    <circle cx="328" cy="155" r="4" fill="#27ae60" opacity="0.9"/>
+    <!-- Singapore -->
+    <circle cx="632" cy="298" r="4" fill="#f1c40f" opacity="0.9"/>
+    <!-- Mauritius -->
+    <circle cx="452" cy="385" r="3" fill="#2ecc71" opacity="0.9"/>
+    <!-- Cape Verde -->
+    <circle cx="300" cy="278" r="3" fill="#2ecc71" opacity="0.85"/>
+    <!-- New Zealand -->
+    <circle cx="700" cy="438" r="4" fill="#27ae60" opacity="0.9"/>
+    <!-- Jamaica -->
+    <circle cx="197" cy="268" r="3" fill="#f1c40f" opacity="0.85"/>
+  </g>
+
+  <!-- Fade overlay so right side is readable -->
+  <rect x="0" y="0" width="780" height="630" fill="url(#mapfade)"/>
+
+  <!-- ── RIGHT PANEL — text content ── -->
+
+  <!-- Compass globe icon — top right area -->
+  <g transform="translate(890, 68)" opacity="0.9">
+    <circle cx="50" cy="50" r="44" fill="none" stroke="#3B6D11" stroke-width="1.5"/>
+    <circle cx="50" cy="50" r="32" fill="none" stroke="#3B6D11" stroke-width="0.8" opacity="0.5"/>
+    <ellipse cx="50" cy="50" rx="44" ry="18" fill="none" stroke="#3B6D11" stroke-width="0.8" opacity="0.5"/>
+    <ellipse cx="50" cy="50" rx="44" ry="32" fill="none" stroke="#3B6D11" stroke-width="0.5" opacity="0.35"/>
+    <line x1="50" y1="6" x2="50" y2="94" stroke="#3B6D11" stroke-width="0.8" opacity="0.6"/>
+    <line x1="6" y1="50" x2="94" y2="50" stroke="#3B6D11" stroke-width="0.8" opacity="0.6"/>
+    <!-- North pointer -->
+    <polygon points="50,14 46,34 50,28 54,34" fill="#EAF3DE" opacity="0.9"/>
+    <circle cx="50" cy="50" r="4" fill="#3B6D11"/>
+    <circle cx="50" cy="50" r="2" fill="#EAF3DE"/>
+  </g>
+
+  <!-- Main headline -->
+  <text x="830" y="210"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="19"
+    fill="#7a9a6a"
+    letter-spacing="3">GOVERNANCE COMPASS</text>
+
+  <text x="828" y="268"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="46"
+    font-weight="400"
+    fill="#faf9f7"
+    letter-spacing="-0.5">138 countries.</text>
+
+  <text x="828" y="322"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="46"
+    font-weight="400"
+    fill="#faf9f7"
+    letter-spacing="-0.5">10 indices.</text>
+
+  <text x="828" y="376"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="46"
+    font-weight="400"
+    fill="#EAF3DE"
+    letter-spacing="-0.5">One picture.</text>
+
+  <!-- Divider -->
+  <line x1="828" y1="408" x2="1160" y2="408" stroke="#3B6D11" stroke-width="1"/>
+
+  <!-- Score bar label -->
+  <text x="828" y="432"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="13"
+    fill="#7a7a74"
+    letter-spacing="1">GOVERNANCE SCORE</text>
+
+  <!-- Colour scale bar -->
+  <rect x="828" y="445" width="332" height="12" rx="6" fill="url(#scorebar_g)" opacity="0.9"/>
+
+  <!-- Scale labels -->
+  <text x="828" y="472"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="11" fill="#7a7a74">0 — fragile</text>
+  <text x="1160" y="472"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="11" fill="#7a7a74"
+    text-anchor="end">100 — exemplary</text>
+
+  <!-- Sub-line -->
+  <text x="828" y="516"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="16"
+    fill="#7a9a6a">CPI · WGI · Freedom House · RSF · WJP</text>
+
+  <text x="828" y="540"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="16"
+    fill="#7a9a6a">Mo Ibrahim · Chandler · BTI · OBI</text>
+
+  <!-- URL badge -->
+  <rect x="828" y="572" width="332" height="38" rx="4" fill="#27500A" opacity="0.95"/>
+  <text x="994" y="595"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="15"
+    fill="#EAF3DE"
+    text-anchor="middle"
+    letter-spacing="0.5">tassilovondroste.github.io</text>
+
+</svg>

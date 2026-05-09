@@ -203,6 +203,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
 .reading-card-desc{font-size:12px;color:var(--text-mid);font-weight:300;line-height:1.55}
 .reading-card-link{display:inline-block;margin-top:0.5rem;font-size:11px;color:var(--green-mid);text-decoration:none}
 .reading-card-link:hover{text-decoration:underline}
+.composite-card{border-left:3px solid var(--text)!important;background:var(--bg)!important}
+.composite-card .score-val{font-size:22px!important;font-weight:500!important}
 </style>
 </head>
 <body>
@@ -211,6 +213,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
     <span class="nav-name">Tassilo von Droste zu H&uuml;lshoff</span>
     <button class="nav-back" onclick="history.back()">&#8592; Back to site</button>
     <a href="correlations.html" style="font-size:12px;color:var(--green-mid);text-decoration:none;font-family:var(--body)">Governance &amp; Outcomes &rarr;</a>
+    <a href="risk.html" style="font-size:12px;color:var(--green-mid);text-decoration:none;font-family:var(--body)">Risk Horizon &rarr;</a>
   </div>
 </nav>
 <div class="wrap">
@@ -272,6 +275,17 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
       <span class="arr">&#9658;</span> How are these indices calculated?
     </button>
     <div class="explainer-grid" id="exp-grid">
+      <div class="exp-card" style="border-left:3px solid var(--text);background:var(--bg)">
+        <div class="exp-name" style="color:var(--text)">&#9672; Governance Compass (Composite)</div>
+        <div class="exp-org" style="color:var(--text-mid)">Editorial synthesis &middot; Equal-weighted average</div>
+        <div class="exp-desc">An equal-weighted composite of all nine indices below, normalised to a common 0&ndash;100 scale. Countries are included in the composite only when data from at least four indices is available for that year. OBI (Open Budget Index) is included but only covers four years (2015, 2019, 2021, 2023) &mdash; in other years it simply contributes nothing, leaving the other eight indices unchanged.</div>
+        <div class="exp-dim" style="color:var(--green)">Dimensions: All nine governance dimensions combined &mdash; corruption, effectiveness, rule of law, accountability, freedom of press, political rights, development trajectory, fiscal transparency</div>
+        <div class="exp-limit" style="color:var(--coral-mid)">Limitation: Averaging across different measurement philosophies can mask important divergences between dimensions. Always inspect individual indices alongside the composite. Coverage drops for years and countries where fewer indices report.</div>
+        <div style="margin-top:0.5rem;font-size:11px;color:var(--text-light)">
+          <a href="indicators.html" style="color:var(--green-mid);text-decoration:none">View methodology &rarr;</a>
+        </div>
+      </div>
+
       <div class="exp-card"><div class="exp-name">Corruption Perceptions Index (CPI)</div><div class="exp-org">Transparency International &middot; Annual</div><div class="exp-desc">Aggregates expert assessments from 13 independent institutions measuring perceived public sector corruption.</div><div class="exp-meta"><span class="exp-pill">0&ndash;100</span><span class="exp-pill">180 countries</span></div><div class="exp-dim">Dimension: Control of corruption in the public sector</div><div class="exp-limit">Limitation: Measures perception, not objective corruption levels. Expert bias toward high-profile cases; petty everyday corruption may be underweighted.</div></div>
       <div class="exp-card"><div class="exp-name">World Bank Governance Indicators</div><div class="exp-org">World Bank &middot; Annual</div><div class="exp-desc">Six governance dimensions averaged: Voice & Accountability, Political Stability, Government Effectiveness, Regulatory Quality, Rule of Law, Control of Corruption. Compiled from 35 data sources.</div><div class="exp-meta"><span class="exp-pill">0&ndash;100 (2025 scale)</span><span class="exp-pill">215 economies</span></div><div class="exp-dim">Dimensions: Six &mdash; Voice &amp; Accountability, Political Stability, Government Effectiveness, Regulatory Quality, Rule of Law, Control of Corruption</div><div class="exp-limit">Limitation: Margins of error are wide, especially for small states. The 2025 methodological revision (WGI 2.0) changes the scale; pre-2015 comparisons require care.</div></div>
       <div class="exp-card"><div class="exp-name">Mo Ibrahim Index (IIAG)</div><div class="exp-org">Mo Ibrahim Foundation &middot; Annual</div><div class="exp-desc">Security, participation, economic opportunity and human development across 54 African countries.</div><div class="exp-meta"><span class="exp-pill">0&ndash;100</span><span class="exp-pill">Africa only</span></div><div class="exp-dim">Dimensions: Security &amp; Rule of Law, Participation &amp; Rights, Economic Opportunity, Human Development</div><div class="exp-limit">Limitation: Africa only. Published biennially with a one-year lag — the 2024 edition covers data through 2023.</div></div>
@@ -279,6 +293,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
       <div class="exp-card"><div class="exp-name">Press Freedom Index</div><div class="exp-org">Reporters Without Borders &middot; Annual</div><div class="exp-desc">Political, legal, economic and security contexts for journalism. Score inverted: 100 = most free.</div><div class="exp-meta"><span class="exp-pill">0&ndash;100</span><span class="exp-pill">180 countries</span></div><div class="exp-dim">Dimension: Operating environment for journalism across political, legal, economic, sociocultural and safety indicators</div><div class="exp-limit">Limitation: Methodology changed significantly in 2022 — pre-2022 and post-2022 scores are not directly comparable. Country coverage gaps exist.</div></div>
       <div class="exp-card"><div class="exp-name">WJP Rule of Law Index</div><div class="exp-org">World Justice Project &middot; Annual</div><div class="exp-desc">Eight rule-of-law dimensions assessed through surveys of 149,000+ households and 3,500+ legal experts.</div><div class="exp-meta"><span class="exp-pill">0&ndash;100</span><span class="exp-pill">142 countries</span></div><div class="exp-dim">Dimensions: Constraints on government, absence of corruption, open government, fundamental rights, order, regulatory enforcement, civil and criminal justice</div><div class="exp-limit">Limitation: Based on household surveys in the three largest cities — may not capture rural or regional variation. Published annually since 2009.</div></div>
       <div class="exp-card"><div class="exp-name">Chandler Good Government Index</div><div class="exp-org">Chandler Institute &middot; Annual</div><div class="exp-desc">Seven pillars of government capability including leadership, institutions, and financial stewardship.</div><div class="exp-meta"><span class="exp-pill">0&ndash;100</span><span class="exp-pill">120 countries</span></div><div class="exp-dim">Dimensions: Leadership &amp; Foresight, Robust Laws, Strong Institutions, Financial Stewardship, Attractive Marketplace, Global Influence, Helping People Rise</div><div class="exp-limit">Limitation: Primarily measures government capabilities, not outcomes experienced by citizens. Composite structure may reward well-managed authoritarian states.</div></div>
+      <div class="exp-card">
+        <div class="exp-name">Open Budget Index (OBI)</div>
+        <div class="exp-org">International Budget Partnership &middot; Biennial</div>
+        <div class="exp-desc">Assesses whether governments publish eight key budget documents online, in a timely manner, and with sufficient detail for public scrutiny. Based on 109 questions scored by independent researchers in each country.</div>
+        <div class="exp-dim">Dimension: Fiscal transparency &mdash; the degree to which budget formulation, execution and auditing are visible to citizens and oversight bodies. Distinct from political accountability: states can score well on OBI while suppressing press freedom.</div>
+        <div class="exp-limit">Limitation: Measures availability of documents, not quality of budget management or whether published information is accurate. Published biennially (2019, 2021, 2023) &mdash; off-years carry forward the most recent value.</div>
+        <div style="margin-top:0.5rem;font-size:11px"><a href="https://internationalbudget.org/open-budget-survey/" target="_blank" style="color:var(--green-mid);text-decoration:none">internationalbudget.org &rarr;</a></div>
+      </div>
+
       <div class="exp-card"><div class="exp-name">Bertelsmann Transformation Index</div><div class="exp-org">Bertelsmann Stiftung &middot; Biennial</div><div class="exp-desc">Governance quality in 137 developing and transition countries assessed by ~300 country experts. Excludes OECD members consolidated before 1989.</div><div class="exp-meta"><span class="exp-pill">0&ndash;100</span><span class="exp-pill">137 countries</span><span class="exp-pill">Biennial</span></div><div class="exp-dim">Dimensions: Democracy status, market economy status, and governance/management quality</div><div class="exp-limit">Limitation: Covers only developing and transition countries; excludes OECD members consolidated before 1989. Published every two years &mdash; may miss rapid change.</div></div>
     </div>
   </div>
@@ -296,13 +319,14 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
         <button class="tab" data-index="wjp">Rule of Law</button>
         <button class="tab" data-index="chandler">Good Government</button>
         <button class="tab" data-index="bti">BTI Governance</button>
+        <button class="tab" data-index="obi">Open Budget</button>
       </div>
     </div>
     <div>
       <div class="ctrl-label">Year</div>
       <select class="year-select" id="year-sel">
-        <option value="2025" selected>2025</option>
-        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2024" selected>2024</option>
         <option value="2023">2023</option>
         <option value="2022">2022</option>
         <option value="2021">2021</option>
@@ -334,7 +358,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
   <div class="country-panel" id="cpanel">
     <div class="panel-header">
       <div class="panel-name" id="pname"></div>
+      <div id="territory-note" style="display:none;font-size:11px;color:var(--text-light);font-style:italic;margin-top:-4px;margin-bottom:4px;padding:3px 6px;background:var(--bg-mid);border-radius:3px;border-left:2px solid var(--text-light)"></div>
       <div class="btn-row">
+        <a id="country-profile-link" class="action-btn" href="country.html?iso=NOR" target="_blank" style="text-decoration:none">&#9656; Country profile</a>
         <button class="action-btn" onclick="downloadFactsheet()">&#8595; Fact sheet</button>
         <button class="action-btn coral" onclick="downloadPolicyBrief()">&#8595; Policy brief</button>
         <button class="action-btn green" onclick="togglePeer()">&#8853; Peer countries</button>
@@ -348,6 +374,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
       <div id="sw-content"></div>
     </div>
     <div id="composite-note"></div>
+    <div id="pefa-row" style="display:none;margin-top:0.6rem;padding:0.5rem 0.75rem;background:var(--bg-mid);border-radius:4px;font-size:12px;border-left:3px solid var(--green-mid)">
+      <div style="color:var(--text-light);font-size:10px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">PFM Assessment (PEFA)</div>
+      <a id="pefa-link" href="#" target="_blank" style="color:var(--green);text-decoration:none;font-weight:500"></a>
+      <span id="pefa-note" style="color:var(--text-light);font-size:10px;margin-left:6px"></span>
+    </div>
+      
     <div class="trajectory-section" id="traj-section" style="display:none">
       <div class="traj-header">
         <span class="traj-title">Score trajectory 2015 &ndash; 2025</span>
@@ -552,6 +584,106 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
   </div>
 </div>
 <script>
+
+var PEFA = {
+  AFG:{y:2019,n:5801},
+  ALB:{y:2025,n:5333},
+  ARM:{y:2022,n:6201},
+  AZE:{y:2014,n:1346},
+  BDI:{y:2022,n:7501},
+  BEN:{y:2022,n:6901},
+  BFA:{y:2021,n:3201},
+  BGD:{y:2021,n:3901},
+  BIH:{y:2022,n:6101},
+  BLR:{y:2014,n:1166},
+  BOL:{y:2021,n:2801},
+  BRA:{y:2009,n:2511},
+  BTN:{y:2016,n:601},
+  BWA:{y:2020,n:241},
+  CAF:{y:2010,n:2466},
+  CIV:{y:2022,n:8701},
+  CMR:{y:2022,n:4401},
+  COG:{y:2022,n:7401},
+  COL:{y:2016,n:551},
+  COM:{y:2016,n:721},
+  CPV:{y:2016,n:836},
+  CRI:{y:2016,n:566},
+  DEU:{y:2022,n:3401},
+  DJI:{y:2022,n:3001},
+  DOM:{y:2016,n:686},
+  ETH:{y:2021,n:3101},
+  GAB:{y:2023,n:8601},
+  GEO:{y:2022,n:3501},
+  GHA:{y:2022,n:4801},
+  GIN:{y:2022,n:7201},
+  GMB:{y:2015,n:1291},
+  GNB:{y:2014,n:1216},
+  GTM:{y:2021,n:5001},
+  HND:{y:2021,n:6601},
+  HTI:{y:2012,n:1811},
+  IDN:{y:2022,n:4301},
+  IRQ:{y:2023,n:8501},
+  JAM:{y:2017,n:571},
+  JOR:{y:2021,n:4701},
+  KAZ:{y:2018,n:266},
+  KEN:{y:2023,n:5101},
+  KGZ:{y:2023,n:6301},
+  KHM:{y:2023,n:7901},
+  KWT:{y:2010,n:2141},
+  LAO:{y:2022,n:8001},
+  LBN:{y:2022,n:7801},
+  LBR:{y:2022,n:7001},
+  LSO:{y:2023,n:8201},
+  MAR:{y:2023,n:7701},
+  MDA:{y:2023,n:4101},
+  MDG:{y:2022,n:5601},
+  MKD:{y:2015,n:921},
+  MLI:{y:2023,n:8301},
+  MMR:{y:2012,n:1671},
+  MNE:{y:2019,n:211},
+  MNG:{y:2022,n:8101},
+  MOZ:{y:2022,n:7301},
+  MRT:{y:2014,n:1286},
+  MUS:{y:2015,n:1036},
+  MWI:{y:2022,n:7101},
+  BEN:{r:'SSA',i:'L'},
+  TGO:{r:'SSA',i:'L'},
+  NER:{y:2021,n:2901},
+  NGA:{y:2019,n:166},
+  NIC:{y:2015,n:1261},
+  NOR:{y:2024,n:4503},
+  NPL:{y:2021,n:5201},
+  PAK:{y:2012,n:1536},
+  PAN:{y:2013,n:1396},
+  PER:{y:2023,n:4001},
+  PHL:{y:2022,n:6001},
+  PRY:{y:2022,n:6801},
+  PSE:{y:2019,n:171},
+  RWA:{y:2021,n:3601},
+  SDN:{y:2010,n:1876},
+  SEN:{y:2022,n:3701},
+  SLE:{y:2022,n:5701},
+  SLV:{y:2022,n:6701},
+  SRB:{y:2021,n:4503},
+  SSD:{y:2022,n:7601},
+  STP:{y:2013,n:1236},
+  TCD:{y:2023,n:8401},
+  TGO:{y:2022,n:5501},
+  THA:{y:2009,n:2341},
+  TJK:{y:2022,n:6401},
+  TLS:{y:2023,n:5901},
+  TUN:{y:2016,n:476},
+  TZA:{y:2022,n:4901},
+  UGA:{y:2022,n:3801},
+  UKR:{y:2023,n:4201},
+  UZB:{y:2023,n:6501},
+  VNM:{y:2013,n:1461},
+  VUT:{y:2013,n:1376},
+  XKX:{y:2021,n:4601},
+  ZAF:{y:2014,n:1266},
+  ZMB:{y:2022,n:5401},
+  ZWE:{y:2022,n:5301}
+};
 // DATA
 const DATA = {
   cpi: {
@@ -645,12 +777,60 @@ const DATA = {
     2020: {AFG:17,AGO:33,ALB:51,ARG:42,ARM:55,AZE:30,BFA:37,BGD:35,BGR:53,BIH:38,BOL:41,BRA:49,BWA:68,CAF:19,CHL:69,CIV:43,CMR:29,COD:23,COG:29,COL:48,CPV:70,CRI:66,CZE:67,DJI:27,DOM:48,DZA:34,ECU:42,EGY:38,ERI:16,ETH:38,FJI:54,GAB:37,GEO:63,GHA:63,GIN:31,GMB:44,GNB:28,GTM:34,HND:33,HRV:57,HTI:11,HUN:54,IDN:55,IND:53,IRN:24,IRQ:25,JAM:57,JOR:46,KAZ:38,KEN:50,KGZ:37,KHM:24,LBN:28,LBY:15,LKA:41,MAR:44,MDA:51,MDG:36,MEX:38,MKD:51,MLI:33,MMR:31,MNE:55,MNG:59,MOZ:41,MRT:33,MUS:64,MWI:47,MYS:57,NAM:61,NER:36,NGA:34,NIC:14,NPL:47,PAK:32,PAN:50,PER:39,PHL:45,PNG:37,POL:64,PRY:39,ROU:58,RWA:63,SDN:22,SEN:61,SLE:42,SLV:39,SOM:13,SRB:49,SSD:15,SVK:58,SYR:10,TCD:19,THA:39,TJK:22,TKM:14,TTO:57,TUN:51,TUR:34,TZA:51,UGA:43,UKR:55,URY:73,UZB:32,VEN:12,VNM:33,YEM:10,ZAF:58,ZMB:47,ZWE:30},
     2022: {AFG:13,AGO:33,ALB:50,ARG:41,ARM:56,AZE:29,BFA:31,BGD:35,BGR:53,BIH:37,BOL:40,BRA:48,BWA:68,CAF:19,CHL:68,CIV:43,CMR:29,COD:23,COG:29,COL:47,CPV:70,CRI:65,CZE:66,DJI:27,DOM:47,DZA:34,ECU:41,EGY:38,ERI:16,ETH:38,FJI:54,GAB:37,GEO:63,GHA:63,GIN:31,GMB:44,GNB:27,GTM:33,HND:32,HRV:57,HTI:10,HUN:51,IDN:55,IND:52,IRN:23,IRQ:25,JAM:57,JOR:45,KAZ:37,KEN:50,KGZ:37,KHM:23,LBN:21,LBY:14,LKA:40,MAR:44,MDA:52,MDG:37,MEX:37,MKD:50,MLI:29,MMR:15,MNE:54,MNG:59,MOZ:40,MRT:33,MUS:63,MWI:47,MYS:57,NAM:61,NER:33,NGA:34,NIC:13,NPL:47,PAK:31,PAN:49,PER:38,PHL:44,PNG:37,POL:63,PRY:38,ROU:58,RWA:63,SDN:22,SEN:61,SLE:42,SLV:39,SOM:13,SRB:48,SSD:14,SVK:57,SYR:10,TCD:18,THA:38,TJK:22,TKM:13,TTO:56,TUN:48,TUR:32,TZA:51,UGA:42,UKR:57,URY:72,UZB:32,VEN:11,VNM:32,YEM:10,ZAF:57,ZMB:46,ZWE:31},
     2024: {AFG:10,AGO:33,ALB:50,ARG:41,ARM:56,AZE:29,BFA:27,BGD:34,BGR:53,BIH:37,BOL:39,BRA:47,BWA:67,CAF:18,CHL:68,CIV:43,CMR:29,COD:23,COG:28,COL:46,COM:27,CPV:70,CRI:64,CZE:65,DJI:27,DOM:47,DZA:33,ECU:40,EGY:39,ERI:16,ETH:39,FJI:54,GAB:37,GEO:64,GHA:64,GIN:31,GMB:43,GNB:27,GTM:33,HND:31,HRV:57,HTI:10,HUN:50,IDN:55,IND:52,IRN:22,IRQ:24,JAM:56,JOR:44,KAZ:37,KEN:49,KGZ:37,KHM:23,LBN:22,LBY:13,LKA:39,LSO:37,MAR:44,MDA:52,MDG:37,MEX:36,MKD:50,MLI:27,MMR:12,MNE:54,MNG:59,MOZ:39,MRT:33,MUS:62,MWI:47,MYS:56,NAM:60,NER:29,NGA:33,NIC:13,NPL:47,PAK:31,PAN:48,PER:37,PHL:44,PNG:36,POL:61,PRY:37,ROU:59,RWA:62,SDN:22,SEN:60,SLE:42,SLV:38,SOM:12,SRB:47,SSD:14,SVK:57,SWZ:27,SYR:10,TCD:18,THA:38,TJK:22,TKM:13,TLS:42,TTO:55,TUN:47,TUR:32,TZA:50,UGA:41,UKR:56,URY:71,UZB:31,VEN:11,VNM:32,YEM:10,ZAF:56,ZMB:46,ZWE:31}
+  },
+  obi: {
+    2023: {AFG:0,ALB:57,DZA:15,AGO:26,ARG:51,ARM:60,AUS:78,AZE:67,BGD:37,BEN:79,
+      BOL:11,BIH:27,BWA:39,BRA:80,BGR:79,BFA:30,BDI:14,KHM:43,CMR:50,CAN:74,
+      CAF:6,TCD:6,CHL:60,CHN:20,COL:50,COM:4,CRI:61,CIV:54,HRV:67,CZE:62,
+      COD:41,DOM:77,ECU:48,EGY:49,SLV:24,GNQ:4,SWZ:30,ETH:10,FJI:34,FRA:74,
+      GMB:36,GEO:87,DEU:76,GHA:46,GTM:64,GIN:10,GNB:5,HND:65,HUN:22,IND:51,
+      IDN:70,IRQ:8,ITA:76,JAM:50,JPN:63,JOR:60,KAZ:63,KEN:55,KGZ:61,LBN:17,
+      LSO:35,LBR:52,MDG:39,MWI:6,MYS:48,MLI:10,MEX:80,MDA:81,MNG:62,MNE:48,
+      MAR:47,MOZ:47,MMR:3,NAM:54,NPL:50,NZL:87,NIC:44,NER:33,NGA:31,MKD:35,
+      NOR:80,PAK:30,PRY:48,PER:71,PHL:75,POL:59,PRT:62,QAT:2,ROU:62,RUS:66,
+      RWA:50,SAU:26,SEN:42,SRB:51,SLE:55,SVK:69,SVN:64,SOM:37,ZAF:83,KOR:71,
+      SSD:13,ESP:54,LKA:37,SDN:2,SWE:85,TJK:33,TZA:41,THA:60,TLS:37,TGO:17,
+      TTO:38,TUN:16,TUR:64,UGA:59,UKR:38,GBR:62,USA:69,VEN:0,VNM:51,YEM:0,
+      ZMB:34,ZWE:63,PNG:52,SEN:42,KGZ:61},
+    2021: {AFG:0,ALB:52,DZA:3,AGO:30,ARG:50,AUS:78,AZE:57,BGD:30,BEN:65,BOL:20,
+      BIH:32,BWA:34,BRA:81,BGR:71,BFA:31,BDI:0,KHM:33,CMR:34,CAN:74,TCD:6,
+      CHL:60,CHN:20,COL:47,COM:0,CRI:57,CIV:47,HRV:68,CZE:60,COD:42,DOM:77,
+      ECU:46,EGY:43,SLV:41,GNQ:5,SWZ:31,FJI:39,FRA:72,GEO:81,DEU:76,GHA:56,
+      GTM:65,HND:65,HUN:22,IND:37,IDN:70,IRQ:6,ITA:75,JAM:50,JPN:63,JOR:61,
+      KAZ:63,KEN:58,KGZ:62,LBN:9,LSO:26,LBR:45,MDG:27,MWI:20,MYS:47,MLI:8,
+      MEX:82,MDA:81,MNG:60,MAR:48,MOZ:45,MMR:28,NAM:42,NPL:39,NZL:85,NIC:44,
+      NER:27,NGA:45,NOR:81,PAK:30,PRY:44,PER:71,PHL:68,POL:59,PRT:62,QAT:2,
+      ROU:63,RUS:73,RWA:50,SAU:23,SEN:40,SRB:46,SLE:55,SVK:65,SVN:66,SOM:37,
+      ZAF:86,KOR:71,SSD:15,ESP:54,LKA:47,SDN:1,SWE:85,TJK:17,TZA:21,THA:60,
+      TLS:52,TTO:34,TUN:42,TUR:55,UGA:58,UKR:65,GBR:74,USA:68,VEN:0,VNM:44,
+      YEM:0,ZMB:19,ZWE:63},
+    2019: {AFG:43,ALB:55,DZA:3,AGO:36,ARG:58,AUS:78,AZE:35,BGD:36,BEN:49,BOL:20,
+      BIH:35,BWA:38,BRA:81,BGR:65,BFA:31,BDI:9,KHM:32,CMR:28,CAN:71,TCD:14,
+      CHL:60,CHN:19,COL:57,COM:0,CRI:56,CIV:34,HRV:57,CZE:61,COD:29,DOM:66,
+      ECU:48,EGY:16,SLV:45,SWZ:31,FJI:37,FRA:74,GEO:66,DEU:73,GHA:54,GTM:61,
+      HND:61,HUN:22,IND:49,IDN:64,IRQ:9,ITA:71,JPN:63,JOR:61,KAZ:58,KEN:50,
+      KGZ:55,LBN:3,LBR:38,MDG:34,MWI:26,MYS:47,MLI:38,MEX:82,MDA:65,MNG:56,
+      MAR:43,MOZ:47,MMR:7,NAM:51,NPL:41,NZL:87,NIC:44,NER:17,NGA:21,NOR:80,
+      PAK:46,PRY:38,PER:76,PHL:76,POL:60,PRT:62,QAT:2,ROU:64,RUS:74,RWA:45,
+      SAU:1,SEN:46,SRB:43,SLE:45,SVK:60,SVN:74,ZAF:87,KOR:74,SSD:7,ESP:53,
+      LKA:44,SDN:2,SWE:86,TJK:30,TZA:17,THA:58,TLS:52,TTO:34,TUN:17,TUR:51,
+      UGA:58,UKR:63,GBR:70,USA:76,VEN:0,VNM:38,YEM:0,ZMB:34,ZWE:59},
+    2015: {AFG:49,ALB:38,DZA:3,AGO:25,ARG:59,AUS:79,AZE:51,BGD:56,BEN:39,BOL:17,
+      BIH:43,BWA:47,BRA:77,BGR:65,BFA:24,KHM:15,CMR:7,CAN:71,TCD:2,CHL:55,
+      CHN:13,COL:58,CRI:50,CIV:24,HRV:53,CZE:75,COD:6,DOM:66,ECU:38,EGY:1,
+      SLV:46,FJI:41,FRA:76,GEO:55,DEU:69,GHA:50,GTM:46,HND:54,HUN:44,IND:46,
+      IDN:59,IRQ:3,ITA:71,JPN:63,JOR:55,KAZ:53,KEN:46,KGZ:20,LBR:43,MDG:40,
+      MWI:52,MYS:46,MLI:39,MEX:66,MDA:58,MNG:51,MAR:38,MOZ:42,NAM:46,NPL:24,
+      NZL:88,NIC:41,NER:0,NGA:24,NOR:84,PAK:44,PRY:47,PER:73,PHL:64,POL:64,
+      PRT:66,QAT:0,ROU:47,RUS:74,RWA:22,SAU:1,SEN:51,SRB:47,SLE:39,SVK:57,
+      SVN:68,ZAF:86,KOR:62,SSD:5,ESP:58,SDN:2,SWE:87,TZA:10,THA:56,TTO:33,
+      TUR:44,UGA:62,UKR:54,GBR:75,USA:81,VEN:0,VNM:18,ZMB:30,ZWE:49}
   }
 };
 
 // NAMES
 const NAMES = {
-  AFG:'Afghanistan',AGO:'Angola',ALB:'Albania',DZA:'Algeria',ARM:'Armenia',AUS:'Australia',AUT:'Austria',AZE:'Azerbaijan',BLR:'Belarus',BEL:'Belgium',BEN:'Benin',BTN:'Bhutan',BOL:'Bolivia',BIH:'Bosnia',BWA:'Botswana',BRA:'Brazil',BRN:'Brunei',BFA:'Burkina Faso',BDI:'Burundi',KHM:'Cambodia',CMR:'Cameroon',CAN:'Canada',CAF:'Central African Republic',TCD:'Chad',CHL:'Chile',CHN:'China',COL:'Colombia',COG:'Congo',CIV:"Côte d'Ivoire",HRV:'Croatia',CUB:'Cuba',CYP:'Cyprus',CZE:'Czech Republic',DNK:'Denmark',DJI:'Djibouti',DOM:'Dominican Republic',ECU:'Ecuador',EGY:'Egypt',SLV:'El Salvador',GNQ:'Equatorial Guinea',ERI:'Eritrea',EST:'Estonia',ETH:'Ethiopia',FJI:'Fiji',FIN:'Finland',FRA:'France',GAB:'Gabon',GMB:'Gambia',GEO:'Georgia',DEU:'Germany',GHA:'Ghana',GRC:'Greece',GTM:'Guatemala',GIN:'Guinea',HTI:'Haiti',HND:'Honduras',HKG:'Hong Kong',HUN:'Hungary',ISL:'Iceland',IND:'India',IDN:'Indonesia',IRN:'Iran',IRQ:'Iraq',IRL:'Ireland',ISR:'Israel',ITA:'Italy',JAM:'Jamaica',JPN:'Japan',JOR:'Jordan',KAZ:'Kazakhstan',KEN:'Kenya',PRK:'North Korea',KOR:'South Korea',KWT:'Kuwait',KGZ:'Kyrgyzstan',LAO:'Laos',LVA:'Latvia',LBN:'Lebanon',LSO:'Lesotho',LBR:'Liberia',LBY:'Libya',LTU:'Lithuania',LUX:'Luxembourg',MDG:'Madagascar',MWI:'Malawi',MYS:'Malaysia',MDV:'Maldives',MLI:'Mali',MRT:'Mauritania',MUS:'Mauritius',MEX:'Mexico',MDA:'Moldova',MNG:'Mongolia',MNE:'Montenegro',MAR:'Morocco',MOZ:'Mozambique',MMR:'Myanmar',NAM:'Namibia',NPL:'Nepal',NLD:'Netherlands',NZL:'New Zealand',NIC:'Nicaragua',NER:'Niger',NGA:'Nigeria',MKD:'North Macedonia',NOR:'Norway',OMN:'Oman',PAK:'Pakistan',PAN:'Panama',PNG:'Papua New Guinea',PRY:'Paraguay',PER:'Peru',PHL:'Philippines',POL:'Poland',PRT:'Portugal',QAT:'Qatar',ROU:'Romania',RUS:'Russia',RWA:'Rwanda',SAU:'Saudi Arabia',SEN:'Senegal',SLE:'Sierra Leone',SGP:'Singapore',SVK:'Slovakia',SVN:'Slovenia',SOM:'Somalia',ZAF:'South Africa',SSD:'South Sudan',ESP:'Spain',LKA:'Sri Lanka',SDN:'Sudan',SWZ:'Eswatini',SWE:'Sweden',CHE:'Switzerland',SYR:'Syria',TWN:'Taiwan',TJK:'Tajikistan',TZA:'Tanzania',THA:'Thailand',TGO:'Togo',TTO:'Trinidad',TUN:'Tunisia',TUR:'Turkey',TKM:'Turkmenistan',UGA:'Uganda',UKR:'Ukraine',ARE:'UAE',GBR:'United Kingdom',USA:'United States',URY:'Uruguay',UZB:'Uzbekistan',VEN:'Venezuela',VNM:'Vietnam',YEM:'Yemen',ZMB:'Zambia',ZWE:'Zimbabwe',CPV:'Cabo Verde',UAE:'United Arab Emirates',ARE:'UAE'
+  AFG:'Afghanistan',AGO:'Angola',ALB:'Albania',DZA:'Algeria',ARM:'Armenia',AUS:'Australia',AUT:'Austria',AZE:'Azerbaijan',BLR:'Belarus',BEL:'Belgium',BEN:'Benin',BTN:'Bhutan',BOL:'Bolivia',BIH:'Bosnia',BWA:'Botswana',BRA:'Brazil',BRN:'Brunei',BFA:'Burkina Faso',BDI:'Burundi',KHM:'Cambodia',CMR:'Cameroon',CAN:'Canada',CAF:'Central African Republic',TCD:'Chad',CHL:'Chile',CHN:'China',COL:'Colombia',COG:'Congo',CIV:"Côte d'Ivoire",HRV:'Croatia',CUB:'Cuba',CYP:'Cyprus',CZE:'Czech Republic',DNK:'Denmark',DJI:'Djibouti',DOM:'Dominican Republic',ECU:'Ecuador',EGY:'Egypt',SLV:'El Salvador',GNQ:'Equatorial Guinea',ERI:'Eritrea',EST:'Estonia',ETH:'Ethiopia',FJI:'Fiji',FIN:'Finland',FRA:'France',GAB:'Gabon',GMB:'Gambia',GEO:'Georgia',DEU:'Germany',GHA:'Ghana',GRC:'Greece',GTM:'Guatemala',GIN:'Guinea',HTI:'Haiti',HND:'Honduras',HKG:'Hong Kong',HUN:'Hungary',ISL:'Iceland',IND:'India',IDN:'Indonesia',IRN:'Iran',IRQ:'Iraq',IRL:'Ireland',ISR:'Israel',ITA:'Italy',JAM:'Jamaica',JPN:'Japan',JOR:'Jordan',KAZ:'Kazakhstan',KEN:'Kenya',PRK:'North Korea',KOR:'South Korea',KWT:'Kuwait',KGZ:'Kyrgyzstan',LAO:'Laos',LVA:'Latvia',LBN:'Lebanon',LSO:'Lesotho',LBR:'Liberia',LBY:'Libya',LTU:'Lithuania',LUX:'Luxembourg',MDG:'Madagascar',MWI:'Malawi',MYS:'Malaysia',MDV:'Maldives',MLI:'Mali',MRT:'Mauritania',MUS:'Mauritius',MEX:'Mexico',MDA:'Moldova',MNG:'Mongolia',MNE:'Montenegro',MAR:'Morocco',MOZ:'Mozambique',MMR:'Myanmar',NAM:'Namibia',NPL:'Nepal',NLD:'Netherlands',NZL:'New Zealand',NIC:'Nicaragua',NER:'Niger',NGA:'Nigeria',MKD:'North Macedonia',NOR:'Norway',OMN:'Oman',PAK:'Pakistan',PAN:'Panama',PNG:'Papua New Guinea',PRY:'Paraguay',PER:'Peru',PHL:'Philippines',POL:'Poland',PRT:'Portugal',QAT:'Qatar',ROU:'Romania',RUS:'Russia',RWA:'Rwanda',SAU:'Saudi Arabia',SEN:'Senegal',SLE:'Sierra Leone',SGP:'Singapore',SVK:'Slovakia',SVN:'Slovenia',SOM:'Somalia',ZAF:'South Africa',SSD:'South Sudan',ESP:'Spain',LKA:'Sri Lanka',SDN:'Sudan',SWZ:'Eswatini',SWE:'Sweden',CHE:'Switzerland',SYR:'Syria',TWN:'Taiwan',TJK:'Tajikistan',TZA:'Tanzania',THA:'Thailand',TGO:'Togo',TTO:'Trinidad',TUN:'Tunisia',TUR:'Turkey',TKM:'Turkmenistan',UGA:'Uganda',UKR:'Ukraine',ARE:'UAE',GBR:'United Kingdom',USA:'United States',URY:'Uruguay',UZB:'Uzbekistan',VEN:'Venezuela',VNM:'Vietnam',YEM:'Yemen',ZMB:'Zambia',ZWE:'Zimbabwe',CPV:'Cabo Verde',UAE:'United Arab Emirates',ARE:'UAE',ESH:'Western Sahara',FJI:'Fiji',TLS:'Timor-Leste',MDV:'Maldives',SYC:'Seychelles',STP:'São Tomé & Príncipe',VUT:'Vanuatu',SLB:'Solomon Islands',MLT:'Malta',ARG:'Argentina',BGD:'Bangladesh',BGR:'Bulgaria',COD:'DR Congo',CRI:'Costa Rica',SRB:'Serbia'
 };
 
 // COUNTRY METADATA
@@ -728,6 +908,7 @@ const INDEX_CONFIG = {
   wjp: { name: 'Rule of Law Index', source: 'World Justice Project', min: 0, max: 100, lowLabel: 'Weak (0)', highLabel: 'Strong (100)', unit: '/100', colors: ['#c0392b','#e67e22','#f1c40f','#2ecc71','#27ae60'],
     methodology: 'Measures rule of law across 8 factors: Constraints on Government Powers, Absence of Corruption, Open Government, Fundamental Rights, Order & Security, Regulatory Enforcement, Civil Justice, and Criminal Justice. Based on 215,000+ household surveys and 4,100 legal expert surveys. Scale 0–1, shown here as 0–100.',
     coverage: '143 countries', frequency: 'Annual (Oct)', url: 'https://worldjusticeproject.org/rule-of-law-index' },
+  obi: { name: 'Open Budget Index', source: 'International Budget Partnership', min: 0, max: 100, lowLabel: 'Opaque (0)', highLabel: 'Transparent (100)', unit: '/100', methodology: 'Assesses whether governments publish 8 key budget documents online, in a timely manner, with sufficient detail for public scrutiny. 109 questions scored by independent researchers.', coverage: '125 countries', frequency: 'Biennial', url: 'https://internationalbudget.org/open-budget-survey/' },
   bti: { name: 'BTI Governance Index', source: 'Bertelsmann Stiftung (developing & transition countries only)', min: 0, max: 100, lowLabel: 'Poor governance (0)', highLabel: 'Strong governance (100)', unit: '/100', colors: ['#c0392b','#e67e22','#f1c40f','#2ecc71','#27ae60'],
     methodology: 'Assesses governance quality in 137 developing and transition countries. Excludes OECD members consolidated before 1989. ~300 country experts assess steering capability, resource efficiency, consensus building, and international cooperation. The Governance Index (Management Index) runs on a 1–10 scale, shown here ×10 as 0–100.',
     coverage: '137 developing & transition countries', frequency: 'Biennial', url: 'https://bti-project.org' },
@@ -743,7 +924,7 @@ const INDEX_CONFIG = {
 // COMPOSITE
 function computeComposite(year, lockedIndices) {
   // lockedIndices: if provided, only use these indices (for comparable trend calculation)
-  var INDICES = lockedIndices || ['cpi','wgi','ibrahim','freedom','press','wjp','chandler','bti'];
+  var INDICES = lockedIndices || ['cpi','wgi','ibrahim','freedom','press','wjp','chandler','bti','obi'];
   var all = new Set();
   INDICES.forEach(function(k){ Object.keys(DATA[k][year]||{}).forEach(function(iso){ all.add(iso); }); });
   var out = {};
@@ -793,7 +974,7 @@ var DATA_VERSION = { updated: '2025-02', sources: 'CPI 2025, WGI 2024, FH 2025, 
 
 // STATE
 var currentIndex = 'composite';
-var currentYear = '2025';
+var currentYear = '2024';
 var selected = null;
 var compareList = [];
 var trendYrs = 5;
@@ -813,6 +994,69 @@ function getColor(val, key) {
 }
 
 // MAP
+// ── ISLAND MARKERS ───────────────────────────────────────────────────────
+// Clickable circles for small island states that are too small to click at 110m
+var ISLAND_STATES = [
+  {iso:'CPV', lon:-24.0, lat:16.0, label:'Cabo Verde'},
+  {iso:'MDV', lon:73.5, lat:3.2, label:'Maldives'},
+  {iso:'SYC', lon:55.5, lat:-4.6, label:'Seychelles'},
+  {iso:'STP', lon:6.6, lat:0.2, label:'São Tomé & Príncipe'},
+  {iso:'COM', lon:43.3, lat:-11.7, label:'Comoros'},
+  {iso:'MUS', lon:57.6, lat:-20.3, label:'Mauritius'},
+  {iso:'FJI', lon:178.0, lat:-18.0, label:'Fiji'},
+  {iso:'VUT', lon:167.0, lat:-16.0, label:'Vanuatu'},
+  {iso:'SLB', lon:160.0, lat:-9.4, label:'Solomon Islands'},
+  {iso:'TLS', lon:125.7, lat:-8.8, label:'Timor-Leste'},
+  {iso:'MLT', lon:14.4, lat:35.9, label:'Malta'},
+  {iso:'BHR', lon:50.6, lat:26.0, label:'Bahrain'},
+  {iso:'SGP', lon:103.8, lat:1.35, label:'Singapore'},
+  {iso:'TTO', lon:-61.2, lat:10.65, label:'Trinidad & Tobago'},
+  {iso:'JAM', lon:-77.3, lat:18.1, label:'Jamaica'},
+  {iso:'MRT', lon:-10.9, lat:20.3, label:'Mauritania'},
+];
+
+var islandG = null;
+function renderIslandMarkers() {
+  if (!svg) return;
+  if (!islandG) islandG = svg.append('g').attr('class', 'island-markers');
+  var d2 = (DATA[currentIndex] && DATA[currentIndex][currentYear]) ? DATA[currentIndex][currentYear] : {};
+  islandG.selectAll('.island-dot').remove();
+  ISLAND_STATES.forEach(function(s) {
+    var proj = pathGen.projection()([s.lon, s.lat]);
+    if (!proj) return;
+    var val = d2[s.iso];
+    var fill = (val !== null && val !== undefined) ? getColor(val, currentIndex) : '#d8d5ce';
+    islandG.append('circle')
+  .attr('class', 'island-dot')
+  .attr('cx', proj[0])
+  .attr('cy', proj[1])
+  .attr('r', 5)
+  .attr('fill', fill)
+  .attr('stroke', '#fff')
+  .attr('stroke-width', 1)
+  .attr('cursor', 'pointer')
+  .on('mousemove', function(ev) {
+    var cfg = INDEX_CONFIG[currentIndex];
+    tt.style.display = 'block';
+    var rect = mapWrap.getBoundingClientRect();
+    tt.style.left = (ev.clientX - rect.left + 12) + 'px';
+    tt.style.top = (ev.clientY - rect.top - 10) + 'px';
+    document.getElementById('tt-name').textContent = s.label;
+    document.getElementById('tt-score').textContent = (val !== undefined && val !== null)
+      ? ((typeof val === 'number' && val % 1 !== 0 ? val.toFixed(1) : val) + cfg.unit)
+      : 'No data';
+    document.getElementById('tt-rank').textContent = cfg.name + ' · ' + currentYear;
+  })
+  .on('mouseleave', function() { tt.style.display = 'none'; })
+  .on('click', function() {
+    selected = s.iso;
+    showCountry(s.iso);
+    islandG.selectAll('.island-dot').attr('stroke', '#fff').attr('stroke-width', 1);
+    d3.select(this).attr('stroke', '#333').attr('stroke-width', 2);
+  });
+  });
+}
+
 var svg = d3.select('#map-svg');
 var proj = d3.geoNaturalEarth1().scale(153).translate([480, 250]);
 var pathGen = d3.geoPath().projection(proj);
@@ -824,7 +1068,7 @@ loadMsg.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(
 loadMsg.textContent = 'Loading map...';
 mapWrap.appendChild(loadMsg);
 
-var NUM_TO_ISO = {4:'AFG',8:'ALB',12:'DZA',24:'AGO',32:'ARG',36:'AUS',40:'AUT',50:'BGD',56:'BEL',64:'BTN',68:'BOL',76:'BRA',104:'MMR',116:'KHM',120:'CMR',124:'CAN',140:'CAF',144:'LKA',152:'CHL',156:'CHN',170:'COL',180:'COD',188:'CRI',191:'HRV',192:'CUB',204:'BEN',208:'DNK',218:'ECU',818:'EGY',222:'SLV',232:'ERI',233:'EST',231:'ETH',246:'FIN',250:'FRA',266:'GAB',276:'DEU',288:'GHA',300:'GRC',320:'GTM',324:'GIN',332:'HTI',340:'HND',348:'HUN',356:'IND',360:'IDN',364:'IRN',368:'IRQ',372:'IRL',376:'ISR',380:'ITA',388:'JAM',392:'JPN',400:'JOR',398:'KAZ',404:'KEN',408:'PRK',410:'KOR',418:'LAO',428:'LVA',422:'LBN',430:'LBR',434:'LBY',440:'LTU',442:'LUX',450:'MDG',454:'MWI',458:'MYS',466:'MLI',478:'MRT',484:'MEX',496:'MNG',504:'MAR',508:'MOZ',516:'NAM',524:'NPL',528:'NLD',554:'NZL',558:'NIC',562:'NER',566:'NGA',578:'NOR',586:'PAK',591:'PAN',598:'PNG',600:'PRY',604:'PER',608:'PHL',616:'POL',620:'PRT',642:'ROU',643:'RUS',646:'RWA',682:'SAU',686:'SEN',694:'SLE',703:'SVK',705:'SVN',706:'SOM',710:'ZAF',724:'ESP',752:'SWE',756:'CHE',760:'SYR',762:'TJK',764:'THA',768:'TGO',780:'TTO',788:'TUN',792:'TUR',795:'TKM',800:'UGA',804:'UKR',784:'ARE',826:'GBR',840:'USA',858:'URY',860:'UZB',862:'VEN',704:'VNM',887:'YEM',894:'ZMB',716:'ZWE',854:'BFA',72:'BWA',132:'CPV',748:'SWZ',834:'TZA',729:'SDN',728:'SSD',100:'BGR',112:'BLR',498:'MDA',688:'SRB',807:'MKD',499:'MNE',70:'BIH',480:'MUS',174:'COM',702:'SGP',344:'HKG',158:'TWN'};
+var NUM_TO_ISO = {4:'AFG',8:'ALB',12:'DZA',24:'AGO',32:'ARG',36:'AUS',40:'AUT',50:'BGD',56:'BEL',64:'BTN',68:'BOL',76:'BRA',104:'MMR',116:'KHM',120:'CMR',124:'CAN',140:'CAF',144:'LKA',152:'CHL',156:'CHN',170:'COL',180:'COD',188:'CRI',191:'HRV',192:'CUB',204:'BEN',208:'DNK',218:'ECU',818:'EGY',222:'SLV',232:'ERI',233:'EST',231:'ETH',246:'FIN',250:'FRA',266:'GAB',276:'DEU',288:'GHA',300:'GRC',320:'GTM',324:'GIN',332:'HTI',340:'HND',348:'HUN',356:'IND',360:'IDN',364:'IRN',368:'IRQ',372:'IRL',376:'ISR',380:'ITA',388:'JAM',392:'JPN',400:'JOR',398:'KAZ',404:'KEN',408:'PRK',410:'KOR',418:'LAO',428:'LVA',422:'LBN',430:'LBR',434:'LBY',440:'LTU',442:'LUX',450:'MDG',454:'MWI',458:'MYS',466:'MLI',478:'MRT',484:'MEX',496:'MNG',504:'MAR',508:'MOZ',516:'NAM',524:'NPL',528:'NLD',554:'NZL',558:'NIC',562:'NER',566:'NGA',578:'NOR',586:'PAK',591:'PAN',598:'PNG',600:'PRY',604:'PER',608:'PHL',616:'POL',620:'PRT',642:'ROU',643:'RUS',646:'RWA',682:'SAU',686:'SEN',694:'SLE',703:'SVK',705:'SVN',706:'SOM',710:'ZAF',724:'ESP',752:'SWE',756:'CHE',760:'SYR',762:'TJK',764:'THA',768:'TGO',780:'TTO',788:'TUN',792:'TUR',795:'TKM',800:'UGA',804:'UKR',784:'ARE',826:'GBR',840:'USA',858:'URY',860:'UZB',862:'VEN',704:'VNM',887:'YEM',894:'ZMB',716:'ZWE',854:'BFA',72:'BWA',132:'CPV',748:'SWZ',834:'TZA',729:'SDN',728:'SSD',100:'BGR',112:'BLR',498:'MDA',688:'SRB',807:'MKD',499:'MNE',70:'BIH',480:'MUS',174:'COM',702:'SGP',344:'HKG',158:'TWN',242:'FJI',626:'TLS',462:'MDV',690:'SYC',678:'STP',548:'VUT',90:'SLB',470:'MLT',710:'ZAF',238:'FLK',732:'ESH'};
 
 fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
   .then(function(r) {
@@ -846,7 +1090,8 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .on('mousemove', function(ev, d) {
         var iso = d.properties.iso;
         if (!iso) return;
-        var val = (DATA[currentIndex][currentYear] || {})[iso];
+        var displayIso = (iso === 'ESH') ? 'MAR' : iso;
+        var val = (DATA[currentIndex][currentYear] || {})[displayIso];
         var cfg = INDEX_CONFIG[currentIndex];
         tt.style.display = 'block';
         var rect = mapWrap.getBoundingClientRect();
@@ -856,17 +1101,19 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
         document.getElementById('tt-score').textContent = (val !== undefined && val !== null)
           ? ((typeof val === 'number' && val % 1 !== 0 ? val.toFixed(1) : val) + cfg.unit)
           : 'No data';
-        document.getElementById('tt-rank').textContent = cfg.name + ' \u00b7 ' + currentYear;
+        document.getElementById('tt-rank').textContent = (iso === 'ESH' ? 'W. Sahara — Morocco data · ' : '') + cfg.name + ' · ' + currentYear;
       })
       .on('mouseleave', function() { tt.style.display = 'none'; })
       .on('click', function(ev, d) {
         var iso = d.properties.iso;
         if (!iso) return;
-        selected = iso;
-        showCountry(iso);
+        var clickIso = iso;
+        selected = clickIso;
+        showCountry(clickIso, iso === 'ESH' ? 'Western Sahara — Morocco administers this territory. Data shown is Morocco’s.' : null);
         svg.selectAll('.country').attr('stroke', '#fff').attr('stroke-width', 0.3);
         d3.select(this).attr('stroke', '#333').attr('stroke-width', 1.5);
       });
+
     updateMap();
   })
   .catch(function(err) {
@@ -879,6 +1126,10 @@ function updateMap() {
     activeRegionFilter = null;
     svg.selectAll('.country').attr('opacity', 1);
   }
+  // Show/hide partial data warning for 2025
+  var yrNote = document.getElementById('yr-coverage-note');
+  if (yrNote) yrNote.style.display = (currentYear === '2025') ? 'inline' : 'none';
+
   // Ensure composite is computed (safety net in case of timing issues)
   if (currentIndex === 'composite' && (!DATA.composite || !DATA.composite[currentYear])) {
     if (!DATA.composite) DATA.composite = {};
@@ -889,11 +1140,13 @@ function updateMap() {
   var d = (DATA[currentIndex] && DATA[currentIndex][currentYear]) ? DATA[currentIndex][currentYear] : {};
   svg.selectAll('.country').each(function(f) {
     var iso = f.properties && f.properties.iso;
+    if (iso === 'ESH') iso = 'MAR'; // Western Sahara: display Morocco data (TI convention)
     var v = iso ? d[iso] : undefined;
     d3.select(this)
       .attr('fill', (v !== null && v !== undefined) ? getColor(v, currentIndex) : '#d8d5ce')
       .classed('no-data', v === null || v === undefined);
   });
+  renderIslandMarkers();
   updateLegend();
   updateTrend();
   renderRegions();
@@ -908,18 +1161,22 @@ function updateLegend() {
 }
 
 // COUNTRY PANEL
-function showCountry(iso) {
+function showCountry(iso, territoryNote) {
   var name = NAMES[iso] || iso;
   var y = currentYear;
   document.getElementById('pname').textContent = name;
+  var cpLink = document.getElementById('country-profile-link');
+  if (cpLink) cpLink.href = 'country.html?iso=' + iso;
+  var tnEl = document.getElementById('territory-note');
+  if (tnEl) { if (territoryNote) { tnEl.textContent = territoryNote; tnEl.style.display='block'; } else { tnEl.style.display='none'; } }
   var grid = document.getElementById('sgrid');
   grid.innerHTML = '';
   Object.entries(INDEX_CONFIG).forEach(function(e) {
     var k = e[0], cfg = e[1];
     var v = (DATA[k][y] || {})[iso];
     var card = document.createElement('div');
-    card.className = 'score-card';
-    var sn = cfg.name.split(' ').slice(0, 2).join(' ');
+    card.className = 'score-card' + (k === 'composite' ? ' composite-card' : '');
+    var sn = k === 'composite' ? '&#9672; Compass' : cfg.name.split(' ').slice(0, 2).join(' ');
     var infoBtn = cfg.url ? '<a href="' + cfg.url + '" target="_blank" title="' + (cfg.methodology||'') + '" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--border);color:var(--text-light);font-size:9px;text-align:center;line-height:14px;text-decoration:none;vertical-align:middle;margin-left:4px;flex-shrink:0" onclick="event.stopPropagation()">?</a>' : '';
     if (v !== undefined && v !== null) {
       var disp = (typeof v === 'number' && v % 1 !== 0) ? v.toFixed(1) : v;
@@ -937,6 +1194,26 @@ function showCountry(iso) {
   });
   showStrengths(iso);
   showCompositeNote(iso);
+  // PEFA row
+  var pefaRow = document.getElementById('pefa-row');
+  var pefaLink = document.getElementById('pefa-link');
+  var pefaNote = document.getElementById('pefa-note');
+  if (pefaRow && pefaLink && PEFA[iso]) {
+    var p = PEFA[iso];
+    pefaLink.href = 'https://www.pefa.org/node/' + p.n;
+    pefaLink.textContent = 'View ' + p.y + ' assessment →';
+    var age = new Date().getFullYear() - p.y;
+    pefaNote.textContent = age >= 8 ? '(' + age + ' years old)' : '';
+    pefaRow.style.display = 'block';
+  } else if (pefaRow) {
+    // No PEFA — show neutral note, not absence as suspicious
+    pefaRow.style.display = 'block';
+    pefaLink.removeAttribute('href');
+    pefaLink.textContent = 'No public assessment available';
+    pefaLink.style.color = 'var(--text-light)';
+    pefaLink.style.fontWeight = 'normal';
+    if (pefaNote) pefaNote.textContent = '';
+  }
   renderTrajectory(iso);
   renderGovernanceGap(iso);
   var gapBtn = document.getElementById('gap-btn');
@@ -1579,8 +1856,9 @@ function setTrendYrs(n) {
 }
 
 function updateTrend() {
-  var base = String(parseInt(currentYear) - trendYrs), end = currentYear;
-  document.getElementById('trend-sub').textContent = trendYrs + '-year change (' + base + ' \u2192 ' + end + ')';
+  var base = String(Math.max(2015, parseInt(currentYear) - trendYrs)), end = currentYear;
+  var actualYrs = parseInt(end) - parseInt(base);
+  document.getElementById('trend-sub').textContent = (actualYrs === trendYrs ? trendYrs + '-year' : base) + ' change (' + base + ' \u2192 ' + end + ')';
   var bd = DATA[currentIndex][base] || {}, ed = DATA[currentIndex][end] || {};
   var changes = [];
   Object.keys(ed).forEach(function(iso) {
@@ -1627,7 +1905,7 @@ function updateTrend() {
 
 // AI INSIGHTS
 async function genInsights() {
-  var base = String(parseInt(currentYear) - trendYrs), end = currentYear;
+  var base = String(Math.max(2015, parseInt(currentYear) - trendYrs)), end = currentYear;
   var bd = DATA[currentIndex][base] || {}, ed = DATA[currentIndex][end] || {};
   var changes = [];
   Object.keys(ed).forEach(function(iso) {
@@ -1705,7 +1983,7 @@ function downloadFactsheet() {
     + '@media print{body{padding:1.5rem}}'
     + '<\/style><\/head><body>'
     + '<div class="header"><div class="sub">GOVERNANCE FACT SHEET \u00b7 ' + y + '<\/div><h1>' + name + '<\/h1>'
-    + '<div class="sub">Governance Compass \u00b7 tassilovondroste.github.io<\/div><\/div>'
+    + '<div class="sub">Governance Compass \u00b7 tassidroste.github.io/governance-<\/div><\/div>'
     + '<h2>Index scores (' + y + ')<\/h2>'
     + '<table><thead><tr><th>Index<\/th><th>Score<\/th><th>5yr change<\/th><th>vs. global avg<\/th><\/tr><\/thead><tbody>' + rows + '<\/tbody><\/table>'
     + '<div class="footer">Sources: Transparency International, World Bank, Freedom House, World Justice Project, RSF, Mo Ibrahim Foundation, Chandler Institute, Bertelsmann Stiftung \u00b7 ' + y + '<\/div>'
@@ -1825,7 +2103,7 @@ async function downloadPolicyBrief() {
     + '<table><thead><tr><th>Index<\/th><th>Score<\/th><th>Trend<\/th><th>Change<\/th><\/tr><\/thead><tbody>' + scoreRows + '<\/tbody><\/table>'
     + (regPeers.length > 1 ? '<h2>Regional context \u2014 ' + (REGION_NAMES[meta.r] || '') + ' (rank ' + regRank + ' of ' + regPeers.length + ')<\/h2>'
       + '<div class="peers">' + peerCards + '<\/div>' : '')
-    + '<div class="footer">Governance Compass \u00b7 tassilovondroste.github.io \u00b7 Sources: Transparency International, World Bank, Freedom House, World Justice Project, RSF, Mo Ibrahim Foundation, Chandler Institute, Bertelsmann Stiftung \u00b7 ' + y + '<\/div>'
+    + '<div class="footer">Governance Compass \u00b7 tassidroste.github.io/governance- \u00b7 Sources: Transparency International, World Bank, Freedom House, World Justice Project, RSF, Mo Ibrahim Foundation, Chandler Institute, Bertelsmann Stiftung \u00b7 ' + y + '<\/div>'
     + '<script>window.onload=function(){window.print();};<\/scr' + 'ipt><\/body><\/html>';
 
   var b = new Blob([html], {type: 'text/html'});
@@ -1913,6 +2191,18 @@ document.querySelectorAll('.tab').forEach(function(tab) {
     document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
     tab.classList.add('active');
     currentIndex = tab.dataset.index;
+    // OBI only has data for 2015, 2019, 2021, 2023 — snap to nearest
+    if (currentIndex === 'obi') {
+      var obiYears = ['2015','2019','2021','2023'];
+      if (obiYears.indexOf(currentYear) < 0) {
+        // Find nearest available OBI year
+        var nearest = obiYears.reduce(function(prev, y) {
+          return Math.abs(parseInt(y)-parseInt(currentYear)) < Math.abs(parseInt(prev)-parseInt(currentYear)) ? y : prev;
+        });
+        currentYear = nearest;
+        document.getElementById('year-sel').value = nearest;
+      }
+    }
     updateMap();
     if (selected) showCountry(selected);
   });
