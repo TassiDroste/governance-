@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aid Effectiveness Explorer &mdash; Tassilo von Droste zu H&uuml;lshoff</title>
+<meta name="description" content="Did governance support work? 138 countries, cumulative governance ODA per capita 2010-2023, and the change in governance scores over the same period. Including Chinese development finance comparison.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --serif:'Playfair Display',Georgia,serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'JetBrains Mono',monospace;
+  --text:#1a1a18;--text-mid:#4a4a46;--text-light:#7a7a74;
+  --border:rgba(26,26,24,0.12);--border-mid:rgba(26,26,24,0.22);
+  --bg:#faf9f7;--bg-card:#f3f1ec;--bg-mid:#ede9e2;
+  --green:#27500A;--green-mid:#3B6D11;--green-light:#EAF3DE;
+  --positive:#1a7a4a;--positive-bg:#e8f5ee;
+  --negative:#8b1a1a;--negative-bg:#fdecea;
+  --neutral:#7a7a74;
+  --china:#b3392a;
+  --west:#185FA5;
+}
+html,body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65}
+
+nav{border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;height:52px}
+.nav-name{font-family:var(--serif);font-size:0.95rem;font-weight:500;color:var(--text);text-decoration:none}
+.nav-links{list-style:none;display:flex;gap:1.75rem}
+.nav-links a{font-size:0.8rem;color:var(--text-mid);text-decoration:none;letter-spacing:0.02em}
+.nav-links a:hover,.nav-links a.active{color:var(--green)}
+
+.page-header{max-width:1120px;margin:0 auto;padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--border)}
+.eyebrow{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-mid);margin-bottom:0.5rem}
+.page-title{font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:400;letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.75rem}
+.page-desc{font-size:0.875rem;color:var(--text-mid);max-width:800px;line-height:1.7;margin-bottom:0.75rem}
+.source-note{font-size:0.72rem;color:var(--text-light);line-height:1.7;max-width:800px}
+.source-note a{color:var(--text-light)}
+
+/* Summary stats strip */
+.stats-strip{max-width:1120px;margin:1.5rem auto 0;padding:0 2rem}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+@media(max-width:700px){.stats-inner{grid-template-columns:1fr 1fr}}
+.stat-cell{background:var(--bg-card);padding:1rem 1.1rem}
+.stat-num{font-family:var(--serif);font-size:1.6rem;font-weight:500;line-height:1.1;color:var(--text)}
+.stat-num.positive{color:var(--positive)}
+.stat-num.negative{color:var(--negative)}
+.stat-num.neutral{color:var(--neutral)}
+.stat-label{font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-light);margin-top:0.3rem;line-height:1.3}
+
+/* Scatter chart */
+.chart-section{max-width:1120px;margin:2rem auto 0;padding:0 2rem}
+.chart-title{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:0.4rem}
+.chart-sub{font-size:0.82rem;color:var(--text-mid);margin-bottom:1rem;line-height:1.6}
+.chart-controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;font-size:0.8rem}
+.ctrl-label{color:var(--text-light)}
+.ctrl-select{font-family:var(--body);font-size:0.8rem;padding:0.38rem 0.7rem;border:1px solid var(--border-mid);border-radius:4px;background:var(--bg);color:var(--text);cursor:pointer}
+.toggle{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;color:var(--text-mid);cursor:pointer;user-select:none}
+.toggle input{cursor:pointer}
+
+.chart-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin-bottom:1.5rem;position:relative}
+svg.scatter{display:block;width:100%;height:auto;max-height:540px}
+.dot-china{fill:var(--china)}
+.dot-west{fill:var(--west)}
+
+.quadrant-label{font-family:var(--serif);font-size:0.78rem;font-style:italic;fill:var(--text-light);text-anchor:middle}
+.axis-line{stroke:var(--border-mid);stroke-width:1}
+.grid-line{stroke:var(--border);stroke-width:0.5;stroke-dasharray:3 3}
+.median-line{stroke:var(--green-mid);stroke-width:1;stroke-dasharray:6 4;opacity:0.5}
+.axis-label{font-size:11px;font-family:var(--body);fill:var(--text-mid)}
+.axis-title{font-size:13px;font-family:var(--body);fill:var(--text);font-weight:500}
+
+.legend{display:flex;gap:1.5rem;align-items:center;margin-top:0.75rem;font-size:0.75rem;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:0.4rem;color:var(--text-mid)}
+.legend-dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+
+/* Quadrant tables */
+.quadrants-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:2rem 0}
+@media(max-width:700px){.quadrants-grid{grid-template-columns:1fr}}
+.q-card{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:1rem 1.2rem}
+.q-card.q-success{border-left:3px solid var(--positive)}
+.q-card.q-fail{border-left:3px solid var(--negative)}
+.q-card.q-endo{border-left:3px solid var(--green-mid)}
+.q-card.q-fall{border-left:3px solid #999}
+.q-title{font-family:var(--serif);font-size:1.05rem;font-weight:500;margin-bottom:0.2rem}
+.q-sub{font-size:0.72rem;color:var(--text-light);margin-bottom:0.7rem}
+.q-count{font-family:var(--mono);font-size:0.78rem;color:var(--text-mid);margin-bottom:0.5rem}
+.q-list{list-style:none;font-size:0.82rem}
+.q-list li{padding:0.22rem 0;display:flex;justify-content:space-between;border-bottom:1px solid var(--border);align-items:baseline}
+.q-list li:last-child{border:none}
+.q-country{color:var(--text)}
+.q-iso{font-family:var(--mono);font-size:0.7rem;color:var(--text-light);margin-left:0.3rem}
+.q-figs{font-family:var(--mono);font-size:0.74rem;color:var(--text-mid)}
+.q-change-pos{color:var(--positive)}
+.q-change-neg{color:var(--negative)}
+
+/* Table */
+.table-section{max-width:1120px;margin:2rem auto 0;padding:0 2rem}
+.section-title{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:0.5rem}
+.section-sub{font-size:0.82rem;color:var(--text-mid);margin-bottom:1rem}
+.search-row{display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+.search-input{font-family:var(--body);font-size:0.82rem;padding:0.4rem 0.75rem;border:1px solid var(--border-mid);border-radius:4px;background:var(--bg);color:var(--text);width:220px}
+.search-input:focus{outline:none;border-color:var(--green-mid)}
+.showing-count{font-size:0.73rem;color:var(--text-light);margin-left:auto}
+
+.table-wrap{overflow-x:auto}
+table.aid-table{width:100%;border-collapse:collapse;font-size:0.84rem}
+table.aid-table thead th{font-size:0.68rem;letter-spacing:0.07em;text-transform:uppercase;color:var(--text-light);padding:0.6rem 0.6rem;border-bottom:2px solid var(--border-mid);text-align:left;cursor:pointer;white-space:nowrap;user-select:none}
+table.aid-table thead th:hover{color:var(--green-mid)}
+table.aid-table thead th.num{text-align:right}
+table.aid-table tbody tr{border-bottom:1px solid var(--border)}
+table.aid-table tbody tr:hover{background:var(--bg-card)}
+table.aid-table td{padding:0.5rem 0.6rem;vertical-align:middle}
+.td-country{font-weight:500}
+.td-iso{font-family:var(--mono);font-size:0.68rem;color:var(--text-light);margin-left:3px}
+.td-region{color:var(--text-light);font-size:0.78rem}
+.td-num{font-family:var(--mono);font-size:0.78rem;text-align:right;color:var(--text-mid)}
+.td-change-pos{color:var(--positive)}
+.td-change-neg{color:var(--negative)}
+
+footer{border-top:1px solid var(--border);padding:1.5rem 0;font-size:0.73rem;color:var(--text-light);margin-top:3rem}
+.footer-inner{max-width:1120px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-disclaimer{flex-basis:100%;width:100%;margin-top:0.85rem;padding-top:0.85rem;border-top:0.5px solid var(--border);font-size:0.72rem;line-height:1.6;color:var(--text-light);font-style:italic}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="index.html">Tassilo von Droste zu H&uuml;lshoff</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Writing</a></li>
+      <li><a href="indicators.html">Compass</a></li>
+      <li><a href="correlations.html">Explorer</a></li>
+      <li><a href="country.html">Countries</a></li>
+      <li><a href="risk.html">Risk Horizon</a></li>
+      <li><a href="aid.html" class="active">Aid Effectiveness</a></li>
+      <li><a href="windows.html">Reform Windows</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="eyebrow">Aid Effectiveness Explorer</div>
+  <h1 class="page-title">Did governance support work?</h1>
+  <p class="page-desc">For each of 138 countries, cumulative governance-targeted ODA per capita (2010&ndash;2023) plotted against the change in Governance Compass score over the same period. Adding Chinese development finance as a comparator. The simple version of a hard question: where did donor governance support correspond to governance improvements, and where did it not? This is not a causal analysis. It is a description of co-movement, with the limits that implies.</p>
+  <div class="source-note">
+    Governance ODA: OECD Creditor Reporting System purpose codes 15110&ndash;15199 (Public Sector Management, Legal &amp; Judicial Development, Democratic Participation, Anti-Corruption, Women&rsquo;s Rights), cumulative 2010&ndash;2023, compiled from OECD published aggregates and AidData core research releases. Chinese finance: AidData Global Chinese Development Finance Dataset v3.0 (2000&ndash;2021 cumulative), Parks et al. 2023. Governance scores: Governance Compass composite (CPI, WGI, Freedom House, RSF, WJP, Mo Ibrahim, BTI, Chandler, OBI). Figures are per capita to enable cross-country comparison and are approximate aggregates, not exact OECD downloads.
+  </div>
+</div>
+
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-cell">
+      <div class="stat-num neutral">r = 0.062</div>
+      <div class="stat-label">Governance ODA per capita &harr; Change in governance score (n=88 ODA recipients)</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num neutral">r = 0.027</div>
+      <div class="stat-label">Chinese finance per capita &harr; Change in governance score</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num positive">32</div>
+      <div class="stat-label">High-aid recipients whose governance scores improved</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num negative">15</div>
+      <div class="stat-label">High-aid recipients whose governance scores declined</div>
+    </div>
+  </div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-title">Aid intensity vs governance change &mdash; the scatter</div>
+  <p class="chart-sub">Each dot is a country. X-axis: governance ODA per capita 2010&ndash;2023 (or Chinese finance, toggleable). Y-axis: change in Governance Compass composite 2015&rarr;2024 (positive = improved). Dashed lines mark the medians, dividing the chart into four quadrants. The story is not in the correlation. It is in the quadrant distribution.</p>
+  <div class="chart-controls">
+    <span class="ctrl-label">X-axis</span>
+    <select class="ctrl-select" id="xSelect">
+      <option value="gov_aid">Governance ODA per capita (USD, 2010&ndash;2023)</option>
+      <option value="china">Chinese development finance per capita (USD, 2000&ndash;2021)</option>
+    </select>
+    <label class="toggle">
+      <input type="checkbox" id="showBoth" checked>
+      Show both finance sources on chart (size = combined)
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="logScale" checked>
+      Log scale (X-axis)
+    </label>
+  </div>
+  <div class="chart-wrap">
+    <svg class="scatter" id="scatter" viewBox="0 0 1080 540" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--west)"></span>Dot size: Western governance ODA</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--china)"></span>Ring: Chinese finance volume</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--green-mid);opacity:0.5"></span>Median lines = quadrant boundaries</span>
+    </div>
+  </div>
+</div>
+
+<div class="chart-section">
+  <h2 class="section-title">The four quadrants &mdash; what the data sorts countries into</h2>
+  <p class="section-sub">Median governance ODA per capita across ODA-eligible recipients was $55. The two columns below show the cases where governance ODA was above or below that median, against whether the country&rsquo;s governance score improved or declined between 2015 and 2024.</p>
+  <div class="quadrants-grid" id="quadrants"></div>
+</div>
+
+<div class="table-section">
+  <h2 class="section-title">Country-by-country table</h2>
+  <p class="section-sub">All 138 countries. Sortable by any column. Filter by region or by income group.</p>
+  <div class="search-row">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search country&hellip;">
+    <select class="ctrl-select" id="regionFilter">
+      <option value="">All regions</option>
+      <option>Western Europe</option>
+      <option>E. Europe &amp; Central Asia</option>
+      <option>North America</option>
+      <option>Latin America &amp; Caribbean</option>
+      <option>Sub-Saharan Africa</option>
+      <option>Middle East &amp; N.Africa</option>
+      <option>South Asia</option>
+      <option>East Asia &amp; Pacific</option>
+    </select>
+    <select class="ctrl-select" id="sortSelect">
+      <option value="gov_aid_desc">Sort: governance ODA &darr;</option>
+      <option value="china_desc">Sort: China finance &darr;</option>
+      <option value="change_desc">Sort: governance change (best first)</option>
+      <option value="change_asc">Sort: governance change (worst first)</option>
+      <option value="name_asc">Sort: country A&ndash;Z</option>
+    </select>
+    <span class="showing-count" id="showingCount"></span>
+  </div>
+  <div class="table-wrap">
+    <table class="aid-table">
+      <thead>
+        <tr>
+          <th data-sort="name">Country</th>
+          <th>Region</th>
+          <th class="num" data-sort="gov_aid">Gov. ODA per cap. <span style="color:var(--west)">&bull;</span></th>
+          <th class="num" data-sort="china">China finance per cap. <span style="color:var(--china)">&bull;</span></th>
+          <th class="num" data-sort="comp15">Gov. 2015</th>
+          <th class="num" data-sort="comp24">Gov. 2024</th>
+          <th class="num" data-sort="change">Change</th>
+        </tr>
+      </thead>
+      <tbody id="aidBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>Aid Effectiveness Explorer &middot; <a href="index.html" style="color:var(--text-light)">tassilovondroste.com</a></span>
+    <span>OECD CRS &middot; AidData GCDF v3 &middot; Governance Compass &middot; Approximate aggregates</span>
+  
+    <span class="footer-disclaimer">Written with AI assistance from my notes, field observations and arguments. I review and edit everything published here, and I am responsible for the content.</span>
+  </div>
+</footer>
+
+<script>
+var DATA = {"AFG":{"name":"Afghanistan","region":"South Asia","income":"L","gov_aid":420,"china":85,"comp15":25,"comp24":17,"change":-8,"cpi":16,"fh":9,"chand":12},"AGO":{"name":"Angola","region":"Sub-Saharan Africa","income":"LM","gov_aid":15,"china":950,"comp15":23,"comp24":33,"change":10,"cpi":32,"fh":26,"chand":27},"ALB":{"name":"Albania","region":"E. Europe & Central Asia","income":"UM","gov_aid":195,"china":130,"comp15":45,"comp24":47,"change":2,"cpi":39,"fh":67,"chand":44},"ARE":{"name":"UAE","region":"Middle East & N.Africa","income":"H","gov_aid":0,"china":0,"comp15":55,"comp24":71,"change":16,"cpi":69,"fh":17,"chand":70},"ARG":{"name":"Argentina","region":"Latin America & Caribbean","income":"UM","gov_aid":6,"china":380,"comp15":54,"comp24":53,"change":-1,"cpi":36,"fh":85,"chand":41},"ARM":{"name":"Armenia","region":"E. Europe & Central Asia","income":"UM","gov_aid":170,"china":120,"comp15":45,"comp24":53,"change":8,"cpi":46,"fh":54,"chand":48},"AUS":{"name":"Australia","region":"East Asia & Pacific","income":"H","gov_aid":0,"china":0,"comp15":85,"comp24":84,"change":-1,"cpi":76,"fh":97,"chand":73},"AUT":{"name":"Austria","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":85,"comp24":81,"change":-4,"cpi":69,"fh":92,"chand":73},"AZE":{"name":"Azerbaijan","region":"E. Europe & Central Asia","income":"UM","gov_aid":12,"china":110,"comp15":32,"comp24":25,"change":-7,"cpi":30,"fh":15,"chand":44},"BEL":{"name":"Belgium","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":83,"comp24":81,"change":-2,"cpi":69,"fh":95,"chand":67},"BEN":{"name":"Benin","region":"","income":"","gov_aid":75,"china":130,"comp15":46,"comp24":48,"change":2,"cpi":45,"fh":61,"chand":35},"BFA":{"name":"Burkina Faso","region":"Sub-Saharan Africa","income":"L","gov_aid":95,"china":35,"comp15":39,"comp24":33,"change":-6,"cpi":40,"fh":27,"chand":22},"BGD":{"name":"Bangladesh","region":"South Asia","income":"LM","gov_aid":30,"china":90,"comp15":35,"comp24":30,"change":-5,"cpi":24,"fh":41,"chand":33},"BGR":{"name":"Bulgaria","region":"E. Europe & Central Asia","income":"UM","gov_aid":4,"china":28,"comp15":55,"comp24":52,"change":-3,"cpi":40,"fh":79,"chand":47},"BLR":{"name":"Belarus","region":"E. Europe & Central Asia","income":"UM","gov_aid":8,"china":360,"comp15":27,"comp24":26,"change":-1,"cpi":31,"fh":9,"chand":35},"BOL":{"name":"Bolivia","region":"Latin America & Caribbean","income":"LM","gov_aid":80,"china":480,"comp15":40,"comp24":42,"change":2,"cpi":28,"fh":63,"chand":34},"BRA":{"name":"Brazil","region":"Latin America & Caribbean","income":"UM","gov_aid":4,"china":175,"comp15":57,"comp24":51,"change":-6,"cpi":35,"fh":73,"chand":46},"BWA":{"name":"Botswana","region":"Sub-Saharan Africa","income":"UM","gov_aid":15,"china":290,"comp15":61,"comp24":64,"change":3,"cpi":58,"fh":71,"chand":50},"CAF":{"name":"Central African Republic","region":"Sub-Saharan Africa","income":"L","gov_aid":130,"china":65,"comp15":20,"comp24":20,"change":0,"cpi":24,"fh":13,"chand":17},"CAN":{"name":"Canada","region":"North America","income":"H","gov_aid":0,"china":0,"comp15":85,"comp24":84,"change":-1,"cpi":75,"fh":99,"chand":73},"CHE":{"name":"Switzerland","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":89,"comp24":89,"change":0,"cpi":80,"fh":96,"chand":76},"CHL":{"name":"Chile","region":"Latin America & Caribbean","income":"H","gov_aid":3,"china":0,"comp15":72,"comp24":72,"change":0,"cpi":63,"fh":92,"chand":62},"CHN":{"name":"China","region":"East Asia & Pacific","income":"UM","gov_aid":0,"china":0,"comp15":27,"comp24":33,"change":6,"cpi":43,"fh":9,"chand":53},"CIV":{"name":"C\u00f4te d'Ivoire","region":"Sub-Saharan Africa","income":"LM","gov_aid":60,"china":165,"comp15":34,"comp24":42,"change":8,"cpi":43,"fh":42,"chand":37},"CMR":{"name":"Cameroon","region":"Sub-Saharan Africa","income":"LM","gov_aid":35,"china":220,"comp15":25,"comp24":31,"change":6,"cpi":26,"fh":27,"chand":26},"COD":{"name":"DR Congo","region":"Sub-Saharan Africa","income":"L","gov_aid":75,"china":195,"comp15":18,"comp24":23,"change":5,"cpi":20,"fh":19,"chand":18},"COG":{"name":"Congo","region":"Sub-Saharan Africa","income":"LM","gov_aid":25,"china":1200,"comp15":26,"comp24":27,"change":1,"cpi":23,"fh":23,"chand":22},"COL":{"name":"Colombia","region":"Latin America & Caribbean","income":"UM","gov_aid":85,"china":25,"comp15":47,"comp24":49,"change":2,"cpi":37,"fh":65,"chand":41},"CPV":{"name":"Cabo Verde","region":"Sub-Saharan Africa","income":"LM","gov_aid":95,"china":195,"comp15":73,"comp24":73,"change":0,"cpi":62,"fh":92,"chand":51},"CRI":{"name":"Costa Rica","region":"Latin America & Caribbean","income":"UM","gov_aid":15,"china":95,"comp15":68,"comp24":64,"change":-4,"cpi":56,"fh":91,"chand":52},"CZE":{"name":"Czech Republic","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":75,"comp24":68,"change":-7,"cpi":59,"fh":92,"chand":61},"DEU":{"name":"Germany","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":83,"comp24":85,"change":2,"cpi":77,"fh":94,"chand":72},"DNK":{"name":"Denmark","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":93,"comp24":92,"change":-1,"cpi":89,"fh":97,"chand":80},"DOM":{"name":"Dominican Republic","region":"Latin America & Caribbean","income":"UM","gov_aid":25,"china":35,"comp15":50,"comp24":44,"change":-6,"cpi":37,"fh":68,"chand":41},"DZA":{"name":"Algeria","region":"Middle East & N.Africa","income":"UM","gov_aid":5,"china":195,"comp15":25,"comp24":37,"change":12,"cpi":34,"fh":35,"chand":32},"ECU":{"name":"Ecuador","region":"Latin America & Caribbean","income":"UM","gov_aid":25,"china":700,"comp15":41,"comp24":39,"change":-2,"cpi":33,"fh":57,"chand":37},"EGY":{"name":"Egypt","region":"Middle East & N.Africa","income":"LM","gov_aid":25,"china":175,"comp15":27,"comp24":33,"change":6,"cpi":30,"fh":23,"chand":41},"ERI":{"name":"Eritrea","region":"Sub-Saharan Africa","income":"L","gov_aid":5,"china":320,"comp15":15,"comp24":16,"change":1,"cpi":13,"fh":3,"chand":15},"ESP":{"name":"Spain","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":67,"comp24":67,"change":0,"cpi":55,"fh":89,"chand":60},"EST":{"name":"Estonia","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":81,"comp24":83,"change":2,"cpi":76,"fh":96,"chand":64},"ETH":{"name":"Ethiopia","region":"Sub-Saharan Africa","income":"L","gov_aid":70,"china":220,"comp15":29,"comp24":35,"change":6,"cpi":38,"fh":28,"chand":30},"FIN":{"name":"Finland","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":94,"comp24":91,"change":-3,"cpi":88,"fh":100,"chand":77},"FRA":{"name":"France","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":74,"comp24":77,"change":3,"cpi":66,"fh":89,"chand":66},"GAB":{"name":"Gabon","region":"Sub-Saharan Africa","income":"UM","gov_aid":8,"china":280,"comp15":33,"comp24":37,"change":4,"cpi":29,"fh":29,"chand":30},"GBR":{"name":"United Kingdom","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":82,"comp24":81,"change":-1,"cpi":70,"fh":94,"chand":71},"GEO":{"name":"Georgia","region":"E. Europe & Central Asia","income":"UM","gov_aid":270,"china":95,"comp15":54,"comp24":60,"change":6,"cpi":50,"fh":60,"chand":52},"GHA":{"name":"Ghana","region":"Sub-Saharan Africa","income":"LM","gov_aid":55,"china":175,"comp15":58,"comp24":57,"change":-1,"cpi":43,"fh":81,"chand":41},"GIN":{"name":"Guinea","region":"Sub-Saharan Africa","income":"L","gov_aid":70,"china":380,"comp15":25,"comp24":32,"change":7,"cpi":26,"fh":26,"chand":23},"GRC":{"name":"Greece","region":"Western Europe","income":"H","gov_aid":0,"china":110,"comp15":56,"comp24":58,"change":2,"cpi":50,"fh":83,"chand":53},"GTM":{"name":"Guatemala","region":"Latin America & Caribbean","income":"UM","gov_aid":75,"china":6,"comp15":38,"comp24":34,"change":-4,"cpi":26,"fh":47,"chand":35},"HKG":{"name":"Hong Kong","region":"East Asia & Pacific","income":"H","gov_aid":0,"china":0,"comp15":73,"comp24":60,"change":-13,"cpi":76,"fh":41,"chand":60},"HND":{"name":"Honduras","region":"Latin America & Caribbean","income":"LM","gov_aid":95,"china":8,"comp15":40,"comp24":30,"change":-10,"cpi":22,"fh":45,"chand":34},"HRV":{"name":"Croatia","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":61,"comp24":59,"change":-2,"cpi":47,"fh":84,"chand":51},"HTI":{"name":"Haiti","region":"Latin America & Caribbean","income":"L","gov_aid":165,"china":18,"comp15":23,"comp24":17,"change":-6,"cpi":16,"fh":25,"chand":15},"HUN":{"name":"Hungary","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":235,"comp15":55,"comp24":54,"change":-1,"cpi":40,"fh":66,"chand":50},"IDN":{"name":"Indonesia","region":"East Asia & Pacific","income":"UM","gov_aid":15,"china":280,"comp15":48,"comp24":51,"change":3,"cpi":34,"fh":60,"chand":47},"IND":{"name":"India","region":"South Asia","income":"LM","gov_aid":6,"china":18,"comp15":51,"comp24":49,"change":-2,"cpi":39,"fh":66,"chand":49},"IRL":{"name":"Ireland","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":84,"comp24":85,"change":1,"cpi":76,"fh":96,"chand":69},"IRN":{"name":"Iran","region":"Middle East & N.Africa","income":"UM","gov_aid":2,"china":145,"comp15":25,"comp24":24,"change":-1,"cpi":23,"fh":13,"chand":24},"ISR":{"name":"Israel","region":"Middle East & N.Africa","income":"H","gov_aid":0,"china":0,"comp15":69,"comp24":68,"change":-1,"cpi":62,"fh":68,"chand":56},"ITA":{"name":"Italy","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":68,"comp24":61,"change":-7,"cpi":53,"fh":85,"chand":60},"JAM":{"name":"Jamaica","region":"Latin America & Caribbean","income":"UM","gov_aid":55,"china":320,"comp15":59,"comp24":52,"change":-7,"cpi":44,"fh":80,"chand":45},"JOR":{"name":"Jordan","region":"Middle East & N.Africa","income":"UM","gov_aid":145,"china":25,"comp15":51,"comp24":52,"change":1,"cpi":50,"fh":37,"chand":44},"JPN":{"name":"Japan","region":"East Asia & Pacific","income":"H","gov_aid":0,"china":0,"comp15":78,"comp24":80,"change":2,"cpi":71,"fh":96,"chand":70},"KAZ":{"name":"Kazakhstan","region":"E. Europe & Central Asia","income":"UM","gov_aid":15,"china":750,"comp15":34,"comp24":39,"change":5,"cpi":38,"fh":23,"chand":47},"KEN":{"name":"Kenya","region":"Sub-Saharan Africa","income":"LM","gov_aid":50,"china":290,"comp15":41,"comp24":44,"change":3,"cpi":30,"fh":52,"chand":38},"KGZ":{"name":"Kyrgyzstan","region":"E. Europe & Central Asia","income":"LM","gov_aid":110,"china":480,"comp15":28,"comp24":33,"change":5,"cpi":26,"fh":27,"chand":37},"KHM":{"name":"Cambodia","region":"East Asia & Pacific","income":"LM","gov_aid":80,"china":510,"comp15":24,"comp24":24,"change":0,"cpi":20,"fh":24,"chand":30},"KOR":{"name":"South Korea","region":"East Asia & Pacific","income":"H","gov_aid":0,"china":0,"comp15":70,"comp24":75,"change":5,"cpi":63,"fh":83,"chand":65},"KWT":{"name":"Kuwait","region":"Middle East & N.Africa","income":"H","gov_aid":0,"china":0,"comp15":49,"comp24":55,"change":6,"cpi":46,"fh":38,"chand":48},"LBN":{"name":"Lebanon","region":"Middle East & N.Africa","income":"UM","gov_aid":95,"china":12,"comp15":35,"comp24":27,"change":-8,"cpi":23,"fh":41,"chand":23},"LBY":{"name":"Libya","region":"Middle East & N.Africa","income":"UM","gov_aid":35,"china":12,"comp15":19,"comp24":16,"change":-3,"cpi":13,"fh":12,"chand":18},"LKA":{"name":"Sri Lanka","region":"South Asia","income":"UM","gov_aid":30,"china":380,"comp15":46,"comp24":41,"change":-5,"cpi":35,"fh":59,"chand":39},"LTU":{"name":"Lithuania","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":73,"comp24":78,"change":5,"cpi":65,"fh":91,"chand":57},"LUX":{"name":"Luxembourg","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":87,"comp24":87,"change":0,"cpi":78,"fh":97,"chand":71},"LVA":{"name":"Latvia","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":72,"comp24":72,"change":0,"cpi":60,"fh":90,"chand":58},"MAR":{"name":"Morocco","region":"Middle East & N.Africa","income":"LM","gov_aid":30,"china":30,"comp15":39,"comp24":44,"change":5,"cpi":39,"fh":37,"chand":42},"MDA":{"name":"Moldova","region":"E. Europe & Central Asia","income":"UM","gov_aid":285,"china":28,"comp15":48,"comp24":50,"change":2,"cpi":42,"fh":61,"chand":46},"MDG":{"name":"Madagascar","region":"Sub-Saharan Africa","income":"L","gov_aid":55,"china":95,"comp15":36,"comp24":39,"change":3,"cpi":25,"fh":57,"chand":25},"MEX":{"name":"Mexico","region":"Latin America & Caribbean","income":"UM","gov_aid":8,"china":12,"comp15":45,"comp24":40,"change":-5,"cpi":27,"fh":54,"chand":43},"MKD":{"name":"North Macedonia","region":"E. Europe & Central Asia","income":"UM","gov_aid":175,"china":145,"comp15":49,"comp24":50,"change":1,"cpi":40,"fh":60,"chand":43},"MLI":{"name":"Mali","region":"Sub-Saharan Africa","income":"L","gov_aid":110,"china":65,"comp15":35,"comp24":30,"change":-5,"cpi":28,"fh":25,"chand":24},"MMR":{"name":"Myanmar","region":"East Asia & Pacific","income":"LM","gov_aid":35,"china":280,"comp15":26,"comp24":19,"change":-7,"cpi":16,"fh":10,"chand":20},"MNE":{"name":"Montenegro","region":"E. Europe & Central Asia","income":"UM","gov_aid":210,"china":1800,"comp15":53,"comp24":54,"change":1,"cpi":46,"fh":67,"chand":45},"MNG":{"name":"Mongolia","region":"E. Europe & Central Asia","income":"LM","gov_aid":95,"china":1450,"comp15":50,"comp24":48,"change":-2,"cpi":31,"fh":64,"chand":42},"MOZ":{"name":"Mozambique","region":"Sub-Saharan Africa","income":"L","gov_aid":110,"china":235,"comp15":38,"comp24":38,"change":0,"cpi":21,"fh":43,"chand":28},"MUS":{"name":"Mauritius","region":"Sub-Saharan Africa","income":"UM","gov_aid":8,"china":240,"comp15":65,"comp24":61,"change":-4,"cpi":48,"fh":88,"chand":55},"MWI":{"name":"Malawi","region":"Sub-Saharan Africa","income":"L","gov_aid":95,"china":85,"comp15":45,"comp24":46,"change":1,"cpi":34,"fh":67,"chand":30},"MYS":{"name":"Malaysia","region":"East Asia & Pacific","income":"UM","gov_aid":8,"china":480,"comp15":52,"comp24":57,"change":5,"cpi":52,"fh":52,"chand":61},"NAM":{"name":"Namibia","region":"Sub-Saharan Africa","income":"UM","gov_aid":25,"china":320,"comp15":61,"comp24":61,"change":0,"cpi":46,"fh":77,"chand":45},"NER":{"name":"Niger","region":"Sub-Saharan Africa","income":"L","gov_aid":95,"china":30,"comp15":30,"comp24":37,"change":7,"cpi":31,"fh":25,"chand":23},"NGA":{"name":"Nigeria","region":"Sub-Saharan Africa","income":"LM","gov_aid":25,"china":95,"comp15":31,"comp24":34,"change":3,"cpi":26,"fh":44,"chand":28},"NIC":{"name":"Nicaragua","region":"Latin America & Caribbean","income":"LM","gov_aid":35,"china":22,"comp15":35,"comp24":18,"change":-17,"cpi":14,"fh":11,"chand":30},"NLD":{"name":"Netherlands","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":90,"comp24":87,"change":-3,"cpi":78,"fh":99,"chand":74},"NOR":{"name":"Norway","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":92,"comp24":91,"change":-1,"cpi":81,"fh":100,"chand":78},"NZL":{"name":"New Zealand","region":"East Asia & Pacific","income":"H","gov_aid":0,"china":0,"comp15":89,"comp24":87,"change":-2,"cpi":81,"fh":99,"chand":75},"PAK":{"name":"Pakistan","region":"South Asia","income":"LM","gov_aid":35,"china":380,"comp15":33,"comp24":30,"change":-3,"cpi":28,"fh":37,"chand":31},"PAN":{"name":"Panama","region":"Latin America & Caribbean","income":"H","gov_aid":15,"china":110,"comp15":55,"comp24":50,"change":-5,"cpi":33,"fh":74,"chand":47},"PER":{"name":"Peru","region":"Latin America & Caribbean","income":"UM","gov_aid":30,"china":145,"comp15":50,"comp24":45,"change":-5,"cpi":30,"fh":67,"chand":40},"PHL":{"name":"Philippines","region":"East Asia & Pacific","income":"LM","gov_aid":25,"china":65,"comp15":48,"comp24":45,"change":-3,"cpi":32,"fh":55,"chand":45},"POL":{"name":"Poland","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":71,"comp24":68,"change":-3,"cpi":52,"fh":87,"chand":56},"PRK":{"name":"North Korea","region":"East Asia & Pacific","income":"L","gov_aid":12,"china":380,"comp15":7,"comp24":6,"change":-1,"cpi":15,"fh":3,"chand":8},"PRT":{"name":"Portugal","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":74,"comp24":71,"change":-3,"cpi":56,"fh":96,"chand":59},"PRY":{"name":"Paraguay","region":"Latin America & Caribbean","income":"UM","gov_aid":40,"china":28,"comp15":39,"comp24":35,"change":-4,"cpi":24,"fh":57,"chand":36},"ROU":{"name":"Romania","region":"E. Europe & Central Asia","income":"H","gov_aid":6,"china":32,"comp15":54,"comp24":57,"change":3,"cpi":45,"fh":80,"chand":49},"RUS":{"name":"Russia","region":"E. Europe & Central Asia","income":"UM","gov_aid":2,"china":80,"comp15":35,"comp24":24,"change":-11,"cpi":22,"fh":15,"chand":39},"RWA":{"name":"Rwanda","region":"Sub-Saharan Africa","income":"L","gov_aid":105,"china":130,"comp15":40,"comp24":53,"change":13,"cpi":58,"fh":24,"chand":43},"SAU":{"name":"Saudi Arabia","region":"Middle East & N.Africa","income":"H","gov_aid":0,"china":0,"comp15":30,"comp24":57,"change":27,"cpi":57,"fh":11,"chand":54},"SDN":{"name":"Sudan","region":"Sub-Saharan Africa","income":"L","gov_aid":45,"china":175,"comp15":14,"comp24":23,"change":9,"cpi":14,"fh":8,"chand":16},"SEN":{"name":"Senegal","region":"Sub-Saharan Africa","income":"LM","gov_aid":75,"china":120,"comp15":55,"comp24":56,"change":1,"cpi":46,"fh":69,"chand":40},"SGP":{"name":"Singapore","region":"East Asia & Pacific","income":"H","gov_aid":0,"china":0,"comp15":78,"comp24":73,"change":-5,"cpi":84,"fh":47,"chand":84},"SLE":{"name":"Sierra Leone","region":"Sub-Saharan Africa","income":"L","gov_aid":160,"china":195,"comp15":40,"comp24":43,"change":3,"cpi":34,"fh":59,"chand":29},"SLV":{"name":"El Salvador","region":"Latin America & Caribbean","income":"UM","gov_aid":80,"china":18,"comp15":43,"comp24":38,"change":-5,"cpi":32,"fh":41,"chand":40},"SOM":{"name":"Somalia","region":"Sub-Saharan Africa","income":"L","gov_aid":195,"china":30,"comp15":10,"comp24":14,"change":4,"cpi":9,"fh":5,"chand":10},"SRB":{"name":"Serbia","region":"E. Europe & Central Asia","income":"UM","gov_aid":95,"china":1100,"comp15":47,"comp24":46,"change":-1,"cpi":33,"fh":55,"chand":45},"SSD":{"name":"South Sudan","region":"Sub-Saharan Africa","income":"L","gov_aid":380,"china":80,"comp15":14,"comp24":17,"change":3,"cpi":9,"fh":12,"chand":12},"SVK":{"name":"Slovakia","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":66,"comp24":61,"change":-5,"cpi":48,"fh":82,"chand":54},"SVN":{"name":"Slovenia","region":"E. Europe & Central Asia","income":"H","gov_aid":0,"china":0,"comp15":75,"comp24":69,"change":-6,"cpi":58,"fh":94,"chand":58},"SWE":{"name":"Sweden","region":"Western Europe","income":"H","gov_aid":0,"china":0,"comp15":91,"comp24":89,"change":-2,"cpi":80,"fh":100,"chand":77},"SYR":{"name":"Syria","region":"Middle East & N.Africa","income":"L","gov_aid":130,"china":8,"comp15":16,"comp24":10,"change":-6,"cpi":15,"fh":10,"chand":10},"TCD":{"name":"Chad","region":"Sub-Saharan Africa","income":"L","gov_aid":75,"china":130,"comp15":18,"comp24":21,"change":3,"cpi":22,"fh":16,"chand":20},"THA":{"name":"Thailand","region":"East Asia & Pacific","income":"UM","gov_aid":15,"china":220,"comp15":44,"comp24":42,"change":-2,"cpi":33,"fh":31,"chand":52},"TTO":{"name":"Trinidad","region":"Latin America & Caribbean","income":"H","gov_aid":5,"china":215,"comp15":54,"comp24":51,"change":-3,"cpi":41,"fh":77,"chand":50},"TUN":{"name":"Tunisia","region":"Middle East & N.Africa","income":"LM","gov_aid":95,"china":30,"comp15":45,"comp24":45,"change":0,"cpi":39,"fh":40,"chand":38},"TUR":{"name":"Turkey","region":"E. Europe & Central Asia","income":"UM","gov_aid":25,"china":35,"comp15":null,"comp24":36,"change":null,"cpi":31,"fh":32,"chand":45},"TWN":{"name":"Taiwan","region":"East Asia & Pacific","income":"H","gov_aid":0,"china":0,"comp15":72,"comp24":77,"change":5,"cpi":68,"fh":94,"chand":62},"TZA":{"name":"Tanzania","region":"Sub-Saharan Africa","income":"LM","gov_aid":55,"china":145,"comp15":39,"comp24":46,"change":7,"cpi":40,"fh":36,"chand":36},"UGA":{"name":"Uganda","region":"Sub-Saharan Africa","income":"L","gov_aid":65,"china":285,"comp15":37,"comp24":36,"change":-1,"cpi":25,"fh":38,"chand":30},"UKR":{"name":"Ukraine","region":"E. Europe & Central Asia","income":"LM","gov_aid":240,"china":65,"comp15":42,"comp24":50,"change":8,"cpi":36,"fh":61,"chand":43},"URY":{"name":"Uruguay","region":"Latin America & Caribbean","income":"H","gov_aid":5,"china":35,"comp15":78,"comp24":78,"change":0,"cpi":73,"fh":96,"chand":55},"USA":{"name":"United States","region":"North America","income":"H","gov_aid":0,"china":0,"comp15":76,"comp24":73,"change":-3,"cpi":64,"fh":83,"chand":68},"UZB":{"name":"Uzbekistan","region":"E. Europe & Central Asia","income":"LM","gov_aid":35,"china":240,"comp15":21,"comp24":36,"change":15,"cpi":31,"fh":17,"chand":44},"VEN":{"name":"Venezuela","region":"Latin America & Caribbean","income":"LM","gov_aid":15,"china":1200,"comp15":20,"comp24":19,"change":-1,"cpi":10,"fh":16,"chand":20},"VNM":{"name":"Vietnam","region":"East Asia & Pacific","income":"LM","gov_aid":40,"china":95,"comp15":28,"comp24":37,"change":9,"cpi":41,"fh":19,"chand":54},"YEM":{"name":"Yemen","region":"Middle East & N.Africa","income":"L","gov_aid":110,"china":18,"comp15":18,"comp24":14,"change":-4,"cpi":13,"fh":12,"chand":10},"ZAF":{"name":"South Africa","region":"Sub-Saharan Africa","income":"UM","gov_aid":12,"china":195,"comp15":62,"comp24":56,"change":-6,"cpi":41,"fh":79,"chand":46},"ZMB":{"name":"Zambia","region":"Sub-Saharan Africa","income":"LM","gov_aid":60,"china":540,"comp15":42,"comp24":45,"change":3,"cpi":37,"fh":57,"chand":33},"ZWE":{"name":"Zimbabwe","region":"Sub-Saharan Africa","income":"LM","gov_aid":25,"china":230,"comp15":28,"comp24":32,"change":4,"cpi":22,"fh":28,"chand":29}};
+
+// Convert to array
+var COUNTRIES = Object.keys(DATA).map(function(iso){
+  return Object.assign({iso:iso}, DATA[iso]);
+});
+
+// State
+var xMetric = 'gov_aid';
+var showBoth = true;
+var logScale = true;
+var sortBy = 'gov_aid_desc';
+var searchQ = '';
+var regionFilter = '';
+
+// Median computations (for quadrant lines)
+function median(vals){
+  var s = vals.slice().sort(function(a,b){return a-b;});
+  return s[Math.floor(s.length/2)];
+}
+
+// ── Scatter chart ─────────────────────────────────────────────────────────────
+function renderScatter() {
+  var svg = document.getElementById('scatter');
+  svg.innerHTML = '';
+  
+  var W = 1080, H = 540;
+  var ml = 60, mr = 30, mt = 30, mb = 50;
+  var pw = W - ml - mr, ph = H - mt - mb;
+  
+  // Data with valid change
+  var pts = COUNTRIES.filter(function(c){
+    return c.change !== null && c[xMetric] !== null;
+  });
+  
+  // X scale
+  var xVals = pts.map(function(c){ return c[xMetric]; });
+  var maxX = Math.max.apply(null, xVals);
+  var minX = logScale ? 1 : 0;
+  
+  function xScale(v){
+    if (logScale) {
+      var lv = Math.log10(Math.max(0.5, v) + 1);
+      var lmax = Math.log10(maxX + 1);
+      return ml + (lv / lmax) * pw;
+    }
+    return ml + (v / maxX) * pw;
+  }
+  
+  // Y scale (change can be -20 to +15)
+  var yVals = pts.map(function(c){ return c.change; });
+  var yMin = Math.min.apply(null, yVals) - 1;
+  var yMax = Math.max.apply(null, yVals) + 1;
+  yMin = Math.floor(yMin / 5) * 5;
+  yMax = Math.ceil(yMax / 5) * 5;
+  
+  function yScale(v){
+    return mt + ph - ((v - yMin) / (yMax - yMin)) * ph;
+  }
+  
+  // Grid + axes
+  var grid = '';
+  // Horizontal gridlines
+  for (var y = yMin; y <= yMax; y += 5) {
+    var yp = yScale(y);
+    grid += '<line class="grid-line" x1="'+ml+'" y1="'+yp+'" x2="'+(W-mr)+'" y2="'+yp+'"/>';
+    grid += '<text class="axis-label" x="'+(ml-8)+'" y="'+(yp+4)+'" text-anchor="end">'+(y>0?'+':'')+y+'</text>';
+  }
+  // Vertical gridlines (log scale)
+  if (logScale) {
+    [1,5,10,50,100,500,1000].forEach(function(v){
+      if (v > maxX) return;
+      var xp = xScale(v);
+      grid += '<line class="grid-line" x1="'+xp+'" y1="'+mt+'" x2="'+xp+'" y2="'+(H-mb)+'"/>';
+      grid += '<text class="axis-label" x="'+xp+'" y="'+(H-mb+15)+'" text-anchor="middle">$'+v+'</text>';
+    });
+  } else {
+    for (var i = 0; i <= 5; i++) {
+      var v = Math.round(maxX * i / 5);
+      var xp = xScale(v);
+      grid += '<line class="grid-line" x1="'+xp+'" y1="'+mt+'" x2="'+xp+'" y2="'+(H-mb)+'"/>';
+      grid += '<text class="axis-label" x="'+xp+'" y="'+(H-mb+15)+'" text-anchor="middle">$'+v+'</text>';
+    }
+  }
+  
+  // Zero line for Y
+  var zeroY = yScale(0);
+  grid += '<line class="axis-line" x1="'+ml+'" y1="'+zeroY+'" x2="'+(W-mr)+'" y2="'+zeroY+'" stroke="var(--text-light)" stroke-width="1"/>';
+  
+  // Median lines
+  var validForMedian = pts.filter(function(c){ return c[xMetric] > 5; });
+  var medX = median(validForMedian.map(function(c){return c[xMetric];}));
+  var medY = 0; // zero change as median proxy for outcomes
+  var medXp = xScale(medX);
+  grid += '<line class="median-line" x1="'+medXp+'" y1="'+mt+'" x2="'+medXp+'" y2="'+(H-mb)+'"/>';
+  grid += '<text class="axis-label" x="'+(medXp+4)+'" y="'+(mt+12)+'" fill="var(--green-mid)" font-size="9">median $'+medX+'</text>';
+  
+  // Axis labels
+  var xLabel = xMetric === 'gov_aid' ? 'Governance ODA per capita 2010–2023 (USD)' : 'Chinese development finance per capita 2000–2021 (USD)';
+  grid += '<text class="axis-title" x="'+(ml+pw/2)+'" y="'+(H-8)+'" text-anchor="middle">'+xLabel+'</text>';
+  grid += '<text class="axis-title" x="-'+(mt+ph/2)+'" y="18" transform="rotate(-90)" text-anchor="middle">Change in Governance Compass 2015→2024</text>';
+  
+  // Quadrant labels (light italic)
+  grid += '<text class="quadrant-label" x="'+(medXp + (W-mr-medXp)/2)+'" y="'+(mt+25)+'">high aid · improved</text>';
+  grid += '<text class="quadrant-label" x="'+(ml + (medXp-ml)/2)+'" y="'+(mt+25)+'">low aid · improved</text>';
+  grid += '<text class="quadrant-label" x="'+(medXp + (W-mr-medXp)/2)+'" y="'+(H-mb-10)+'">high aid · declined</text>';
+  grid += '<text class="quadrant-label" x="'+(ml + (medXp-ml)/2)+'" y="'+(H-mb-10)+'">low aid · declined</text>';
+  
+  // Dots
+  var dots = '';
+  pts.sort(function(a,b){ return (b.gov_aid + b.china) - (a.gov_aid + a.china); }).forEach(function(c){
+    var x = xScale(c[xMetric]);
+    var y = yScale(c.change);
+    var r = xMetric === 'gov_aid' ? Math.max(3, Math.sqrt(c.gov_aid)/2) : Math.max(3, Math.sqrt(c.china)/3);
+    r = Math.min(r, 14);
+    
+    // Main dot
+    var color = xMetric === 'gov_aid' ? 'var(--west)' : 'var(--china)';
+    dots += '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+color+'" fill-opacity="0.65" stroke="'+color+'" stroke-width="0.8"/>';
+    
+    // Optionally show other finance source as ring
+    if (showBoth) {
+      var otherV = xMetric === 'gov_aid' ? c.china : c.gov_aid;
+      if (otherV > 30) {
+        var ringR = xMetric === 'gov_aid' ? Math.max(4, Math.sqrt(otherV)/3) : Math.max(4, Math.sqrt(otherV)/2);
+        ringR = Math.min(ringR + r, 22);
+        var ringColor = xMetric === 'gov_aid' ? 'var(--china)' : 'var(--west)';
+        dots += '<circle cx="'+x+'" cy="'+y+'" r="'+ringR+'" fill="none" stroke="'+ringColor+'" stroke-width="1.3" stroke-opacity="0.7"/>';
+      }
+    }
+    
+    // Label major outliers
+    var isOutlier = (c.gov_aid > 150 && Math.abs(c.change) > 4) ||
+                    (Math.abs(c.change) > 9) ||
+                    (['SGP','RWA','CHN','UZB','GEO','MDA','HUN','HND','AFG','NIC','VEN','LBN'].indexOf(c.iso) >= 0);
+    if (isOutlier) {
+      dots += '<text x="'+(x+r+3)+'" y="'+(y+3)+'" font-size="10" font-family="JetBrains Mono,monospace" fill="var(--text)">'+c.iso+'</text>';
+    }
+  });
+  
+  svg.innerHTML = grid + dots;
+}
+
+// ── Quadrant tables ───────────────────────────────────────────────────────────
+function renderQuadrants() {
+  var oda = COUNTRIES.filter(function(c){ return c.gov_aid > 5 && c.change !== null; });
+  var medAid = median(oda.map(function(c){return c.gov_aid;}));
+  
+  var q = {high_imp:[], high_dec:[], low_imp:[], low_dec:[]};
+  oda.forEach(function(c){
+    var high = c.gov_aid >= medAid;
+    var imp = c.change >= 0;
+    if (high && imp) q.high_imp.push(c);
+    else if (high && !imp) q.high_dec.push(c);
+    else if (!high && imp) q.low_imp.push(c);
+    else q.low_dec.push(c);
+  });
+  
+  // Sort each by magnitude of change
+  q.high_imp.sort(function(a,b){return b.change - a.change;});
+  q.high_dec.sort(function(a,b){return a.change - b.change;});
+  q.low_imp.sort(function(a,b){return b.change - a.change;});
+  q.low_dec.sort(function(a,b){return a.change - b.change;});
+  
+  function fmtList(items, limit){
+    var top = items.slice(0, limit);
+    return top.map(function(c){
+      var chCls = c.change >= 0 ? 'q-change-pos' : 'q-change-neg';
+      return '<li><span class="q-country">'+c.name+'<span class="q-iso">'+c.iso+'</span></span>'
+        + '<span class="q-figs">$'+c.gov_aid+' &middot; <span class="'+chCls+'">'+(c.change>=0?'+':'')+c.change.toFixed(0)+'pts</span></span></li>';
+    }).join('') + (items.length > limit ? '<li style="color:var(--text-light);font-style:italic">+'+(items.length-limit)+' more</li>' : '');
+  }
+  
+  var html = ''
+    + '<div class="q-card q-success">'
+    +   '<div class="q-title">High aid &middot; Improved governance</div>'
+    +   '<div class="q-sub">Donor-supported cases where governance scores rose</div>'
+    +   '<div class="q-count">'+q.high_imp.length+' countries &middot; median aid above $'+medAid+' per capita</div>'
+    +   '<ul class="q-list">'+fmtList(q.high_imp, 12)+'</ul>'
+    + '</div>'
+    + '<div class="q-card q-fail">'
+    +   '<div class="q-title">High aid &middot; Declined governance</div>'
+    +   '<div class="q-sub">Where heavy governance support did not produce improvement</div>'
+    +   '<div class="q-count">'+q.high_dec.length+' countries</div>'
+    +   '<ul class="q-list">'+fmtList(q.high_dec, 12)+'</ul>'
+    + '</div>'
+    + '<div class="q-card q-endo">'
+    +   '<div class="q-title">Low aid &middot; Improved governance</div>'
+    +   '<div class="q-sub">Endogenous reform: minimal Western governance ODA, scores improved</div>'
+    +   '<div class="q-count">'+q.low_imp.length+' countries</div>'
+    +   '<ul class="q-list">'+fmtList(q.low_imp, 12)+'</ul>'
+    + '</div>'
+    + '<div class="q-card q-fall">'
+    +   '<div class="q-title">Low aid &middot; Declined governance</div>'
+    +   '<div class="q-sub">Limited engagement, deteriorating institutions</div>'
+    +   '<div class="q-count">'+q.low_dec.length+' countries</div>'
+    +   '<ul class="q-list">'+fmtList(q.low_dec, 12)+'</ul>'
+    + '</div>';
+  
+  document.getElementById('quadrants').innerHTML = html;
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+function renderTable() {
+  var rows = COUNTRIES.filter(function(c){
+    if (searchQ && !c.name.toLowerCase().includes(searchQ) && c.iso.toLowerCase() !== searchQ) return false;
+    if (regionFilter && c.region !== regionFilter) return false;
+    return true;
+  });
+  
+  var sortFns = {
+    gov_aid_desc: function(a,b){return b.gov_aid - a.gov_aid;},
+    china_desc: function(a,b){return b.china - a.china;},
+    change_desc: function(a,b){return (b.change||-99) - (a.change||-99);},
+    change_asc: function(a,b){return (a.change||99) - (b.change||99);},
+    name_asc: function(a,b){return a.name.localeCompare(b.name);},
+  };
+  rows.sort(sortFns[sortBy] || sortFns.gov_aid_desc);
+  
+  document.getElementById('aidBody').innerHTML = rows.map(function(c){
+    var chCls = c.change === null ? '' : (c.change >= 0 ? 'td-change-pos' : 'td-change-neg');
+    var chStr = c.change === null ? '—' : ((c.change>=0?'+':'') + c.change.toFixed(0));
+    return '<tr>'
+      + '<td><span class="td-country">'+c.name+'</span><span class="td-iso">'+c.iso+'</span></td>'
+      + '<td class="td-region">'+c.region+'</td>'
+      + '<td class="td-num">$'+c.gov_aid+'</td>'
+      + '<td class="td-num">$'+c.china+'</td>'
+      + '<td class="td-num">'+(c.comp15||'—')+'</td>'
+      + '<td class="td-num">'+(c.comp24||'—')+'</td>'
+      + '<td class="td-num '+chCls+'">'+chStr+'</td>'
+      + '</tr>';
+  }).join('');
+  
+  document.getElementById('showingCount').textContent = rows.length+' of '+COUNTRIES.length+' countries';
+}
+
+function refresh() { renderScatter(); renderQuadrants(); renderTable(); }
+
+document.getElementById('xSelect').addEventListener('change', function(e){
+  xMetric = e.target.value;
+  renderScatter();
+});
+document.getElementById('showBoth').addEventListener('change', function(e){
+  showBoth = e.target.checked;
+  renderScatter();
+});
+document.getElementById('logScale').addEventListener('change', function(e){
+  logScale = e.target.checked;
+  renderScatter();
+});
+document.getElementById('searchInput').addEventListener('input', function(e){
+  searchQ = e.target.value.toLowerCase().trim();
+  renderTable();
+});
+document.getElementById('regionFilter').addEventListener('change', function(e){
+  regionFilter = e.target.value;
+  renderTable();
+});
+document.getElementById('sortSelect').addEventListener('change', function(e){
+  sortBy = e.target.value;
+  renderTable();
+});
+
+refresh();
+</script>
+
+</body>
+</html>

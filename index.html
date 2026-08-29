@@ -8,14 +8,14 @@
 <meta name="keywords" content="governance, development cooperation, public financial management, supreme audit institutions, citizen engagement, civic technology, GIZ, Uganda, Chad, Africa, inclusive governance, accountability, SAI, AFROSAI, CitizensEye, digital rights, AI Africa, culture development, Karamoja, N'Djamena, AFROTOPIA, anti-corruption, civil society">
 <meta name="author" content="Tassilo von Droste zu Hülshoff">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://tassidroste.github.io/governance-/">
+<link rel="canonical" href="https://tassilovondroste.com/">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://tassidroste.github.io/governance-/">
-  <meta property="og:image" content="https://tassidroste.github.io/governance-/og-image.svg">
+<meta property="og:url" content="https://tassilovondroste.com/">
+  <meta property="og:image" content="https://tassilovondroste.com/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://tassidroste.github.io/governance-/og-image.svg">
+  <meta name="twitter:image" content="https://tassilovondroste.com/og-image.svg">
 <meta property="og:title" content="Tassilo von Droste zu Hülshoff — Governance &amp; Development">
 <meta property="og:description" content="Practitioner and writer working on governance, public accountability, and citizen engagement across Africa.">
 
@@ -28,7 +28,7 @@
   "name": "Tassilo von Droste zu Hülshoff",
   "jobTitle": "Governance Specialist and Development Cooperation Expert",
   "description": "Development practitioner with 18 years of experience in governance, public financial management, and citizen engagement across Africa.",
-  "url": "https://tassidroste.github.io/governance-/",
+  "url": "https://tassilovondroste.com/",
   "knowsAbout": ["Governance", "Public Financial Management", "Supreme Audit Institutions", "Civic Technology", "Development Cooperation", "Civil Society", "Inclusive Governance"],
   "alumniOf": [
     {"@type": "EducationalOrganization", "name": "SOAS University of London"},
@@ -174,6 +174,7 @@
   /* FOOTER */
   footer { border-top: 0.5px solid var(--border); padding: 1.75rem 0; margin-top: 3rem; }
   .footer-inner { max-width: 860px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+    .footer-disclaimer { max-width: 860px; margin: 0.9rem auto 0; padding: 0.9rem 2rem 0; border-top: 0.5px solid var(--border); font-size: 0.72rem; line-height: 1.6; color: var(--text-light); font-style: italic; }
   .footer-name { font-family: var(--serif); font-size: 12px; color: var(--text-light); }
   .footer-links { display: flex; gap: 1.5rem; }
   .footer-links a { font-size: 12px; color: var(--text-light); text-decoration: none; cursor: pointer; transition: color 0.2s; }
@@ -204,6 +205,8 @@
     <ul class="nav-links">
       <li><a onclick="showPage('home')" id="nav-home" class="active">Writing</a></li>
       <li><a href="risk.html">Risk Horizon</a></li>
+      <li><a href="aid.html">Aid Effectiveness</a></li>
+      <li><a href="windows.html">Reform Windows</a></li>
       <li><a href="country.html">Countries</a></li>
       <li><a href="indicators.html" id="nav-indicators" style="display:inline-flex;align-items:center;gap:0.35rem"><svg width="14" height="14" viewBox="0 0 140 140" style="display:inline-block"><circle cx="70" cy="70" r="63" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="70" cy="70" r="46" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/><g stroke="currentColor" stroke-width="1.5"><line x1="70" y1="7" x2="70" y2="24"/><line x1="70" y1="116" x2="70" y2="133"/><line x1="7" y1="70" x2="24" y2="70"/><line x1="116" y1="70" x2="133" y2="70"/><line x1="26" y1="26" x2="37" y2="37"/><line x1="103" y1="103" x2="114" y2="114"/><line x1="114" y1="26" x2="103" y2="37"/><line x1="26" y1="114" x2="37" y2="103"/></g><circle cx="70" cy="8" r="3" fill="currentColor"/><circle cx="70" cy="132" r="3" fill="currentColor"/><circle cx="8" cy="70" r="3" fill="currentColor"/><circle cx="132" cy="70" r="3" fill="currentColor"/><polygon points="70,26 65.5,52 70,47 74.5,52" fill="currentColor"/><circle cx="70" cy="70" r="5" fill="currentColor"/><circle cx="70" cy="70" r="2" fill="white"/></svg>Governance Compass</a></li>
       <li><a href="correlations.html" id="nav-correlations" style="display:inline-flex;align-items:center;gap:0.35rem"><svg width="14" height="14" viewBox="0 0 140 140" style="display:inline-block"><line x1="20" y1="20" x2="20" y2="120" stroke="currentColor" stroke-width="3"/><line x1="20" y1="120" x2="120" y2="120" stroke="currentColor" stroke-width="3"/><circle cx="40" cy="90" r="7" fill="currentColor" opacity="0.7"/><circle cx="60" cy="70" r="6" fill="currentColor" opacity="0.7"/><circle cx="80" cy="55" r="8" fill="currentColor" opacity="0.7"/><circle cx="100" cy="35" r="5" fill="currentColor" opacity="0.7"/><line x1="30" y1="105" x2="115" y2="28" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/></svg>Governance &amp; Outcomes</a></li>
@@ -245,6 +248,18 @@
   <div class="index-section">
     <div class="index-section-label">Essays</div>
 
+    <div class="index-item" onclick="showPage('essay-windows')">
+      <div class="index-item-left">
+        <div class="index-item-title">The Fourteen-Year Wait</div>
+        <div class="index-item-desc">261 reform windows since 1945, detected from eighty years of V-Dem data. Two-thirds of all democratic improvement happened in five per cent of country-years; the median window closes within two years; and the gains, against the prevailing pessimism, mostly stick. What this means for how reform support should actually be designed.</div>
+      </div>
+    </div>
+    <div class="index-item" onclick="showPage('essay-aid')">
+      <div class="index-item-left">
+        <div class="index-item-title">Did Governance Support Work?</div>
+        <div class="index-item-desc">Cumulative governance-targeted development cooperation per capita for 138 countries, plotted against the change in governance scores over fifteen years. The aggregate correlation is essentially zero. The disaggregation by indicator tells a much more useful story &mdash; about what donor engagement can and cannot purchase, and the mirror-image effect of Chinese development finance.</div>
+      </div>
+    </div>
     <div class="index-item" onclick="showPage('essay-authoritarianism')">
       <div class="index-item-left">
         <div class="index-item-title">The Authoritarian Temptation</div>
@@ -623,7 +638,7 @@
   <div class="prose">
     <p>Every cultural space makes a decision about who belongs in it. Usually the decision is not announced. It is made through architecture — the absence of a ramp, the height of a stage — through pricing, through the language of a programme note, through the implicit understanding of who the evening is for. The people excluded by these decisions rarely appear in anyone's account of the evening, because their absence is the precondition for the event taking place as planned. They are not there to object.</p>
 
-    <p>In 2022, working through a project called AFROTOPIA at the cultural centre ACAMOD in N'Djamena, we tried, on two occasions that year, to make different decisions. The two events were superficially unlike each other. One involved migrants in a transit centre, invited to paint and dance and play music over four weeks in the early summer. The other was a celebration of Chad's national holiday on the 11th of August, designed explicitly around the presence and participation of artists and thinkers with disabilities. What they shared was a single underlying conviction: that a cultural space which excludes the people it has simply never bothered to include is not a neutral space. It is a space that has made a choice, and called it normal.</p>
+    <p>In 2022, working through a project called AFROTOPIA in N'Djamena, we tried, on two occasions that year, to make different decisions. The two events were superficially unlike each other. One involved migrants in a transit centre, invited to paint and dance and play music over four weeks in the early summer. The other was a celebration of Chad's national holiday on the 11th of August, designed explicitly around the presence and participation of artists and thinkers with disabilities. What they shared was a single underlying conviction: that a cultural space which excludes the people it has simply never bothered to include is not a neutral space. It is a space that has made a choice, and called it normal.</p>
 
     <p>AFROTOPIA had taken its name from the philosopher Felwine Sarr, whose argument about African futures was, at its core, an argument about imagination: stop measuring these societies against a modernity designed elsewhere, and start asking what they might become on their own terms. For us, in the specific context of N'Djamena — a city without a permanent art gallery until we opened one, a capital where the national museum was gently collapsing into itself — the project was more immediate than philosophical. In the first months after reopening the centre, we had organised eleven concerts, open-mic evenings, a vernissage, exhibitions, and training workshops. The artists who performed brought with them the instruments of Chadian musical tradition — the sanza, the balafon, the kundi, the kakaki — filling a space that had been silent for years. It was about opening a space and then being deliberate, each time, about who entered it.</p>
   </div>
@@ -635,7 +650,7 @@
 
     <p>The development sector has a complicated relationship with this kind of proposition. Psychosocial support, art therapy, cultural programming — these categories exist in logframes, but they occupy a defensive position. You justify them differently than you justify a water pump. The evidence base is presented as thinner, the outcomes as harder to quantify. And yet the evidence is not thin at all: the relationship between creative expression and mental wellbeing in displacement contexts is well-established. What the workshops provided — structure, a skill being acquired, the presence of attentive artists, the small rhythm of arriving somewhere with a purpose — addressed something real in people whose days had otherwise lost their shape.</p>
 
-    <p>What I keep coming back to, thinking about those mornings, is a distinction that feels important. The water pump and the vaccination campaign restore what was taken. Art does something different: it asserts what remains. To choose a colour, to decide how a line falls, to learn three chords — these are acts of agency in a situation designed, structurally, to suspend it. The transit centre decided when people ate, where they slept, what their next step would be. The patio at ACAMOD was one of the few places where the decision belonged entirely to the person holding the brush.</p>
+    <p>What I keep coming back to, thinking about those mornings, is a distinction that feels important. The water pump and the vaccination campaign restore what was taken. Art does something different: it asserts what remains. To choose a colour, to decide how a line falls, to learn three chords — these are acts of agency in a situation designed, structurally, to suspend it. The transit centre decided when people ate, where they slept, what their next step would be. The patio at AFROTOPIA was one of the few places where the decision belonged entirely to the person holding the brush.</p>
 
     <p>On the 17th of June the patio filled. Paintings were hung on the walls — landscapes of countries left behind, faces of people missed, images of peace, chosen by the participants themselves in conversation with the artists over the preceding weeks. A group played music. There was dancing. None of it was polished. All of it was specific, which is the only quality that distinguishes genuine expression from decoration. The event had cost less than a thousand euros in total. I have sat in donor planning meetings where that sum was spent on a single line of catering. The disproportion is not an accusation; it is an observation about what we have decided dignity costs.</p>
   </div>
@@ -670,7 +685,7 @@
   <span class="back-link" onclick="showPage('home')">← All writing</span>
   <span class="eyebrow">Gallery · N'Djamena · 2022</span>
   <h1 class="article-title" style="max-width:600px">AFROTOPIA:<br><em>Artists of Chad</em></h1>
-  <p class="article-subtitle" style="max-width:580px">Portraits and works from the gallery at ACAMOD cultural centre, N'Djamena — the first permanent art gallery in Chad</p>
+  <p class="article-subtitle" style="max-width:580px">Portraits and works from the AFROTOPIA gallery, N'Djamena — the first permanent art gallery in Chad</p>
   <div class="essay-meta">
     <span class="meta-item">Photography by Henry Bailey</span>
     <div class="meta-sep"></div>
@@ -679,7 +694,7 @@
     <span class="s-badge blue-badge">Gallery</span>
   </div>
   <div class="prose" style="max-width:580px;margin-bottom:3rem">
-    <p>These are seven of the artists who made AFROTOPIA what it became — painters, a poet, a performer — each working in a city that had almost no infrastructure for what they were making. The portraits were taken at ACAMOD. The works shown here are from the gallery's inaugural exhibition.</p>
+    <p>These are seven of the artists who made AFROTOPIA what it became — painters, a poet, a performer — each working in a city that had almost no infrastructure for what they were making. The portraits were taken at AFROTOPIA. The works shown here are from the gallery's inaugural exhibition.</p>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;margin-bottom:4rem;padding-bottom:4rem;border-bottom:0.5px solid var(--border)">
@@ -1076,6 +1091,7 @@
       <a href="https://www.linkedin.com/in/tassilo-von-droste-53aaab32/" target="_blank">LinkedIn ↗</a>
     </div>
   </div>
+  <div class="footer-disclaimer">Written with AI assistance from my notes, field observations and arguments. I review and edit everything published here, and I am responsible for the content.</div>
 </footer>
 
 <script>
@@ -1092,6 +1108,174 @@
 
 
 
+
+
+
+<div id="page-essay-windows" class="page">
+<div class="narrow">
+  <span class="back-link" onclick="showPage('home')">&#8592; All writing</span>
+  <span class="eyebrow">Analysis &middot; Reform Windows &middot; 2026</span>
+  <h1 class="article-title">The Fourteen-Year<br><em>Wait</em></h1>
+  <p class="article-subtitle">On a song played after midnight in Lisbon, 261 reform windows detected across eighty years of data, and why both donor gradualism and donor pessimism turn out to be wrong</p>
+  <div class="essay-meta">
+    <span class="meta-item">Tassilo von Droste zu H&#252;lshoff</span>
+    <span class="meta-sep">&middot;</span>
+    <span class="meta-item">2026</span>
+    <span class="meta-sep">&middot;</span>
+    <span class="meta-item">2,500 words</span>
+  </div>
+  <div class="essay-body">
+
+<p>A few minutes past midnight on the 25th of April, 1974, a Lisbon radio station played a song that had been banned from the airwaves. <em>Gr&#226;ndola, Vila Morena</em> &mdash; Zeca Afonso&rsquo;s slow hymn to a town where, as the lyric has it, the people are the ones who give the orders. It was the second of two agreed signals. Across the country, junior army officers heard it and moved their units. By the end of the following day, the Estado Novo &mdash; at forty-eight years, the oldest dictatorship in Western Europe &mdash; had ceased to exist. Almost nobody fired a shot. A flower seller in the Rossio began handing carnations to soldiers, who put them in their rifle barrels, and the event acquired the name it has carried ever since.</p>
+
+<p>In the V-Dem data, Portugal&rsquo;s electoral democracy score rose by 0.69 &mdash; sixty-nine points on a hundred-point scale &mdash; in the six years that followed. It is one of the largest improvements ever recorded. Ten years after the window closed, Portugal had kept all of it, and added more.</p>
+
+<p>The question that interests me is whether Lisbon is the exception or the rule. Development cooperation is built, almost everywhere, on the opposite assumption: that governance improves gradually, through accumulation &mdash; a training here, a reformed procurement law there, a five-year programme with a mid-term review. I have spent a large part of my career inside programmes designed on that assumption. So I went looking for the answer in the longest dataset we have.</p>
+
+<p>  *  *  *</p>
+
+<p>The method is simple enough to describe in a sentence. Take V-Dem&rsquo;s electoral democracy index for every country from 1945 to 2025; flag every clustered jump that adds at least ten points; call each cluster a window; then watch what happens for the next ten years. Run that across 183 countries and you get 261 windows, in 138 countries, over eighty years. The algorithm has no knowledge of history &mdash; it sees only numbers &mdash; and yet the list it produces reads like the table of contents of a textbook on democratisation: Portugal 1974, Spain 1977, Greece 1974, Brazil 1985, Korea 1987, Poland 1989, Chile 1990, South Africa 1994, Taiwan 1996, Indonesia 1998, Georgia 2004, Tunisia 2011, The Gambia 2017, Armenia 2018, Zambia 2021. Nobody curated that list. The data produced it.</p>
+
+<p>Five findings come out of those 261 episodes, and each one unsettles a piece of conventional wisdom.</p>
+
+<p>The first is that democratic improvement is overwhelmingly episodic. Since 1945, sixty-seven per cent of all the democratic improvement recorded anywhere in the world happened in just five per cent of country-years. Countries do not drift upward. They sit on plateaus &mdash; sometimes for decades &mdash; and then they jump. The gradualist picture, in which steady annual effort produces steady annual gains, describes about a third of the story. The other two-thirds arrives in bursts.</p>
+
+<p>The second is that the bursts are short. The median window lasts two years. Eighty-nine per cent close within three; ninety-eight per cent within five. Whatever a country is going to win in an opening, it wins quickly. This is worth setting against the standard rhythm of development cooperation, where a programme is identified in year one, designed in year two, procured in year three, and disbursing seriously by year four. By the historical record, the window such a programme was designed for has usually already closed.</p>
+
+<p>The third finding is the one I found hardest to accept, and checked twice. Windows do not announce themselves. Of the episodes with enough prior data to judge, forty-six per cent opened from complete stagnation and twenty-seven per cent from active decline. Only about a quarter had any positive momentum at all in the five years before. Armenia was flat for a decade before 2018. The Gambia was deteriorating before Jammeh lost an election everyone expected him to steal. Malawi&rsquo;s constitutional court annulled a stolen election in 2020 and ordered a rerun that the opposition won &mdash; nothing in the preceding trend data hinted at it. The practical meaning is uncomfortable for anyone whose job involves country strategies: you cannot time a window from the outside. The five-year trend, the thing every strategy document begins with, tells you almost nothing about whether one is coming.</p>
+
+<p>The fourth finding runs the other way, against the pessimists rather than the planners. The gains mostly stick. Ten years after a window closes, the median episode has retained 103 per cent of what it won &mdash; that is, it kept everything and added a little. Fifty-seven per cent of windows are fully retained or better. Only twelve per cent reverse completely. And &mdash; this surprised me &mdash; retention does not depend on the size of the window or the level a country started from. Small openings from low bases stick about as well as the great transitions. The era of democratic backsliding has made reversal feel like the natural order of things. In the long data, it is the exception. Hungary and Nicaragua are real; they are also, statistically, one case in eight.</p>
+
+<p>The exceptions deserve their own honesty, because they are instructive. Tunisia&rsquo;s 2011 window &mdash; the largest opening of the Arab Spring &mdash; retained sixteen per cent of its gains after President Sa&#239;ed&rsquo;s consolidation. Georgia&rsquo;s 2013 window went negative; the country is now below where it stood before the opening. Ukraine&rsquo;s Orange Revolution window of 2005 kept barely a quarter of what it won. Chile&rsquo;s brief opening of 1971 was followed by the coup, and the data records the aftermath as one of the deepest reversals in the file. Windows can slam. They mostly do not.</p>
+
+<p>The fifth finding is the title of this essay. For countries that experienced more than one window, the median gap between them is fourteen years. A window, in other words, comes round roughly once in a political generation. Miss it &mdash; because the programme was still in procurement, because the strategy was written for a different scenario, because headquarters needed eighteen months to reallocate &mdash; and the historical expectation is that the next chance arrives in the second half of the following decade.</p>
+
+<p>  *  *  *</p>
+
+<p>Two further things in the data are worth sitting with.</p>
+
+<p>The first concerns the present. The 1990s were the great anomaly &mdash; sixty-eight windows in a single decade, a quarter of everything in the file, as the Soviet system came apart and its clients followed. No other decade comes close. But the surprise is the current one. Through five and a half years of what everyone calls the democratic recession, windows have kept opening at close to the long-run normal rate: Malawi 2020, Zambia and Bolivia 2021, Honduras and The Gambia again in 2022, Thailand and Fiji 2023, Poland, Guatemala and Sri Lanka in 2024. The recession is real, but it is a story about decline in places that were democratic, not about the disappearance of openings in places that were not. The two processes run in parallel. Reading only the first produces the fashionable despair; reading both produces something more like patience.</p>
+
+<p>The second concerns what the method cannot see, and the omission is itself a finding. Uzbekistan &mdash; the largest improver in my Governance Compass over the past decade &mdash; does not appear in the file at all. Not one window. Its gains came through administrative reform under Mirziyoyev: civil service, services, fiscal management, the machinery of the state &mdash; with no electoral opening for the polyarchy index to register. This is the same distinction that emerged from the aid-effectiveness data on this site: technical governance and political governance move separately, respond to different forces, and reward different kinds of support. There are, it seems, two kinds of windows. The democratic kind, mapped here, opens rarely, closes fast, and mostly holds. The capability kind opens more quietly, from above, and is visible only in different instruments. A practitioner needs to know which kind of country they are standing in.</p>
+
+<p>  *  *  *</p>
+
+<p>What follows from all of this for the practice of development cooperation? Three things, I think.</p>
+
+<p>The first is that speed is not a procurement detail; it is the whole game. If the median window closes in two years, the ability to move money, expertise and political support inside twenty-four months is not an operational nicety &mdash; it is the difference between being part of an opening and writing its retrospective. The donors who did this well in the cases the data flags &mdash; the accession-driven support to Eastern Europe in the 1990s, the rapid backing of The Gambia&rsquo;s transition in 2017, the speed with which Moldova&rsquo;s reformers were supported after 2019 &mdash; were not running better five-year programmes. They were running faster two-year ones.</p>
+
+<p>The second follows from unpredictability. If you cannot time a window, the only rational posture is standing readiness: be present, modestly and patiently, before anything happens. The organisations that make the difference inside a window &mdash; the election observers, the budget-watchers, the lawyers with their battered Toyotas &mdash; are never built during one. They are built in the long flat years before, usually on small grants, usually under administrative harassment, usually with no result a logframe would recognise. Funding them through the plateau is not charity for the unproductive years. It is the premium on an insurance policy whose payout date nobody can know.</p>
+
+<p>The third is about expectations after the window closes. The base rates say most gains hold &mdash; but they also say one window in eight dies, and the deaths are not random noise; Tunisia and Georgia were both cases where the political settlement underneath the opening was never consolidated. The decade after a window is not the time to declare success and graduate the country. It is the period in which the twelve per cent is decided.</p>
+
+<p>  *  *  *</p>
+
+<p>One caution, so that this is read honestly. The tracker detects windows from outcomes &mdash; it sees an opening once expert coders have begun to record it, a year or two after the people in the country felt it. It describes base rates; it predicts nothing. Anyone who claims to forecast the next Lisbon is selling something. The data&rsquo;s gift is humbler and, I think, more useful: it tells you how often the door opens, how long it stays open, and what the odds are that what comes through it survives.</p>
+
+<p>Nobody predicted the song. The censors had banned it precisely because they understood what it meant, and they were still taken entirely by surprise when it played. The captains had chosen it because everyone would recognise it and no one expected it. Fifty years later, Portugal has kept every point it gained that spring, which is the part of the story the pessimists forget, and it had waited forty-eight years for the chance, which is the part the gradualists forget. The window opened after midnight and the country went through it before nightfall.</p>
+
+<p>That is what the 261 episodes say, reduced to a single instruction. Be ready before the song plays. You will not know the date. You will, on the historical record, wait about fourteen years &mdash; and when it comes, you will have about two.</p>
+
+  </div><!-- .essay-body -->
+
+  <div class="essay-footer">
+    <div class="ai-note">AI-assisted analysis using the V-Dem v16 dataset (v2x_polyarchy, 1945&ndash;2025). Episode detection: clustered year-on-year gains of &ge;0.05 with cumulative gain &ge;0.10; retention measured ten years after each window closed; 261 episodes across 138 countries. For the full interactive dataset, see the <a href="windows.html">Reform Window Tracker</a>.</div>
+    <div class="essay-tools">
+      <a href="windows.html" class="essay-tool-link">&#8599; Explore all 261 windows</a>
+      <a href="risk.html" class="essay-tool-link">&#8599; Governance Risk Horizon</a>
+      <a href="indicators.html" class="essay-tool-link">&#8599; Governance Compass</a>
+    </div>
+  </div>
+
+</div><!-- .narrow -->
+</div><!-- #page-essay-windows -->
+
+<div id="page-essay-aid" class="page">
+<div class="narrow">
+  <span class="back-link" onclick="showPage('home')">&#8592; All writing</span>
+  <span class="eyebrow">Analysis &middot; Aid Effectiveness &middot; 2025</span>
+  <h1 class="article-title">Did Governance Support Work?<br><em>The aggregate, the disaggregation, and what each tells us</em></h1>
+  <p class="article-subtitle">A first look at fifteen years of governance-targeted development cooperation across 138 countries suggests it did not move the needle. A closer look, indicator by indicator, tells us where it did and where it did not &mdash; and produces a mirror-image finding about Chinese development finance.</p>
+  <div class="essay-meta">
+    <span class="meta-item">Tassilo von Droste zu H&#252;lshoff</span>
+    <span class="meta-sep">&middot;</span>
+    <span class="meta-item">2025</span>
+    <span class="meta-sep">&middot;</span>
+    <span class="meta-item">3,400 words</span>
+  </div>
+  <div class="essay-body">
+
+<p>The question is, on its face, the simplest one in development cooperation. Did the money work? Donors have spent something in the order of one hundred billion dollars on governance support programmes since 2000 &mdash; anti-corruption commissions, parliamentary strengthening, justice sector reform, civil service training, electoral support, public financial management. The question of whether any of it produced governance improvements that would not otherwise have happened is, if anything, the question that practitioners have been most reluctant to ask honestly.</p>
+
+<p>The first answer the data gives, taken at face value, is discouraging. Across 88 ODA-eligible countries with sufficient data to draw a line through fifteen years, the correlation between cumulative governance-targeted development cooperation per capita and the change in their Governance Compass scores is r&nbsp;=&nbsp;0.062. That is statistical noise. Heavy donor engagement has, on average and across the population of recipients, no detectable relationship with composite governance improvement. The same exercise with Chinese development finance produces r&nbsp;=&nbsp;0.027 &mdash; also nothing. Two different models of development finance, two different sets of donors, two different sets of conditions, both producing the same null result when assessed against the aggregate composite.</p>
+
+<p>If the analysis stopped there, the verdict would be straightforward. But the aggregate composite is the wrong place to look. The Governance Compass composite is itself an average across eight indicators measuring very different things &mdash; corruption, rule of law, press freedom, political rights, electoral integrity, fiscal transparency. When you take the composite apart and ask which underlying components have moved with development cooperation and which have not, the picture sharpens considerably. The headline null result hides four meaningfully different stories. And those stories tell us a great deal about what governance support can do, what it cannot, and where practitioners should concentrate their efforts.</p>
+
+<p>  *  *  *</p>
+
+<p>Anti-corruption is where the data is clearest. The correlation between governance support per capita and change in CPI scores 2015&ndash;2024 across eighty-seven recipient countries is r&nbsp;=&nbsp;+0.210 &mdash; small in absolute terms but consistent and in the expected direction. High-cooperation recipients improved their CPI scores by an average of 4.7 points over the period; low-cooperation recipients by 0.2 points. C&ocirc;te d&rsquo;Ivoire gained twenty-two CPI points while receiving $60 per capita in governance support. Sierra Leone gained fourteen with $160. Uzbekistan gained fourteen with $35. Ethiopia, Guinea, Niger, and the Democratic Republic of Congo each gained ten or more points on the corruption index. This is the dimension where the conventional governance support toolkit &mdash; new institutions, prosecutor training, public procurement digitisation, asset declaration systems, audit office strengthening &mdash; appears to produce results that show up reliably in cross-country measurement.</p>
+
+<p>Rule of law is the second positive story, though more modest. Governance support correlates with change in WJP Rule of Law scores at r&nbsp;=&nbsp;+0.169 across the sixty countries with WJP coverage. Press freedom shows a similar pattern at r&nbsp;=&nbsp;+0.122. Both are weaker than CPI but both point in the same direction. The reforms that change these measures &mdash; commercial courts, judicial training, media support, right-to-information legislation, paralegal services &mdash; appear to produce measurable improvements where donor engagement is sustained. Vietnam, Jordan, North Macedonia, Malaysia, Uganda, Angola, Georgia, Guatemala, Thailand, and Zimbabwe are the countries where rule of law indicators rose most over the period, with substantial variation in donor exposure but a consistent positive direction.</p>
+
+<p>Then there is Freedom House, which is the dimension where the conventional governance support model has most clearly stopped working. Governance support correlates with change in Freedom House scores at r&nbsp;=&nbsp;&minus;0.047 &mdash; very slightly negative, statistically indistinguishable from zero. In low-cooperation recipient countries, FH scores rose by an average of 4.9 points between 2015 and 2024. In high-cooperation recipient countries, they rose by only 1.3 points. The countries that improved most on political rights &mdash; Peru, Argentina, Bolivia, Mexico, South Africa, Ghana, Botswana &mdash; received little governance-targeted support. Several of the countries that received the most governance support per capita &mdash; Afghanistan, Haiti, South Sudan, Lebanon, Somalia &mdash; saw their FH scores decline sharply.</p>
+
+<p>What this disaggregation suggests is that the conventional governance support toolkit does work, but only for certain things. It works for what I would call <em>technical governance</em>: building institutions, training prosecutors, digitising procurement, improving budget transparency, strengthening commercial courts, professionalising the civil service. It does not work, or works far less reliably, for what I would call <em>political governance</em>: producing free and contested elections, expanding political competition, restraining executive power, protecting opposition rights, opening political space. The technical reforms can be done with money and expertise. The political reforms cannot, because they require the existing political coalition to accept constraints on its own power, and no amount of donor money will purchase that consent if the coalition has decided not to give it.</p>
+
+<p>This explains, I think, why so many of the most-supported governance reform countries are simultaneously celebrated for technical governance gains and criticised for political backsliding. Rwanda&rsquo;s anti-corruption institutions are real; its political system has not opened. Ethiopia, before 2018 and after 2020, ran functioning fiscal institutions while restricting political space. Uzbekistan&rsquo;s civil service reform under Mirziyoyev has been substantial; its political pluralism has not arrived. C&ocirc;te d&rsquo;Ivoire has rebuilt state administrative capacity while preserving a narrow political settlement. These are not failures of donor design. They are accurate signals of what the technical dimension of governance can deliver in the absence of political settlement change.</p>
+
+<p>  *  *  *</p>
+
+<p>The four-quadrant analysis sharpens the same story in a different way. Among the eighty-eight countries with valid trajectories, thirty-two received above-median governance support and saw composite improvements. The list reads exactly as a development practitioner would expect: Rwanda, Armenia, C&ocirc;te d&rsquo;Ivoire, Ukraine, Guinea, Niger, Tanzania, Ethiopia, Georgia, the Democratic Republic of Congo, Kyrgyzstan, Somalia, Madagascar, Sierra Leone, South Sudan, Chad, Zambia, Albania, Benin, Bolivia, Colombia, Moldova, Jordan, North Macedonia, Montenegro, Malawi, Senegal, the Central African Republic, Cabo Verde, Cambodia, Mozambique, and Tunisia.</p>
+
+<p>Some of these are genuine success stories where governance has improved substantially and where donor engagement was material. Georgia, Moldova, Armenia, Albania, North Macedonia &mdash; the Eastern European accession-orbit countries. Liberia, Sierra Leone, post-conflict recoveries that owe a great deal to sustained donor presence. Rwanda, whose thirteen-point improvement is real even if accompanied by political conditions that practitioners debate uncomfortably. Some are cases where the trajectory is positive but modest. Some are cases where the &ldquo;improvement&rdquo; is recovery from a deep trough that donors helped manage rather than the production of new capability. The honest reading of this quadrant is not that governance support produced these improvements. It is that, in countries where governance reform was politically possible, donors were present and the trajectory moved upward. Whether causation runs from donor presence to reform or from political opening to donor engagement is a question the data cannot settle.</p>
+
+<p>The more uncomfortable quadrant is the next one. Fifteen countries received high governance support per capita and saw their composite scores decline anyway. Afghanistan is the most famous case &mdash; $420 per capita in cumulative governance support, a decline of eight points, and then the 2021 collapse that made all of it retrospectively legible as failure. But the others are more illuminating because they failed without the same dramatic ending. Honduras received $95 per capita and its composite fell ten points. Haiti received $165 and fell six. Burkina Faso, Mali, El Salvador, Guatemala, Yemen, Lebanon, Jamaica &mdash; all received substantial governance support and all saw their composite scores decline.</p>
+
+<p>On inspection, three patterns emerge in these cases. First, a political settlement that absorbed the technical reforms without absorbing their intended effects: anti-corruption commissions were established, prosecutors were trained, procurement was digitised, and the underlying political economy continued to extract value through other channels. Second, an external shock &mdash; Central American gang violence, the Sahel insurgencies, Lebanon&rsquo;s financial collapse, Yemen&rsquo;s war &mdash; that overwhelmed whatever institutional gains had been made. Third, and most telling for practitioners, a donor coordination problem in which different reform programmes pulled in different directions, sometimes because they came from different donors with different theories of change. The lesson is not that governance support is wasted. It is that it cannot substitute for the political conditions that make reform possible. Where those conditions exist, donor engagement amplifies them. Where they do not, it is absorbed into the same patronage structures it was meant to reform.</p>
+
+<p>The third quadrant &mdash; low cooperation, improved governance &mdash; is the one that should make Western development agencies most uncomfortable. Eighteen countries received minimal governance-targeted support and improved their scores anyway. Uzbekistan improved by fifteen points. Angola by ten. Sudan, Vietnam, Cameroon, Egypt, Kazakhstan, Morocco, Malaysia, Zimbabwe, Botswana, Indonesia, Kenya, Nigeria &mdash; all moved upward on the Compass with little or no governance-targeted Western support. Some of this reflects base-effect mathematics. But much of it reflects genuine reform produced domestically, from above, often through political transitions that no donor programme could have manufactured. The implication, if taken seriously, is that some of the largest governance improvements of the past fifteen years happened in countries that Western donors barely engaged with on governance terms.</p>
+
+<p>The fourth quadrant requires only brief mention. Twenty-three countries received little governance support and saw their scores decline. Nicaragua, Azerbaijan, Myanmar, South Africa, Pakistan, Sri Lanka, Mexico. Where neither donors nor domestic constituencies are pushing for reform, reform does not happen.</p>
+
+<p>  *  *  *</p>
+
+<p>The Chinese finance pattern produces a mirror image of the Western governance support story, and it is the question I get asked most often by practitioners. Does heavy Chinese development finance correspond to governance decline, as the standard Western narrative implies?</p>
+
+<p>The aggregate data says no, with caveats. The correlation between Chinese finance per capita and composite governance change is essentially zero (r&nbsp;=&nbsp;0.027). The heaviest Chinese-finance recipients show a mixed pattern. Montenegro received $1,800 per capita in Chinese commitments and improved by one point. Mongolia received $1,450 and declined by two. Republic of Congo received $1,200 and improved by one. Venezuela received $1,200 and declined by one. Serbia received $1,100 and declined by one. Angola received $950 and improved by ten. Kazakhstan received $750 and improved by five. Ecuador received $700 and declined by two. This is not the picture of systematic Chinese-finance-induced governance decline that the standard narrative implies. It is the picture of a finance flow that, like Western governance support, has no detectable aggregate effect on composite governance trajectories.</p>
+
+<p>But the disaggregated picture, again, sharpens the story considerably. Across seventy-eight countries with significant Chinese exposure, the correlation with CPI change is r&nbsp;=&nbsp;&minus;0.132 &mdash; small but consistently negative. Countries receiving heavy Chinese finance saw their CPI scores fall by an average of 0.3 points; countries receiving moderate Chinese finance saw them rise by 1.5 points. Press freedom shows a similar pattern, declining 1.4 points on average in heavy-finance recipients versus no change in moderate-finance ones. WJP Rule of Law declined by 5.8 points in the heavy-finance group versus 4.1 in the moderate group. These differences are not large, and most are not individually statistically significant. But the consistent direction across multiple indicators suggests that the political-economy effects of large Chinese infrastructure finance &mdash; opaque negotiations, non-competitive procurement, debt obligations to a non-conditional creditor &mdash; do correspond to small but measurable decline in the dimensions of governance most associated with transparency and rule of law. Freedom House, interestingly, shows no Chinese-finance effect at all.</p>
+
+<p>The Chinese finance pattern damages technical governance more than political governance &mdash; the exact opposite of where Western governance support has its measurable impact. Put the two flows side by side and a clearer picture emerges. Western governance support, where it has measurable effects, strengthens technical institutions: anti-corruption commissions, courts, procurement systems, the administrative apparatus of the state. It does not produce political opening. Chinese development finance, where it has measurable effects, weakens technical governance: it makes procurement less competitive, debt management less transparent, and rule of law institutions less independent. It also does not affect political openings in any consistent direction. The two flows are working on different dimensions of the same problem, and neither is producing the political reform that ultimately determines whether the technical gains are sustained.</p>
+
+<p>What is also true is that Chinese finance reduces the leverage that Western donors have to attach governance conditions to their support. A country that can borrow from China on commercial terms for infrastructure does not need to accept governance reform conditions to access Western infrastructure finance. The substitution effect is real and is reshaping the political economy of development cooperation in ways that the next decade will make clearer.</p>
+
+<p>  *  *  *</p>
+
+<p>The practical conclusion from this analysis, I think, is more useful than the surface-level null result that prompted the question in the first place.</p>
+
+<p>Governance support is more like climate finance than it is like trade. It cannot be assessed on aggregate efficacy because its effects are conditional, contextual, and disproportionately driven by political conditions the donor cannot control. But the disaggregation makes clear that the toolkit is not equally effective across all governance dimensions, and practitioners would be better served by being more honest about that. The strongest evidence base, by some distance, is for anti-corruption and public sector integrity work. The next strongest is for rule of law and access to justice. The weakest is for political rights, electoral integrity, and democratic opening &mdash; and that weakness reflects something real about what donor money can and cannot purchase, not a deficiency in programme design that better instruments would correct.</p>
+
+<p>This has direct implications for how governance support should be designed. Programmes that focus on technical institution-building have a reasonable chance of producing measurable results, particularly where the political settlement is at least neutral to reform. Programmes that aim to produce political opening, expand competitive elections, or restrain executive power face a much harder evidentiary case and should be designed with much greater humility about what they can plausibly deliver. The conventional bundling of these two kinds of objective into a single &ldquo;governance reform&rdquo; portfolio has, I think, made it harder for the development community to learn from its experience, because the failures of political reform contaminate the assessment of technical reform that may be working precisely as intended.</p>
+
+<p>It also has implications for how the Chinese-finance question should be framed. The right comparison is not Western governance support versus Chinese infrastructure finance in their aggregate effects on governance &mdash; both are weak. The right comparison is the specific governance dimensions where each flow has measurable effects. Western support strengthens technical governance and is neutral on politics. Chinese finance weakens technical governance and is also neutral on politics. The choice between them, for a recipient country government, is not a choice between &ldquo;better&rdquo; and &ldquo;worse&rdquo; governance partners in some general sense. It is a choice between strengthening or weakening the specific technical institutions that determine whether large-scale finance can be managed transparently. That is a narrower claim than the standard Western critique, but it is the claim the data actually supports.</p>
+
+<p>The eighteen low-cooperation improvers should remind us, finally, that some of the largest governance gains of our era happened with very little Western support, and that the practice of development cooperation needs to take seriously what that means for the next twenty years. The thirty-two high-cooperation improvers should remind us that, in the right political circumstances, sustained donor engagement is not wasted. And the fifteen high-cooperation decliners deserve the institutional learning that they have not yet received, because they contain most of what we have not understood about why governance support sometimes does not produce governance.</p>
+
+<p>The data does not say development cooperation does not work. It says that the question of whether it works depends entirely on which dimension of governance you are asking about, and that the answer is not the same for political rights as it is for procurement transparency. We have known something like this for a long time. We are still designing programmes as if we did not.</p>
+
+  </div><!-- .essay-body -->
+
+  <div class="essay-footer">
+    <div class="ai-note">AI-assisted analysis using OECD CRS aggregates (purpose codes 15110&ndash;15199, cumulative 2010&ndash;2023, per capita), AidData Global Chinese Development Finance Dataset v3.0 (Parks et al. 2023, 2000&ndash;2021), and the Governance Compass composite. Figures are approximate aggregates compiled from published OECD tables and AidData reports, not exact CRS bulk downloads. For interactive exploration of the underlying data, see the <a href="aid.html">Aid Effectiveness Explorer</a>.</div>
+    <div class="essay-tools">
+      <a href="aid.html" class="essay-tool-link">&#8599; Explore the data</a>
+      <a href="indicators.html" class="essay-tool-link">&#8599; Governance Compass</a>
+      <a href="country.html" class="essay-tool-link">&#8599; Country profiles</a>
+    </div>
+  </div>
+
+</div><!-- .narrow -->
+</div><!-- #page-essay-aid -->
 
 <div id="page-essay-authoritarianism" class="page">
 <div class="narrow">
