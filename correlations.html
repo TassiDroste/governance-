@@ -102,6 +102,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(250,249,247,0.95);backdrop
 .sources{font-size:11px;color:var(--text-light);line-height:1.8;margin-top:1.5rem}
 .sources a{color:var(--green-mid);text-decoration:none}
 .sources a:hover{text-decoration:underline}
+
+.data-attribution{max-width:1120px;margin:1.5rem auto 0;padding:1.1rem 2rem 0;border-top:0.5px solid var(--border);font-size:0.72rem;line-height:1.7;color:var(--text-light)}
+.data-attribution .da-title{font-family:var(--serif,Georgia,serif);font-size:0.85rem;color:var(--text-mid);margin-bottom:0.5rem;letter-spacing:0.02em}
+.data-attribution p{margin-bottom:0.6rem}
+.data-attribution strong{color:var(--text-mid);font-weight:500}
 </style>
 </head>
 <body>
@@ -1121,6 +1126,11 @@ function closeDetail() {
 init();
 </script>
 <footer style="border-top:1px solid var(--border);padding:1.5rem 0;margin-top:2.5rem;font-size:0.72rem;color:var(--text-light)">
+  <div class="data-attribution">
+    <div class="da-title">Data &amp; attribution</div>
+    <p>This is an independent, non-commercial project. It is not affiliated with, endorsed by, or produced in cooperation with any of the organisations whose data it draws on. Each index remains the work of its publisher and is shown here as an unmodified score, with attribution, as publicly released. The combined &ldquo;Governance Compass composite&rdquo; is the author&rsquo;s own construction and should not be attributed to any of these organisations.</p>
+    <p>Sources, with their terms of use: <strong>Corruption Perceptions Index</strong> &mdash; Transparency International (CC BY-ND 4.0); <strong>Worldwide Governance Indicators</strong> &mdash; World Bank (CC BY 4.0); <strong>Freedom in the World</strong> &mdash; Freedom House (used with attribution); <strong>World Press Freedom Index</strong> &mdash; Reporters Without Borders / RSF.org (CC BY-ND 4.0, non-commercial); <strong>Rule of Law Index</strong> &mdash; World Justice Project (&copy; WJP, all rights reserved; used for non-commercial, informational purposes with attribution); <strong>Ibrahim Index of African Governance</strong> &mdash; Mo Ibrahim Foundation; <strong>Good Government Index</strong> &mdash; Chandler Institute of Governance; <strong>Transformation Index</strong> &mdash; Bertelsmann Stiftung; <strong>Open Budget Index</strong> &mdash; International Budget Partnership; <strong>electoral democracy index</strong> &mdash; V-Dem Institute (CC BY-SA 4.0). All indices are used with attribution as publicly released; index names and logos are the property of their respective owners. Where an index is offered under a licence that does not permit modification, only its own score is displayed and it is not altered.</p>
+  </div>
   <div style="max-width:1120px;margin:0 auto;padding:0 2rem">
     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem">
       <span><a href="index.html" style="color:var(--text-light)">tassilovondroste.com</a></span>
